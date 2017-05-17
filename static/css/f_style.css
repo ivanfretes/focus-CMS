@@ -1,0 +1,164 @@
+/* -- Fonts -- */
+
+
+@font-face {
+  font-family: 'aqz';
+  src: url('../fonts/AQZCREW_.TTF');
+}
+
+@font-face {
+  font-family: 'epuka';
+  src: url('../fonts/TrashHand.ttf');
+}
+
+@import url('https://fonts.googleapis.com/css?family=Molengo');font-family: 'Molengo', sans-serif;
+font-weight:bold;
+text-transform: uppercase ;
+
+/* -- FlexSlide --*/
+
+.flex-direction-nav a {
+    height: 70px;
+}
+
+section.slider {
+    background: #eaeaea;
+}
+
+/* -- b_theme --- */
+
+section {
+	overflow: hidden; 
+}
+
+
+.spotlight.style1 .image {
+    width: 52%;
+    min-width: 25rem;
+    border-radius: 0;
+}
+
+.spotlight.style1 .content {
+    width: 48%;
+    max-width: 64rem;
+}
+
+/* -- Custom -- */
+@media(min-width: 768px){
+	.col-5 {
+	    width: 20%;
+	    float:left;
+	}
+
+	.col-2 {
+	    width: 50%;
+	    float:left;
+	}
+
+	.col-4 {
+	    width: 40%;
+	    float:left;
+	    position: relative;
+	}
+	.col-6 {
+	    width: 60%;
+	    float:left;
+	    position: relative;
+	}
+
+	.site-heading {
+		padding: 300px 0;
+	}
+    
+    .gallery.style1 article {
+        width: 20%;
+    }
+    
+    .navbar-nav > li {
+        /*padding-left: 1.7rem;*/
+        padding-right: 1.25rem;
+    }
+
+    .navbar-default {
+        background: none;
+        padding: 30px;
+        border:0px;
+    }
+}
+
+.footer-title {
+    font-family: epuka; 
+}
+
+/* -- nav -- */
+.navbar-brand {
+    font-family: epuka;
+    text-decoration: none;
+    font-size: 45px;
+}
+
+.navbar-default .navbar-nav>li>a {
+    text-decoration: none;
+    font-family: 'Molengo', sans-serif;
+    font-weight:bold;
+    text-transform: uppercase ;
+    font-size: 16px;
+}
+
+
+/* -- cover page -- */
+.title-page{
+    font-family: 'epuka';
+    font-weight: bold;
+    font-size: 6vw;
+    color:#fff;
+    letter-spacing: 0.4vw;
+    text-shadow: 1px -1px 0 rgba(165,54,201,1), 1px 1px 0 rgba(165,54,201,1), -1px -1px 0 rgba(165,54,201,1), -1px 1px 0 rgba(165,54,201,1), 2px -2px 0 rgba(165,54,201,1), 2px 2px 0 rgba(165,54,201,1), -2px -2px 0 rgba(165,54,201,1), -2px 1px 0 rgba(165,54,201,1), -1px 1px 0 rgba(165,54,201,1), -1px 2px 0 rgba(165,54,201,1), -2px 2px 0 rgba(165,54,201,1), -2px 3px 0 rgba(165,54,201,1), -3px 3px 0 rgba(165,54,201,1), -4px 4px 0 rgba(165,54,201,1);
+}
+
+.title-page:before {
+    opacity: 0.65;
+    position: absolute;
+    color: #000;
+    z-index: -10;
+    text-shadow: #117864 1px 1px, black 2px 2px, black 3px 3px, black 4px 4px, black 5px 5px, black 6px 6px, black 7px 7px, black 8px 8px, black 9px 9px, black 10px 10px;
+}
+
+ 
+.banner.style5 {
+    padding: 5rem 5rem 3rem 5rem;
+}
+
+/*
+    -- Buttons --
+*/
+input[type="submit"], input[type="reset"], input[type="button"], button, .button {
+    text-decoration: none;
+    border-radius:3px;
+    box-shadow: 0px 4px 0px 0px #d9d6cf;
+    top: 10px;
+}
+
+input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover, button:hover, .button:hover {
+    color: #47D3E5 !important;
+    box-shadow: 0px 4px 0px 0px #d9d6cf;
+}
+
+
+input[type="submit"]:active, input[type="reset"]:active, input[type="button"]:active, button:active, .button:active {
+    box-shadow: 0px 4px 0px 0px #fff;
+    top: 10px;
+}
+
+
+/* -- Slide -- */
+
+.flex-direction-nav a {
+    height:70px;
+}
+
+
+
+
+
+
