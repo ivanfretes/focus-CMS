@@ -3,12 +3,11 @@
    * View the slide component
    */
 
-  if (!isset($order_component))
-    $order_component = -1; 
+
 ?>
 <li class="ui-sortable-component" 
     data-type-widget="slide" 
-    data-order="<?= $order_component ;?>" 
+    data-order="<?= $widget_order ;?>" 
     data-widget="<?= $widget_id ;?>" 
     data-structure="grid" >       
     

@@ -22,11 +22,17 @@
             ?>
                 <img src="<?= base_url().$portfolio_image; ?>" alt="" />
             </a>
-            <div class="caption">
-                <h3><?= $portfolio->portfolio_title ;?></h3>
-                
-                
-            </div>
+
+            <?
+                if (NULL !== $portfolio->portfolio_title &&
+                    '' !== $portfolio->portfolio_title) : ?>
+                     <div class="caption">
+                        <h3><?= $portfolio->portfolio_title ;?></h3>
+                    </div>
+            <?    endif
+
+            ?>
+           
         </article>
     <?  endforeach ?>
     </div>

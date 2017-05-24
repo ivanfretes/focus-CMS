@@ -20,6 +20,9 @@ if (! function_exists('verify_chars')){
 	}
 }
 
+
+
+
 // custom feature pagination 
 if (! function_exists('pagination_custom')){
 	function pagination_custom($custom_config = array()){
@@ -72,11 +75,11 @@ if (! function_exists('pagination_custom')){
 if (! function_exists('upload_custom')){
 	function upload_custom(	$uplaod_library, $file_tag_name, 
 							$custom_config = array() ){
-		
+	
 		// upload setting
 		$config['upload_path']          =  './uploads/images/';
   		$config['allowed_types']        = 'gif|jpg|png';
-        $config['max_size']             =  300;
+        $config['max_size']             =  4000;
         //$config['max_width']            =  1024;
         //$config['max_height']           =  768;
 
@@ -93,8 +96,9 @@ if (! function_exists('upload_custom')){
 		$uplaod_library->initialize($config);
 
 		// Subimos el archivo si esta inicializado
-		if (!$uplaod_library->do_upload($file_tag_name))
+		if (!$uplaod_library->do_upload(trim($file_tag_name))){
 	        $img_name = '';
+		}
 		else {
 			$file = $uplaod_library->data();
 			$img_name = $file['file_name'];
@@ -138,8 +142,20 @@ if (! function_exists('print_json_msg')){
 
 
 
-
-
+/**
+ * Genera el listado de menu a mostrarse en la vista del front
+ * 
+ * @return {void}
+ */
+if (! function_exists('get_menu_front')){
+	function get_menu_front(){
+		$ci = & get_instance();
+		$ci->load->model('General/menu_model','menu_model');
+		
+		$data['list_menu'] = $ci->menu_model->get_all_menu();
+		$ci->load->view('frontend/theme/nav',$data);
+	}
+}
 
 
 

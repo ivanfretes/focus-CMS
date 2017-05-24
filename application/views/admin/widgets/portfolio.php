@@ -1,15 +1,6 @@
-
-<? /**
- * -- Portfolio widget -- 
- */ 
-  
-  if (!isset($order_component))
-    $order_component = -1; 
-
-?>
 <li class="ui-sortable-component" 
     data-type-widget="portfolio" 
-    data-order="<?= $order_component ;?>" 
+    data-order="<?= $widget_order ;?>" 
     data-widget="<?= $widget_id ;?>" 
     data-structure="grid" >    
     
@@ -26,43 +17,46 @@
     </div>
 
     <!-- Portfolio content -->
-    <div>
-        <form action="<?= base_url().'gestion/widgets/edit/portfolio'?>"
-              enctype="multipart/form-data"
-              data-component="<?= $widget_id; ?>"
-              id="portfolio_form_<?= $widget_id; ?>">
+
+    <form action="<?= base_url().'gestion/widgets/edit/portfolio'?>"
+          enctype="multipart/form-data"
+          data-component="<?= $widget_id; ?>"
+          id="portfolio_form_<?= $widget_id; ?>">
 
     	<ul class="grid_sortable">
         
-        <!-- Listing the portfolio -->
-    		<? foreach ($portfolio_list as $index => $portfolio) : 
-                $bg_url = '';
-                // Verified if background initialized
-                if ('' !== $portfolio->portfolio_image)
-                    $bg_url = base_url().'uploads/images/'.$portfolio->portfolio_image;
+        <!-- Listed item the portfolio -->
+    		<?  foreach ($portfolio_list as $index => $portfolio) : 
+                    $bg_url = '';
+
+                    // Verified if background initialized
+                    if ('' !== $portfolio->portfolio_image)
+                        $bg_url = base_url().'uploads/images/'.$portfolio->portfolio_image;
             ?>
             <li style="background-image: url(<?= $bg_url ;?>); " 
                 data-grid-order="<?= $portfolio->portfolio_order; ?>" 
                 data-grid="<?= $portfolio->portfolio_id; ?>">
               
-              <!-- Portfolio Structure -->
-              <div style="margin-top: 60px;">
+                <!-- Portfolio Structure -->
+                <div style="margin-top: 60px;">
 
-                  <input type="file" name="<?= 
-                      'portfolio_img_'.$portfolio->portfolio_id ?>" />
-                  <input type="text" name="portfolio_title_<?=
-                                   $portfolio->portfolio_id ?>"
-                          value="<?= $portfolio->portfolio_title ;?>"
-                          class="form-control">
+                    <input type="file" name="<?= 
+                    'portfolio_img_'.$portfolio->portfolio_id ?>" />
 
-              </div>        
-    			</li>
-    		<? endforeach ?>
+                    <input type="text" name="portfolio_title_<?=
+                            $portfolio->portfolio_id ?>"
+                            value="<?= $portfolio->portfolio_title ;?>"
+                            class="form-control">
+
+                </div>        
+    		
+            </li>
+    		<?    endforeach   ?>
             
     	</ul>
-        </form>
+    </form>
 
-    </div>
+    
 
     <script type="text/javascript">
       

@@ -33,10 +33,24 @@
             </form>
 
             <div class="list_menu_item">
-                <ul>
+                <ul id="menu_created">
                 <?  foreach ($list_menu as $menu) : ?>
-                    <li>
+                    <li id="ui-sortable-component"
+                        data-menu="<?= $menu->id_menu?>">
                         <?= $menu->menu_name; ?>
+                        
+
+                        <!-- Panel de edicion -->
+                        <div style="float: right;">
+                            <input type="text" disabled 
+                                    value="<?= $menu->menu_link; ?>" 
+                                    class="form-control" >
+      
+                                <a href="<?= base_url().'gestion/menu/remove/' ;?>"  data-value="<?= $menu->id_menu ;?>" 
+                                          data-action="remove" 
+                                          class='r_menu'> x </a>
+
+                        </div>
                     </li>
                 <?  endforeach ?>
                 </ul>

@@ -7,10 +7,22 @@
 	 * Component view folder is $this->config['path_view'].'/widgets/*'
 	 *
 	 * # Examples
-	 * @example $config['path_view'] - frontend / admin or custom folder 
-	 * 		-  
+	 * @example $config 
+	 * 	
+	 * --
 	 * 
+	 * @var $config['path_view'] description
+	 * @var $config['path_view'] description
+	 * @var $config['path_view'] description
+	 * @var $config['path_view'] description
+	 * @var $config['path_view'] description
+	 * @var $config['path_view'] description
+	 * @var $config['path_view'] description
+	 * @var $config['path_view'] description
+	 * @var $config['path_view'] description
 	 * 
+	 * --		
+	 *  	
 	 * @package GestionCMS
 	 * @subpackage Website/pages/widgets
 	 * @author Ivan Fretes
@@ -24,16 +36,39 @@
 									'' => '--', #default option
 									'portfolio' => 'Portfolio',
 									'single_row' =>'Fila',
-									'slide' => 'Slide'); 
+									'slide' => 'Slide',
+									/*'single_video' => 'Video'*/); 
 
 
 		/**
 		 * @var {array} Orientation/align the row component
 		 */
 		protected $row_align = array(
-									'left' => 'Dos columnas / Imagen Izquierda',
-									'right' =>'Dos columnas / Imagen derecha',
-									'center' => 'Una Columna'); 
+									'center' => '1 Columna / Imagen Arriba ',
+									'right' => '2 Columnas / Imagen a la Izquierda',
+									'left' =>'2 columnas / Imagen derecha'); 
+
+
+
+		/**
+		 * @var {array} Alineaciones posibles
+		 */
+		protected $video_aling = array(
+									'center' => '',
+									'left' => '',
+									'right' => '',
+									'single' => ''
+								);
+
+
+
+		/**
+		 * @return {array} Retorna las alineaciones posibles de un componente
+		 * de video
+		 */
+		public function get_video_align(){
+			return $this->video_align;
+		}
 
 		/**
 		 * @var content_tmp Is a data receibed in the outher class
@@ -232,15 +267,25 @@
 			
 		}
 
+
+		
 		
 		
 		/**
 		 * Get the portfolio component
 		 */
 		public function get_portfolio(){
+
+			$data['widget_order'] = $this->config['widget_order'];
+			$data['widget_id'] = $this->config['widget_id'];
+
+
+			/**
+			 * @var {array} Listado de items pertenecientes a
+			 * un portfolio
+			 */
 			$data['portfolio_list'] = $this->w_m->get_portfolio_list(
 												$this->config['widget_id']);
-			$data['widget_id'] = $this->config['widget_id'];
 
 			return $this->CI->load->view($this->config['path_view'].
 										'widgets/portfolio',
@@ -251,9 +296,16 @@
 		 * Get the slide component
 		 */
 		public function get_slide(){
+
 			$data['widget_id'] = $this->config['widget_id'];
+			$data['widget_order'] = $this->config['widget_order'];
+
+			/**
+			 * @var {array} Listado de Items pertenecientes a un slide
+			 */
 			$data['slide_list'] = $this->w_m->get_slide_list(
 									$this->config['widget_id']);
+			
 
 			return $this->CI->load->view($this->config['path_view'].
 										'widgets/slide',$data,TRUE);
@@ -263,12 +315,18 @@
 		 * Get the single row view
 		 */
 		public function get_single_row(){
-			$data['row'] = $this->w_m->get_single_row(
-									$this->config['widget_id']);
+			
 			$data['widget_id'] = $this->config['widget_id'];
 			$data['widget_order'] = $this->config['widget_order'];
 			$data['row_align'] = $this->row_align;
 
+
+			/**
+			 * @var {object} Objecto con informacion acerca de la 
+			 * configuracion de la fila
+			 */
+			$data['row'] = $this->w_m->get_single_row(
+									$this->config['widget_id']);
 
 			return $this->CI->load->view($this->config['path_view'].
 										'widgets/single_row',
@@ -284,11 +342,26 @@
 		public function create_single_row(){
 			
 		 	$this->content_inside = $this->w_m->create_single_row(
-				'Título','','Contenido', 'Más Información',
+				'Título','Subtítulo','Editar Contenido [ aquí ]', 'Más Información',
 				 base_url().'','right',
-				 $this->config['widget_id']);
+				 $this->config['widget_id'], NULL);
 
 		}
+
+
+		/**
+		 * Creating a single video component
+		 * 
+		 * Modo [ Edit ]
+		 */
+
+		// public function create_single_video(){
+			
+		//  	$this->content_inside = $this->w_m->create_single_row(
+		// 		'','','', '','','right',
+		// 		 $this->config['widget_id']);
+
+		// }
 
 
 		/**
@@ -391,6 +464,13 @@
 	        	$this->data_widget['widget_description'] = NULL;
 	        
 
+	        /**
+			 * @var $this->data_widget['widget_id'] 
+			 * Refiere al ID del componente no la ID del widget 
+			 * description
+			 */
+
+	        
 	        $edit = $this->w_m->edit_single_row(
 	        						$this->data_widget['widget_title'],
 	        						$this->data_widget['widget_subtitle'],
@@ -398,9 +478,10 @@
 									$this->data_widget['btn_title'],
 									$this->data_widget['btn_link'], 
 									$this->data_widget['row_align'],
+									$this->data_widget['widget_video'],
+									$this->data_widget['widget_img'],
 									$this->data_widget['widget_id']);
 
-	        var_dump($this->data_widget);
 			return;
 
 		}
@@ -420,7 +501,13 @@
 		}
 
 		
-
+		/**
+		 * Retorna el mayor valor ordenado
+		 * @return {number} 
+		 */
+		public function get_order(){
+			return $this->w_m->get_last_order($this->config['page_id']);
+		}
 
 	/**
 	 * -- New Widget(CRUD) --

@@ -1,13 +1,6 @@
 <?
-
-    /**
-     * This a slide componente view in the frontend 
-     */
-
-    $slide_tag_id = $slide_list[0]->widget;
-    
+    $slide_tag_id = $slide_list[0]->widget;  
 ?>
-
     <div id="container" class="cf">
 
         <div id="main" role="main">

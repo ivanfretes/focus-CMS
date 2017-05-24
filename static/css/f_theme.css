@@ -1,11 +1,5 @@
-@import url(font-awesome.min.css);
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i");
 
-/*
-	Story by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
+/*@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i");*/
 
 /* Reset */
 
@@ -2138,7 +2132,7 @@
 		display: block;
 		font-size: 0.9rem;
 		font-weight: 400;
-		margin: 0 0 1rem 0;
+		margin: 1rem 0 0 0;
 	}
 
 	input[type="text"],

@@ -60,14 +60,15 @@
 		 */
 		public function edit_menu($menu_name,$menu_link,$menu_order = -1){
 
-			if ('' !== $menu_name) ; 
-				$this->db->set('menu_name',$menu_name);
-
-			if ('' !== $menu_link) ; 
-				$this->db->set('menu_link',$menu_link);
+			$this->db->set('menu_name',$menu_name);
+			$this->db->set('menu_link',$menu_link);
 
 			if (-1 !== $menu_order)	
 				$this->db->set('menu_order');
+
+			$this->db->update('menu');
+
+
 
 		}
 
@@ -76,11 +77,23 @@
 		 * Lista todos los menu, existentes
 		 */
 		public function get_all_menu(){
+			$this->db->order_by('menu_order','asc');
 			$query = $this->db->get('menu');
 
 			return $query->result();
 		}
 
+
+		/**
+		 * Order the menu asc
+		 * @param $paramname description
+		 */
+		public function ordered($menu_id, $menu_order){
+			$this->db->set('menu_order', $menu_order);
+			$this->db->where('id_menu', $menu_id);
+
+			$this->db->update('menu');
+		}
 	}
 
 ?>

@@ -20,6 +20,20 @@
 
 
 		/**
+		 * Retorna el mayor valor del orden encontrado
+		 * por página 
+		 * @return {number}
+		 */
+
+		public function get_last_order($page_id ){
+			$this->db->select_max('widget_orderly', 'maxOrder')
+				->where('page',$page_id);
+
+			$query = $this->db->get('widgets');
+			return $query->row()->maxOrder;
+		}
+
+		/**
 		 * List a widget by a page
 		 * 
 		 * @param {number} $page_id
@@ -71,7 +85,8 @@
 			$data = array('page' => $page_id, 
 						  'component' => $widget_name, 
 						  'widget_atributes' => $atributes,
-						  'widget_orderly' => $order);
+						  'widget_orderly' => $order, 
+						  'widget_slug' => substr(md5(time()), 0, 12) );
 
 	    	$this->db->insert('widgets',$data);
 	    	return $this->db->insert_id();
@@ -109,10 +124,9 @@
 			public function create_single_row($row_title,$row_subtitle,
 											  $row_content, $row_btn_title,
 											  $row_btn_link, $row_orientation,
-											  $widget_id) {
+											  $widget_id,$row_video) {
 
 
-			
 				$this->db->set('row_title',$row_title);
 				$this->db->set('row_subtitle',$row_subtitle);
 				$this->db->set('row_content',$row_content);
@@ -121,10 +135,13 @@
 				$this->db->set('row_orientation',$row_orientation);
 				$this->db->set('widget',$widget_id);
 
+
 				$this->db->insert('widget_rows');
 				return $this->db->insert_id();
 				
 			}
+
+
 
 			/**
 			 * Get The single row detail, by row id or 
@@ -158,24 +175,27 @@
 			public function edit_single_row($row_title,$row_subtitle,
 											$row_content, $row_btn_title,
 											$row_btn_link, $row_orientation,
-											$row_id) {
+											$row_video,$row_image,$row_id) {
 
-
-				// queda pendiente el row
-				// row_img o row_link video
-				// if ('' !== $image)
-				// 	$this->db->set('', $image);
-			
-
-				if (isset($row_content)) 
+				
+				if (NULL !== $row_content) 
 					$this->db->set('row_content',$row_content);
+
+
+				if ('' !== $row_video) 
+					$this->db->set('row_video',$row_video);
+
+				if ('' !== $row_image) 
+					$this->db->set('row_image', $row_image);
+
 
 				$this->db->set('row_title',$row_title)
 					->set('row_subtitle',$row_subtitle)
 					->set('row_btn_title',$row_btn_title)
 					->set('row_btn_link',$row_btn_link)
 					->set('row_orientation',$row_orientation)
-					
+
+
 					->where('id_row',$row_id);
 
 				if ($this->db->update('widget_rows')) return TRUE;

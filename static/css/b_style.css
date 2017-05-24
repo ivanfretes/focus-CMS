@@ -137,31 +137,24 @@ body {
 }
 
 
-
-
-.ui-sortable-component {
-    background: #fdfdfd;
-    border: 1px solid #dff0d8;
-    padding: 20px;
-    list-style: none;
-    margin: 20px 0px 0px -40px; 
-    border-radius: 5px; 
-}
-
  /*input[type=file]  {
     width: 80px;
 }*/
 
 
+/*
 div[data-action=edit], .form-control {
     background: #fff;
     border: 0.009px #eaeaea solid;
     border-bottom: 4px #eaeaea solid;
 }
+*/
 
+/*
 div[data-action=edit]{
     padding: 5px;
 }
+*/
 
 .form_component {
 /*
@@ -206,3 +199,116 @@ div[data-action=edit]{
 .content_theme {
     margin-top: 50px;
 }
+
+
+#menu_created {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px;
+}
+
+#menu_created li{
+    min-height: 40px;
+    list-style: none;
+    padding: 10px;
+    background: #eaeaea;
+    margin-left: -30px;
+    margin-top: 10px;
+}
+
+#menu_created li input[disabled]{
+    color #ca2b5f;
+    background:#fafafa;
+    margin-top: -6px;
+}
+
+#menu_created li .r_menu {
+    position: absolute;
+    margin-top: -52px;
+    margin-left: 190px;
+    background: #F44336;
+    color: #fff;
+    padding: 2px;
+    width: 30px;
+    text-align: center;
+}
+
+.box-url {
+    color: #444;
+    text-transform: lowercase;
+    padding-left: 10px; 
+    background: #f7f7f7;
+    font-weight: bold;
+    /* border: 1px solid #ccc; */
+}
+
+label {
+    margin-top: 20px
+}
+
+.form-control {
+    background-color: #f7f7f7;
+    border: 0px;
+    box-shadow: inset 0 0px 0px #f7f7f7;
+}
+
+
+.box-editable {
+    background: #f7f7f7;
+    min-height: 46px;
+    padding: 10px 16px;
+}
+
+.img-portada {
+    margin-top: 45px;
+}
+
+    /* -- Componente -- */
+
+    #component_created > li {
+        min-height: 300px;
+        list-style: none;
+        padding: 10px;
+        margin-left: -30px;
+        margin-top: 10px;
+        background: #fdfdfd;
+    }
+
+
+    .ui-sortable-component {
+        border: 1px solid #dff0d8;
+        padding: 20px;
+        list-style: none;
+        margin: 20px 0px 0px -40px; 
+        border-radius: 5px; 
+    }
+    
+
+/* -- pNotify -- */
+
+.ui-pnotify.ui-pnotify-fade-normal.ui-pnotify-in.ui-pnotify-fade-in.ui-pnotify-move {
+    background: #f5ff7a;
+    color: #444;
+    border: 1px #444 solid;
+    margin-top: 30px;
+}
+
+
+
+/*
+.content-theme h3 {
+    margin: 9px 0;
+    text-transform: uppercase;
+    text-decoration: initial;
+    line-height: 1em;
+    font-weight: bold;
+    font-size: 1.5em;
+    position: absolute;
+    z-index: 1;
+    margin-left: 22px;
+    margin-top: 30px;
+    text-rendering: optimizeLegibility;
+    text-shadow: 1px 1px 1px #f9f9f9;
+}*/
+
+

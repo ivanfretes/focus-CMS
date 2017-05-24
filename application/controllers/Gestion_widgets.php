@@ -53,7 +53,7 @@ class Gestion_widgets extends CI_Controller {
 
 	/**
 	 * Edit a subcomponent/ sub 
-	 * @param {string} $widget_name 
+	 * @param {string} $widget_name Refiere al nombre del widget
 	 * @return {void}
 	 */
 	public function edit($widget_name){
@@ -84,14 +84,21 @@ class Gestion_widgets extends CI_Controller {
 			 * @var {string} A component img
 			 */	
 			$data_widget['widget_img']  = upload_custom($this->upload,
-								 		str_replace('value','img', $w_value));
+								 	str_replace('value','img', $w_value));
 
-			
+
 			/**
 			 * @var {string} Title Widget/Subcomponent
 			 */
 			$data_widget['widget_title'] = 
 				$this->input->post(str_replace('value','title', $w_value));
+			
+
+			/**
+			 * @var {string} Link del video 
+			 */
+			$data_widget['widget_video'] = 
+				$this->input->post(str_replace('value','video', $w_value));
 			
 			
 
@@ -118,14 +125,9 @@ class Gestion_widgets extends CI_Controller {
 			 * @var {string} Descripcion del widget
 			 */
 
-			$description = $this->input->post(
+			$data_widget['widget_description'] = $this->input->post(
 								str_replace('value','description',$w_value));
 
-			//var_dump($description);
-
-			if (NULL !== $description){
-				$data_widget['widget_description'] = $description;
-			}
 			
 			/**
 			 * @var {string} alineacion de la imagen/video

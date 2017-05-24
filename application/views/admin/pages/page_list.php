@@ -31,7 +31,7 @@
                 </td>
                 
                 <td>
-                    <a  href="<?= base_url().'v1/'.$page->page_url ;?>" 
+                    <a  href="<?= base_url().$page->page_url ;?>" 
                         target="_blank">
                         Ver página      
                     </a>

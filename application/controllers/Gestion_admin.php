@@ -5,13 +5,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //require 'Auth.php';
 
 /**
+ * 
+ * This class control a loggin admin
+ * 
  * @author Ivan Fretes
  * @example gestion/admin/create
  * 			gestion/login
  * 			gestion/login/auth
  * 			gestion/logout
- * 			login/auth
- * 			login/logon
  */
 class Gestion_admin extends CI_Controller { 
 
@@ -25,9 +26,15 @@ class Gestion_admin extends CI_Controller {
 
 
 	/**
-	 * Verified the session user active
+	 * Verify the user session init 
+	 * 
+	 * if not init session, redirect to login page
+	 * else 
 	 */
 	public function index(){
+		// Para no generar conflicto con el autoload de session
+		//load_infosite();
+	
 		if ($this->session->has_userdata('logged_in')){
 			redirect('gestion/pages');
 		}
@@ -52,6 +59,8 @@ class Gestion_admin extends CI_Controller {
 	/**
 	 * Validate send data form, the login
 	 * @example gestion/login/auth
+	 * 
+	 * if data is incorrect reload the login
 	 */
 	public function validate_credentials() {	
 
@@ -61,6 +70,8 @@ class Gestion_admin extends CI_Controller {
 		$password = $this->_encrypt_password($this->input->post('password'));
 		$is_valid = $this->u_m->validate($username, $password);
 
+
+		// Verificamos que sea valido el inicio de session
 		if($is_valid){
 			
 			$data = array(
@@ -70,12 +81,16 @@ class Gestion_admin extends CI_Controller {
 
 			
 			$this->session->set_userdata($data);
+
+			// Cargamos el contenido de infosite por defecto si 
+			// inicializamos los datos
 			redirect('gestion/pages');
 		}
-		else { // incorrect username or password
-			$data['title'] = 'Inicio Session';		
-			$data['message_error'] = TRUE;		
-			$this->load->view('admin/users/login', $data);	
+		else { // Redirecciona al inicio de session
+			// $data['title'] = 'Inicio Session';		
+			// $data['message_error'] = TRUE;		
+			// $this->load->view('admin/users/login', $data);	
+			redirect('gestion/login');
 		}
 	}	
 	

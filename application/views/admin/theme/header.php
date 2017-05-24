@@ -1,4 +1,10 @@
-<? // ../../../../ ?>
+<? 
+
+    /**
+     * Cargamos los datos por defecto del negocio 
+     */
+    
+?>
 <!DOCTYPE html>
 
 <html lang="en">

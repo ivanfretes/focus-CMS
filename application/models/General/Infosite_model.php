@@ -29,7 +29,6 @@
 		 */
 		public function get_infosite(){
 			$this->db->limit(1);
-			$this->db->order_by('id_page_info','ASC');
 			$query = $this->db->get('page_info');	
 
 			return $query->row();

@@ -14,21 +14,33 @@ class Pages extends CI_Controller {
 
 		// Inicializamos widget custom
 		$this->load->library('widget_custom');
-
-		$this->load->model('General/menu_model','menu_model');
-		$this->list_menu = $this->menu_model->get_all_menu();
 	}	
 	
 	/**
 	 * View the page, 
 	*/
-	public function index($param_url = 'index'){		
-		$data['page_title'] = 'Inicio';
-		$data['page'] = $this->p_m->get_page_by_url($param_url);
-		// Listado de menu de la página
-		$data['list_menu'] = $this->list_menu;
-		
+	public function index(){
 
+		$param_url = $this->uri->segment(1);
+
+		/**
+		  * Verificamos si no existe parametro
+		  * Buscamos la página principal
+		  */ 
+
+		if (NULL === $param_url) {
+			$data['page_title'] = 'Inicio';
+			$data['page'] = $this->p_m->get_index_page();
+		}
+		else {
+			$data['page'] = $this->p_m->get_page_by_url($param_url);
+
+			if (NULL !== $data['page'])
+				$data['page_title'] = $data['page']->page_title;
+		}
+
+
+		// Si no existe página
 		if (NULL !== $data['page']){
 
 			// setting widget
@@ -45,16 +57,6 @@ class Pages extends CI_Controller {
 		else show_404();
 
 	}
-
-
-	public function contact(){
-		$data['list_menu'] = $this->list_menu;
-	}
-
-	public function infosite(){
-		$data['list_menu'] = $this->list_menu;
-	}
-
 	
 }
 

@@ -5,14 +5,16 @@
 			parent::__construct();
 		}
 
-
 		/**
-		 * 
-		 * Listado de todos los contactos sin discriminacion
+		 * Listed all contects
 		 * @return {array} 
 		 */
-		public function get_all_contacts(){
+		public function get_contacts($limit_start,$limit_end){
+			$this->db->limit($limit_start, $limit_end)
+				->order_by('contact_date_created', 'DESC');
+
 			$query = $this->db->get('contacts');
+
 			return $query->result();
 		}
 
@@ -22,7 +24,7 @@
 		 * @param {number} $contact_id
 		 * @return {object} 
 		 */
-		public function get_contact($contact_id){
+		public function get_contact_by_id($contact_id){
 
 			$this->db->where('id_contact', $contact_id);
 			$query = $this->db->get('contacts');
@@ -33,6 +35,8 @@
 		/**
 		 * 
 		 * Create a simple porfolio
+		 * Requiere que el nombre de la persona este inicializado
+		 * 
 		 * 
 		 * @param {string} $contact_id
 		 * @param {string} $firstname
@@ -46,26 +50,29 @@
 		 * @param {string} $description
 		 * @param {number} $status
 		 *  
-		 * @return {object} Retorna si no se inserto
+		 * @return {boolean} Retorna si no se inserto
 		 */
 		public function create_contact($firstname,$lastname,$dni,$phone,
 									 $movil,$mail,$direction,$reference,
 									 $description,$status){
 			
-			$this->db->set('contact_firstname', $firstname);
-			$this->db->set('contact_lastname', $lastname);
-			$this->db->set('contact_dni', $dni);
-			$this->db->set('contact_phone', $phone);
-			$this->db->set('contact_movil', $movil);
-			$this->db->set('contact_mail', $mail);
-			$this->db->set('contact_direction', $direction);
-			$this->db->set('contact_reference', $reference);
-			$this->db->set('contact_description', $description);
-			$this->db->set('contact_status', 0);
+			if (NULL !== $firstname){
+				$this->db->set('contact_firstname', $firstname);
+				$this->db->set('contact_lastname', $lastname);
+				$this->db->set('contact_dni', $dni);
+				$this->db->set('contact_phone', $phone);
+				$this->db->set('contact_movil', $movil);
+				$this->db->set('contact_mail', $mail);
+				$this->db->set('contact_direction', $direction);
+				$this->db->set('contact_reference', $reference);
+				$this->db->set('contact_description', $description);
+				$this->db->set('contact_status', 0);
 
-			$this->db->insert('contacts');
+				if ($this->db->insert('contacts')) return TRUE;
+			}
 
-			return $this->db->insert_id();
+			return FALSE;
+			
 		}
 
 
@@ -108,6 +115,20 @@
 			$this->db->where('id_contact', $contact_id);
 			$this->db->update('contacts');
 		}
+
+
+		/**
+		 * Count the number of contacts
+		 * @return {number} 
+		 */
+		public function count_contacts(){
+			$this->db->select('COUNT(1) AS cantContact');
+			$query = $this->db->get('contacts');
+
+			return $query->row()->cantContact;    
+		}
 	}
+
+	
 
 ?>

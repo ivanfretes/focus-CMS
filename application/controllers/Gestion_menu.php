@@ -59,13 +59,34 @@
 		 * 
 		 * @return {string} Si fue o no eliminado
 		 */	
-		public function remove($menu_id){
-			if (!isset($menu_id)) /** Mensaja de errror */;
+		public function remove(){
+
+			$menu_id = $this->input->post('param');
+
+			if (NULL === $menu_id) print_json_msg('No se elímino el menú', 1);
 			else {
 				$this->menu_model->remove_menu($menu_id);
-
-				// mensaje el menu fue eliminado correctamente
+				print_json_msg('Se elímino el menú', 1);
 			}
+		}
+
+
+		/**
+		 * ordena los datos del menu
+		 */
+		public function order(){
+			$arr_order = $this->input->post('order');
+
+			if (count($arr_order) > 0){
+				foreach ($arr_order as $index => $menu_id) {
+					$this->menu_model->ordered($menu_id, $index + 1);
+				}
+
+				return print_json_msg('Se ordenó el ménu correctamente' , 0);
+			}
+
+			return print_json_msg('No se ordenó el ménu correctamente',1);
+			
 		}
 	}
 

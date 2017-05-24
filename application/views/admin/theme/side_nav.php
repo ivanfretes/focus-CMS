@@ -12,7 +12,9 @@
         <!-- menu profile quick info -->
         <div class="profile">
             <div class="profile_info_business">
-                EPUKA!
+        <?= 
+            $this->session->userdata('data_infosite')['page_info_name'];
+        ?>
             </div>
         </div>
         <!-- end menu profile -->
@@ -42,17 +44,17 @@
 
                 <li>
                     <a href="<?= base_url().'gestion/menu'; ?>">
-                        <i class="fa fa-envelope-o"></i> 
+                        <i class="fa fa-list"></i> 
                         Menú<span class="fa fa-chevron-right"></span>
                     </a>
                 </li>
 
-                <li>
+                <!-- <li>
                     <a href="<?= base_url().'gestion/infosite'; ?>">
                         <i class="fa fa-envelope-o"></i> 
                         Mi Negocio<span class="fa fa-chevron-right"></span>
                     </a>
-                </li>
+                </li> -->
 
 
 

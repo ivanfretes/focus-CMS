@@ -11,9 +11,11 @@
   src: url('../fonts/TrashHand.ttf');
 }
 
-@import url('https://fonts.googleapis.com/css?family=Molengo');font-family: 'Molengo', sans-serif;
-font-weight:bold;
-text-transform: uppercase ;
+body {
+	height: 100%
+}
+
+/*@import url('https://fonts.googleapis.com/css?family=Molengo');font-family: 'Molengo', sans-serif;*/
 
 /* -- FlexSlide --*/
 
@@ -21,8 +23,18 @@ text-transform: uppercase ;
     height: 70px;
 }
 
+
+.flexslider .slides {
+    max-height: 500px;
+}
+
 section.slider {
     background: #eaeaea;
+	height: 60%;
+}
+
+.flexslider {
+	border: 0px;
 }
 
 /* -- b_theme --- */
@@ -103,8 +115,20 @@ section {
     font-weight:bold;
     text-transform: uppercase ;
     font-size: 16px;
+	color: #fff;
 }
 
+.navbar-default .navbar-nav>li>a:hover {
+	color: #fff;
+}
+
+
+.navbar-absolute-top {
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
 
 /* -- cover page -- */
 .title-page{
@@ -112,7 +136,7 @@ section {
     font-weight: bold;
     font-size: 6vw;
     color:#fff;
-    letter-spacing: 0.4vw;
+    letter-spacing: 0.2vw;
     text-shadow: 1px -1px 0 rgba(165,54,201,1), 1px 1px 0 rgba(165,54,201,1), -1px -1px 0 rgba(165,54,201,1), -1px 1px 0 rgba(165,54,201,1), 2px -2px 0 rgba(165,54,201,1), 2px 2px 0 rgba(165,54,201,1), -2px -2px 0 rgba(165,54,201,1), -2px 1px 0 rgba(165,54,201,1), -1px 1px 0 rgba(165,54,201,1), -1px 2px 0 rgba(165,54,201,1), -2px 2px 0 rgba(165,54,201,1), -2px 3px 0 rgba(165,54,201,1), -3px 3px 0 rgba(165,54,201,1), -4px 4px 0 rgba(165,54,201,1);
 }
 
@@ -129,25 +153,34 @@ section {
     padding: 5rem 5rem 3rem 5rem;
 }
 
+.banner.style5 .image {
+    opacity: 1;
+}
+
 /*
     -- Buttons --
 */
-input[type="submit"], input[type="reset"], input[type="button"], button, .button {
+input[type="submit"], input[type="reset"], 
+input[type="button"], button, a.button{
     text-decoration: none;
-    border-radius:3px;
-    box-shadow: 0px 4px 0px 0px #d9d6cf;
+    border-radius:1px;
+    box-shadow: 0px 4px 0px 0px #00ffff;
     top: 10px;
+    background: #444;
+    font-weight: bold;
+    color: #00ffff !important;
 }
 
 input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover, button:hover, .button:hover {
-    color: #47D3E5 !important;
-    box-shadow: 0px 4px 0px 0px #d9d6cf;
+    background: #555;
+    box-shadow: 0px 4px 0px 0px #00ffff;
 }
 
 
 input[type="submit"]:active, input[type="reset"]:active, input[type="button"]:active, button:active, .button:active {
-    box-shadow: 0px 4px 0px 0px #fff;
-    top: 10px;
+    background: #555;
+    transform: translateY(4px);
+    box-shadow: 0px 0px 0px 0px #00ffff;
 }
 
 
@@ -157,8 +190,76 @@ input[type="submit"]:active, input[type="reset"]:active, input[type="button"]:ac
     height:70px;
 }
 
+.flexslider {
+    margin: 0px;
+}
+
+
+.flex-caption {
+    position: absolute;
+    background: lime;
+}
+
+a {
+    text-decoration: none;   
+}
+
+
+footer {
+    margin-top: 100px;
+}
 
 
 
+.logo {
+	width: 200px;
+	margin-top: -15px;
+}
 
 
+#wrapper > .invert {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+iframe {
+	max-width: 100%;
+}
+
+
+/* -- Purple detail -- */
+    .purple-epuka {
+    	background: rgba(165,54,201,1);
+        color: #fff;
+    }
+
+
+    .purple-epuka h1,.purple-epuka h2,.purple-epuka h3,.purple-epuka h4,.purple-epuka h5,.purple-epuka h6 {
+        color: #fff;
+    }
+
+    h2 {
+        font-family: epuka;
+    }
+
+
+    .purple-epuka a {
+        color: #fff;
+    }
+
+
+
+.spotlight .image {
+    background-color: #fff;
+}
+
+
+.spotlight.style5 .content {
+    width: 50rem;
+    max-width: 80%;
+}
+
+
+.container-fluid{
+	margin-top: 20px;
+}

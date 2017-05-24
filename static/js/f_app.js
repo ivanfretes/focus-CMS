@@ -381,3 +381,23 @@ $(function(){
 	});
 
 })(jQuery);
+
+
+
+// Acciones no definidas
+$(function(){
+  
+    $('#contact_date').submit({
+        
+    })
+    
+    // $('#contact_date').date
+    
+	
+}
+});
+
+function field_required(selector){
+	$('selector').on('submit', function()){
+					 
+	}	

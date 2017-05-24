@@ -67,7 +67,7 @@ $route['gestion/logout'] = 'gestion_admin/logout';
 $route['gestion/pages'] = 'gestion_pages/index';
 $route['gestion/pages/add'] = 'gestion_pages/create_page';
 $route['gestion/pages/edit/(:num)'] = 'gestion_pages/get_page/$1';
-$route['gestion/pages/update/(:num)'] = 'gestion_pages/edit_page/$1';
+$route['gestion/pages/update'] = 'gestion_pages/edit_page';
 $route['gestion/pages/remove'] = 'gestion_pages/remove_page';
 $route['gestion/pages/(:num)'] = 'gestion_pages/index/$1'; //$1 = page number
 
@@ -76,8 +76,7 @@ $route['gestion/pages/(:num)'] = 'gestion_pages/index/$1'; //$1 = page number
 $route['gestion/widgets/add/(:any)'] = 'gestion_widgets/create/$1';
 $route['gestion/widgets/remove'] = 'gestion_widgets/remove';
 $route['gestion/widgets/edit/(:any)'] = 'gestion_widgets/edit/$1';
-
-// $route['gestion/widgets/edit/single_row/(:num)'] = 'gestion_widgets/edit_row/$1';
+$route['gestion/widgets/ordered'] = 'gestion_widgets/ordered';
 
 // Lotes
 $route['gestion/lotes/(:num)'] = 'gestion_lotes/index/$1';
@@ -97,35 +96,51 @@ $route['gestion/fracciones/(:num)/georef'] =
 
 // Contacts
 $route['gestion/contacts'] =  'gestion_contacts/index';
+$route['gestion/contacts/(:num)'] =  'gestion_contacts/index/$1';
 $route['gestion/contacts/detail/(:num)'] =  'gestion_contacts/get_contact/$1';
-
+$route['gestion/contacts/create'] =  'gestion_contacts/index';
 
 // Menu
 $route['gestion/menu'] =  'gestion_menu/index';
 $route['gestion/menu/add'] =  'gestion_menu/create';
-//$route['gestion/contacts/detail/(:num)'] =  'gestion_contacts/get_contact/$1';
+$route['gestion/menu/ordered'] =  'gestion_menu/order';
+$route['gestion/menu/remove'] =  'gestion_menu/remove';
 
 
-// Menu
+
+// Infosite
 $route['gestion/infosite'] =  'gestion_infosite/index';
 $route['gestion/infosite/edit'] =  'gestion_infosite/edit';
 
+
 /**
  * -- Frontend --
+ * 
+ * Todo contenido estatico para que no sea sobre escrito
+ * ubicarlo antes de los routes de páginas
  */
 
 // Fracciones
-$route['v1/fracciones'] = 'fracciones/index';
-$route['v1/fracciones/distrito'] = 'fracciones/get_por_distrito';
-$route['v1/fracciones/cuadricula'] = 'fracciones/get_cuadricula';
-$route['v1/fracciones/mapa-svg'] = 'fracciones/get_mapa_svg';
+$route['fracciones'] = 'fracciones/index';
+$route['fracciones/distrito'] = 'fracciones/get_por_distrito';
+$route['fracciones/cuadricula'] = 'fracciones/get_cuadricula';
+$route['fracciones/mapa-svg'] = 'fracciones/get_mapa_svg';
 
+// Contacto
+$route['contacto'] = 'contacts/index';
+$route['contacto/send'] = 'contacts/create'; // recibimos un nuevo contacto
+$route['contacto/message'] = 'contacts/get_success_msg'; // recibimos un nuevo contacto
+
+// Infosite
+$route['la-empresa'] = 'infosite/index';
 
 // Paginas
-$route['v1/'] = 'pages/index/';
-$route['v1/(:any)'] = 'pages/index/$1';
-$route['v1/la-empresa'] = 'pages/infosite';
-$route['v1/contacto'] = 'pages/contact';
+$route['(:any)'] = 'pages/index/$1';
+
+
+
+
+
 
 /**
  * API

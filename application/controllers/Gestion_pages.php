@@ -26,10 +26,9 @@ class Gestion_pages extends CI_Controller {
 
         $this->load->library('upload');
 
-       	//$this->output->enable_profiler(TRUE);
+       //	$this->output->enable_profiler(TRUE);
 
-
-       	$this->link_route = print_link_route($this->uri);
+       	//$this->link_route = print_link_route($this->uri);
 	}
 
 	
@@ -81,11 +80,9 @@ class Gestion_pages extends CI_Controller {
 	/**
 	 * Data load in the page and respectives components 
 	 * of the page by ID
-	 * @return {} description
+	 * @return {void} 
 	 */
 	public function get_page($page_id){ 
-
-
 
 		if (!$this->p_m->get_page_by_id($page_id)){
 			show_404();
@@ -108,6 +105,8 @@ class Gestion_pages extends CI_Controller {
 		$data['page_detail'] = $this->p_m->get_page_by_id($page_id);
 		$data['array_component'] = $this->widget_custom->get_all_widgets();
 		
+		// Orden actual de los componentes creados
+		$data['order_component'] = $this->widget_custom->get_order();
 		
 		$data['page_url'] = $this->base_url;
 
@@ -121,42 +120,77 @@ class Gestion_pages extends CI_Controller {
 
 	/**
 	 * Edit a page
+	 * @example gestion/pages/update Link logico / Route
 	 * @param {number} $page_id
+	 * @return {void} 
 	 */
-	public function edit_page($page_id = NULL){
+	public function edit_page(){
 
-		// Verififica que exista la página
-		if (NULL !== $this->p_m->get_page_by_id($page_id)){
+
+		/**
+		 * @var {object} Contiene todos los camposs de la página por ID
+		 * 
+		 * component_id es un comodin, funciona para cualquier componente,
+		 * [*] todo es un componente en la gestion
+		 */
+		$page_id = $this->input->post('component_id');
+		$page = $this->p_m->get_page_by_id($page_id);
+
+		
+
+		// Verififica que exista la página y el boton este inicializado
+		if (NULL !== $page){
 
 			$page_title = $this->security->xss_clean(
 									$this->input->post('p_title'));
 			$page_subtitle = $this->security->xss_clean(
 									$this->input->post('p_subtitle'));
-			$page_description = trim($this->security->xss_clean(
-									$this->input->post('p_description')));
+			$page_description = trim($this->input->post('p_description'));
 
+
+
+			/**
+			 * @var {number} 
+			 * Valor de nueva página principal
+			 */
+			$page_main = $this->input->post('p_main');
 			
+
+			if (1 === intval($page_main)) {
+				// Seteamos a null la pagina principal
+				$this->p_m->set_index_page($page_id);
+			}
+
+
 			$page_portada = upload_custom($this->upload, 'page_portada');
 
 			// Creamos una nueva página
 			$add = $this->p_m->edit_page($page_id, $page_title, 
 										$page_subtitle, $page_description, 
 										'',$page_portada, 
-										date("Y-m-d H:i:s"));
+										date("Y-m-d H:i:s"), $page_main);
 
-			if ($add) $msg = 'Se editó la página';
-			else {
-				$msg = 'No se creó la página';
+			if ($add) 
+				$this->error = 0;
+			else 
 				$this->error = 1;
-			}
 
 		}
 		else {
-			$msg = '';
-			$this->error = 1;
+			$this->error = 1;	
 		}
 		
 
+
+		// Asigna el mensaje de error, dependiendo de la accion
+		if (!$this->error){
+			$msg = 'Se editó la página';
+		}
+		else {
+			$msg = 'No se editó la página';	
+		}
+		
+		
 		// Print the msg
 		$msg = htmlentities($msg);
 		echo json_encode(array('msg' => $msg, 'error' => $this->error ));
@@ -181,9 +215,8 @@ class Gestion_pages extends CI_Controller {
 		if (NULL === $this->p_m->get_page_by_url($page_url) && 
 			strlen($page_url) > 0){
 
-			// limpiamos la URL
+			// remplzamos acentos
 			$page_url = convert_accented_characters($page_url);
-
 
 			$page_title = $this->security->xss_clean(
 									$this->input->post('p_title'));
@@ -206,6 +239,7 @@ class Gestion_pages extends CI_Controller {
 			// Mensaje de creacion de la página
 			if ($add) $msg = 'Se creó la página';
 			else {
+				
 				$msg = 'No se creó la página';
 				$this->error = 1;
 			}
