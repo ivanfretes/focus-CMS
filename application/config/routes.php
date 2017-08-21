@@ -64,33 +64,33 @@ $route['gestion/logout'] = 'gestion_admin/logout';
 
 
 // Pages
-$route['gestion/pages'] = 'gestion_pages/index';
-$route['gestion/pages/add'] = 'gestion_pages/create_page';
-$route['gestion/pages/edit/(:num)'] = 'gestion_pages/get_page/$1';
-$route['gestion/pages/update'] = 'gestion_pages/edit_page';
-$route['gestion/pages/remove'] = 'gestion_pages/remove_page';
-$route['gestion/pages/(:num)'] = 'gestion_pages/index/$1'; //$1 = page number
+$route['gestion/pages'] = 'gestion_pages/all';
+$route['gestion/pages/(:num)'] = 'gestion_pages/all/$1';
+$route['gestion/pages/new'] = 'gestion_pages/create';
+$route['gestion/pages/edit/(:num)'] = 'gestion_pages/edit/$1';
+$route['gestion/pages/remove/(:num)'] = 'gestion_pages/remove/$1';
 
+// -- Widgets --
+$route['gestion/widgets/(:num)'] = 'gestion_widget/get_all/$1';
+$route['gestion/pages/(:num)/widgets'] = 'gestion_widget/all/$1';
+$route['gestion/widgets/remove/(:num)'] = 'gestion_widget/remove/$1';
 
-// Components/widgets
-$route['gestion/widgets/add/(:any)'] = 'gestion_widgets/create/$1';
-$route['gestion/widgets/remove'] = 'gestion_widgets/remove';
-$route['gestion/widgets/edit/(:any)'] = 'gestion_widgets/edit/$1';
-$route['gestion/widgets/ordered'] = 'gestion_widgets/ordered';
+	// e.g gestion/row/183
+	$route['gestion/(:any)/(:num)'] = 'gestion_widget/get/$1/$2';
 
-// Lotes
-$route['gestion/lotes/(:num)'] = 'gestion_lotes/index/$1';
-$route['gestion/lotes/edit/(:num)/georef'] = 
-									'gestion_lotes/edit_lote_georef/$1';
+	// Cuadricula
+	$route['gestion/cuadricula/new/(:num)'] = 'gestion_cuadricula/create/$1';
+	$route['gestion/cuadricula/edit/(:num)'] = 'gestion_cuadricula/edit/$1';
 
-// Fracciones 
-$route['gestion/fracciones'] = 'gestion_fracciones/index'; 
-$route['gestion/fracciones/(:num)'] = 'gestion_fracciones/index/$1'; #page
-$route['gestion/fracciones/edit/(:num)/georef'] = 
-								'gestion_fracciones/edit_georef/$1'; 
-$route['gestion/fracciones/(:num)/georef'] = 
-								'gestion_fracciones/get_georef/$1'; 
+	// Row
+	$route['gestion/row/new/(:num)'] = 'gestion_row/create/$1';
+	$route['gestion/row/edit/(:num)'] = 'gestion_row/edit/$1';
 
+	// Slide
+	$route['gestion/slide/new/(:num)'] = 'gestion_slide/create/$1';
+	$route['gestion/slide/edit/(:num)'] = 'gestion_slide/edit/$1';
+
+	
 
 
 
@@ -102,15 +102,10 @@ $route['gestion/contacts/create'] =  'gestion_contacts/index';
 
 // Menu
 $route['gestion/menu'] =  'gestion_menu/index';
-$route['gestion/menu/add'] =  'gestion_menu/create';
+$route['gestion/menu/new'] =  'gestion_menu/create';
 $route['gestion/menu/ordered'] =  'gestion_menu/order';
 $route['gestion/menu/remove'] =  'gestion_menu/remove';
 
-
-
-// Infosite
-$route['gestion/infosite'] =  'gestion_infosite/index';
-$route['gestion/infosite/edit'] =  'gestion_infosite/edit';
 
 
 /**
@@ -134,16 +129,13 @@ $route['contacto/message'] = 'contacts/get_success_msg'; // recibimos un nuevo c
 // Infosite
 $route['la-empresa'] = 'infosite/index';
 
+// Encasular carpetas imagenes
+$route['uploads'] = 'pages/index';
+$route['uploads/images'] = 'pages/index';
+$route['uploads/images/resized'] = 'pages/index';
+
+
 // Paginas
 $route['(:any)'] = 'pages/index/$1';
-
-
-
-
-
-
-/**
- * API
- */
 
 

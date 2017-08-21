@@ -7,6 +7,11 @@
 		
 		public function __construct(){
 			parent::__construct();
+
+			if(!$this->session->userdata('logged_in')){
+	            redirect('gestion/login');
+	        }
+
 			$this->load->model('General/menu_model', 'menu_model');
 		}
 

@@ -271,7 +271,8 @@ label {
         padding: 10px;
         margin-left: -30px;
         margin-top: 10px;
-        background: #fdfdfd;
+        background: #ccc;
+        color: #000;
     }
 
 
@@ -312,3 +313,10 @@ label {
 }*/
 
 
+.box-hash {
+    background: #444;
+    color: yellow;
+    margin-left: 10px;
+    padding-left: 5px;
+    padding-right: 5px; 
+}

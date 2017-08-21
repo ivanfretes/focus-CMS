@@ -9,7 +9,7 @@ class Galerias extends CI_Controller {
 	}
 
 	public function index(){
-
+		
 	}
 
 	public function create(){
@@ -24,9 +24,6 @@ class Galerias extends CI_Controller {
 		}
 
 		
-	}
-
-
-	
+	}	
 }
 ?>

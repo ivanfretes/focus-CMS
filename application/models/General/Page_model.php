@@ -1,41 +1,61 @@
 <?
 
 /**
+ * -- Modelo de Páginas --
  * @package GestionCMS
  * @subpackage Website/pages
  */
 class Page_model extends CI_Model {
 
 
+	public function __construct(){
+		parent::__construct();
+		$this->table = 'page';
+	}
+
+
+
 	/**
-	 * Create a page
+	 * Creamos una nueva página
 	 * 
-	 * @param {string} $page_title
-	 * @param {string} $page_subtitle
-	 * @param {string} $page_description
-	 * @param {string} $page_url
-	 * @param {string} $page_portada
-	 * @param {string} $date_modified Date()
+	 * @param {array} $data : Datos a ser insertados en la db
+	 * @return {mixed} : El id o False en caso de no insertarse la pagina 
 	 */
-	public function create_page($page_title,$page_subtitle,$page_description,
-						   $page_url, $page_portada, $date_modified){
+	public function create($data){
 
-		if ('' !== $page_portada)
-			$this->db->set('page_portada_url', $page_portada);
+		// Verificamos que la página que queremos crear sea index (principal)
+		$data['page_main'] = $this->new_index_page($data['page_main']);
 
-		$this->db->set('page_url', $page_url);
-		$this->db->set('page_subtitle', $page_subtitle);
-		$this->db->set('page_description', $page_description);
-		$this->db->set('page_title', $page_title);
-		$this->db->set('page_date_modified',  $date_modified);
-	    $this->db->set('page_status', 1);
 
-		if ($this->db->insert('pages')) return TRUE;
+		// Verifica si el slug ya se asigno a otra pagina
+		if (!$this->get_exist_slug($data['page_url'])){
+
+			if ($this->db->insert($this->table,$data)) {
+				return $this->db->insert_id();
+			}	
+
+		}
+
 		return FALSE;
-		
-		//return $this->db->insert_id();
-	    
+
 	}	
+
+
+	/**
+	 * Actualiza la nueva pagina de inicio
+	 */
+	protected function new_index_page(&$page_main){
+
+		if (isset($page_main)){
+			$this->_set_null_index_page();
+
+			return 1;
+		}	
+		else{
+			return NULL;
+		}
+
+	}
 
 
 	/**
@@ -44,105 +64,70 @@ class Page_model extends CI_Model {
 	 * @return {object}
 	 */
 	public function get_index_page(){
-		$this->db->where('page_main <> ', NULL);
-		$query = $this->db->get('pages');
+		$this->db->where('page_main', 1);
+		$query = $this->db->get($this->table);
 
 		return $query->row();
 	}
 
 
 	/**
-	 * Eliminamos la pagina principal 
-	 * y actualizamos el actual $page_id como pagina principal
-	 * @param {number} $page_id
-	 * @return {boolean}
-	 */
-	public function set_index_page($page_id){
-		
-		if ($this->_set_null_index_page()){
-			
-			$this->db->where('id_page',$page_id);
-			$this->db->set('page_main', 1);
-			$this->db->update('pages');
-			
-			return TRUE;
-		}
-		return FALSE;
-	}
-
-
-	/**
-	 * Setea a null la pagina principal
-	 * @return {boolean}
+	 * Actualiza a null la pagina principal anterior 
+	 * 
+	 * @return {boolean} 
 	 */
 	protected function _set_null_index_page(){
-		$this->db->set('page_main', NULL );
 
-		if ($this->db->update('pages')) return TRUE ;
+		$this->db->set('page_main', NULL);
+		if ($this->db->update($this->table))
+			return TRUE;
+
+
 		return FALSE;
+
 	}
 
+
 	/**
-	 * Count the number of pages
+	 * Retorna la cantidad de páginas
 	 * @return {number} 
 	 */
-	public function count_pages(){
+	public function get_count(){
 		$this->db->select('COUNT(1) AS cantPages');
-		$query = $this->db->get('pages');
+		$query = $this->db->get($this->table);
 
 		return $query->row()->cantPages;    
 	}
 
 	/**
-	 * Edit a page
+	 * Edita una ṕagina principal
 	 * 
 	 * @param {string} $page_title
-	 * @param {string} $page_subtitle
-	 * @param {string} $page_description
-	 * @param {string} $page_url
-	 * @param {string} $page_portada
-	 * @param {string} $date_modified Date()
-	 * @param {number} $page_main Refiere a la página de inicio
+	 * @return
 	 */
-	public function edit_page($page_id, $page_title,$page_subtitle,
-						 $page_description,$page_url, 
-						 $page_portada, $date_modified, 
-						 $page_main = NULL){
+	public function edit($page_id, $data){
 
-		if ('' !== $page_portada)
-			$this->db->set('page_portada_url', $page_portada);
-
-		if ('' !== $page_url)
-			$this->db->set('page_url', $page_url);
-
-		if (1 !== $page_main)
-			$this->db->set('page_main', $page_main);
-		
-		if ('' !== $page_description)
-			$this->db->set('page_description', $page_description);
-
-
-		$this->db->set('page_subtitle', $page_subtitle);
-		$this->db->set('page_title', $page_title);
-		$this->db->set('page_date_modified',  $date_modified);
-	    $this->db->set('page_status', 1);
-	    $this->db->where('id_page', $page_id);
+		// Verificamos que la página que queremos crear sea index (principal)
+	    if (isset($data['page_main']))
+	    	$data['page_main'] = $this->new_index_page($data['page_main']);
 	    
-		if ($this->db->update('pages')) return TRUE;
-		else return FALSE;
+		$this->db->where('id_page',$page_id);
+		if ($this->db->update($this->table,$data)) return TRUE;
+		
+		return FALSE;
 	}	
 
 
+
 	/**
-	 * Remove Page
+	 * Elimina una página
 	 * 
 	 * @param {number} $page_id
 	 */
-
-	public function remove_page($page_id){
+	public function remove($page_id){
 		$this->db->where('id_page', $page_id);
 
-		if ($this->db->delete('pages')) return TRUE;
+		if ($this->db->delete($this->table)) return TRUE;
 		return FALSE;
 
 	}
@@ -153,52 +138,80 @@ class Page_model extends CI_Model {
 	 * @param {number} $page_id
 	 * @return {object} 
 	 */
-	public function get_page_by_id($page_id){
+	public function get($page_id){
 		$this->db->where('id_page',$page_id);
-		$query = $this->db->get('pages');
+		$query = $this->db->get($this->table);
 
 		return $query->row();
 	}
 
 
 	/**
-	 * Get the all page 
+	 * Retorna todas las paginas
 	 * @return {object}
 	 */
-	public function get_pages($limit_start, $limit_end){
-		
-		$this->db->limit($limit_start, $limit_end);
-		$query = $this->db->get('pages');
+	public function get_all($start, $cant){
+
+		$this->db->limit($cant, $start);
+		$query = $this->db->get($this->table);
 
 		return $query->result();	
 	}
 
 	/**
-	 * Get the page by URL
+	 * Retorna una pagina por su slug de URL
 	 * 
-	 * @param {string} $param_url
-	 * @return {object} 
+	 * @param {string} $slug
+	 * @return {object} : Página encontrada
 	 */
-	public function get_page_by_url($param_url){
+	public function get_by_slug($slug){
 		
-		$this->db->where('page_url',trim($param_url));
-		$query = $this->db->get('pages');
+		$this->db->where('page_url',trim($slug));
+		$query = $this->db->get($this->table);
 
 		return $query->row();
 	}
 
 	/**
-	 * @param {number} $paramname description
+	 * Verifica si el slug ya fue creado
+	 * 
+	 * @param {string} $slug 
+	 * @return {boolean}
 	 */
-	public function get_page_list($limit = ''){
-		
-		if ($limit !== '' && is_numeric($limit)){
-			$this->db->limit($limit);	
-		}
-		$this->db->order_by('page_date_modified','desc');
-		$query = $this->db->get('pages');
-		return $query->result();
+	public function get_exist_slug(&$slug){
+
+		$page = $this->get_by_slug($slug);
+
+		if (NULL !== $page) return TRUE;
+		return FALSE;			
+
 	}
+
+
+	/**
+	 * Verifica si existe una pagina
+	 * 
+	 * @param {number} $page_id
+	 * @return {boolean}
+	 */
+	public function get_exist($page_id){
+		if (isset($this->get($page_id)->id_page))
+			return TRUE;
+
+		return FALSE;
+	}
+
+	/**
+	 * Consulta en particular, podria ser utilizada para busqueda
+	 * por ejemplo
+	 * 
+	 * $param {array} : $data : Contiene los datos a ser buscados
+	 */
+	public function get_custom_query(){
+
+	}
+
+
 	
 
 }

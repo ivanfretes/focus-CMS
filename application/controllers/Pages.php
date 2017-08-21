@@ -3,58 +3,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * @package GestionCMS
- * @subpackage Website/pages
  * @author Ivan Fretes
  */
 class Pages extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('General/page_model', 'p_m');
+
+		$this->load->model('General/page_model', 'page_model');
+		$this->load->model('General/menu_model','menu_model');
 
 		// Inicializamos widget custom
 		$this->load->library('widget_custom');
 	}	
 	
 	/**
-	 * View the page, 
+	 * Vista de la pagina
 	*/
-	public function index(){
-
-		$param_url = $this->uri->segment(1);
+	public function index($param_url = NULL){
 
 		/**
-		  * Verificamos si no existe parametro
-		  * Buscamos la página principal
+		  * Si no existe slug en el base url
+		  * Selecciona la pagina principal
 		  */ 
 
 		if (NULL === $param_url) {
+			$data = (array) $this->page_model->get_index_page();
 			$data['page_title'] = 'Inicio';
-			$data['page'] = $this->p_m->get_index_page();
 		}
-		else {
-			$data['page'] = $this->p_m->get_page_by_url($param_url);
+		else 
+			$data = (array) $this->page_model->get_by_slug($param_url);
+		
 
-			if (NULL !== $data['page'])
-				$data['page_title'] = $data['page']->page_title;
-		}
+		// Retornamos el menu
+		$data['menu_list'] = (array) $this->menu_model->get_all();
+		
 
+		// Si existe la pagina
+		if (isset($data['id_page'])){
 
-		// Si no existe página
-		if (NULL !== $data['page']){
-
-			// setting widget
-			$setting['page_id'] = $data['page']->id_page;
-			$setting['path_view'] = 'frontend';
-			$this->widget_custom->initialize($setting);
-
-			
-			$data['list_components'] = $this->widget_custom->get_all_widgets();
 			$data['main_content'] = 'frontend/index';
-
 			$this->load->view('frontend/template',$data);
+			
 		}
-		else show_404();
+		else 
+			show_404();
 
 	}
 	

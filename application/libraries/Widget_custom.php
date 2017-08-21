@@ -9,19 +9,7 @@
 	 * # Examples
 	 * @example $config 
 	 * 	
-	 * --
-	 * 
-	 * @var $config['path_view'] description
-	 * @var $config['path_view'] description
-	 * @var $config['path_view'] description
-	 * @var $config['path_view'] description
-	 * @var $config['path_view'] description
-	 * @var $config['path_view'] description
-	 * @var $config['path_view'] description
-	 * @var $config['path_view'] description
-	 * @var $config['path_view'] description
-	 * 
-	 * --		
+	 * -
 	 *  	
 	 * @package GestionCMS
 	 * @subpackage Website/pages/widgets
@@ -108,15 +96,11 @@
 
 		public function __construct(){
 
-			//if ($this->session->has_userdata('lib_'))
-
-
 			$this->CI =& get_instance();
 			$this->CI->load->model('General/widget_model','w_m');
 
 			$this->w_m = $this->CI->w_m;
 			
-			//$this->initialize(array());
 		}
 
 
@@ -177,6 +161,7 @@
 					$this->config['widget_id'] = $widget->id_widget;
 					$this->config['widget_name'] = $widget->component;
 					$this->config['widget_order'] = $widget->widget_orderly;
+					$this->config['widget_slug'] = $widget->widget_slug;
 
 					array_push($widget_view_file, $this->get());
 				}
@@ -254,7 +239,7 @@
 			
 				if (method_exists($this, 'edit_slide')){
 					return call_user_func_array(array($this,$fn_call_back), 
-										  	array());
+										  	    array());
 				}
 				else {
 					throw new Exception("El metodo no existe");
@@ -278,7 +263,7 @@
 
 			$data['widget_order'] = $this->config['widget_order'];
 			$data['widget_id'] = $this->config['widget_id'];
-
+			$data['widget_slug'] = $this->config['widget_slug'];
 
 			/**
 			 * @var {array} Listado de items pertenecientes a
@@ -299,6 +284,7 @@
 
 			$data['widget_id'] = $this->config['widget_id'];
 			$data['widget_order'] = $this->config['widget_order'];
+			$data['widget_slug'] = $this->config['widget_slug'];
 
 			/**
 			 * @var {array} Listado de Items pertenecientes a un slide
@@ -318,8 +304,8 @@
 			
 			$data['widget_id'] = $this->config['widget_id'];
 			$data['widget_order'] = $this->config['widget_order'];
+			$data['widget_slug'] = $this->config['widget_slug'];
 			$data['row_align'] = $this->row_align;
-
 
 			/**
 			 * @var {object} Objecto con informacion acerca de la 
@@ -333,50 +319,6 @@
 										$data, TRUE);
 		}
 
-
-
-		/**
-		 * Creating a single row component
-		 */
-
-		public function create_single_row(){
-			
-		 	$this->content_inside = $this->w_m->create_single_row(
-				'Título','Subtítulo','Editar Contenido [ aquí ]', 'Más Información',
-				 base_url().'','right',
-				 $this->config['widget_id'], NULL);
-
-		}
-
-
-		/**
-		 * Creating a single video component
-		 * 
-		 * Modo [ Edit ]
-		 */
-
-		// public function create_single_video(){
-			
-		//  	$this->content_inside = $this->w_m->create_single_row(
-		// 		'','','', '','','right',
-		// 		 $this->config['widget_id']);
-
-		// }
-
-
-		/**
-		 * Created a abstract component, later to created 
-		 * the detail component
-		 * 
-		 * Raw component
-		 */
-		protected function create_widget(){
-
-			$this->config['widget_id'] = $this->w_m->create_widget(
-									$this->config['page_id'], 
-									$this->config['widget_name'] , 
-									'', $this->config['widget_order']);
-		}
 
 
 		/**
@@ -394,41 +336,12 @@
 
 
 		/**
-		 * Create the slide component
-		 */
-		public function create_slide($cant_items = 5){
-
-			for ($i = 1; $i <= $cant_items; $i++) { 
-				$this->w_m->create_slide($this->config['widget_id'],
-										'', '', '', $i);
-
-			}
-
-		}
-
-
-
-		/**
-		 * Remove the page_component,
-		 * Not important the component page by id
-		 * 
-		 * @return {void}
-		 */
-		public function remove($widget_id){			
-			$this->w_m->remove_widget($widget_id);
-		}
-
-		public function __destruct(){
-			unset($this);	
-		}
-
-
-		/**
 		 * Ordered component ASC, dependiendo del grupo 
 		 * de ID, en el cual se encuentra ordenados
 		 * 
-		 * @param {array} $arr_order Grupo de ID, en el actual orden
-		 * @param {number} $page_id
+		 * @param {array} $arr_order : Conjuto de id ordenados que se recibe
+		 * @param {number} $page_id : Página a la que pertenecen
+		 * 
 		 * @return {boolean} 
 		 */
 		public function ordered($arr_order,$page_id){
@@ -444,70 +357,6 @@
 			return FALSE;
 		}
 
-
-		/**
-		 * Edit the slide 
-		 */
-		public function edit_slide(){
-
-			$this->w_m->edit_slide($this->data_widget['widget_id'], 
-								   $this->data_widget['widget_img'],
-								   $this->data_widget['widget_title'], 
-								   $this->data_widget['widget_description'], 
-								   '');
-
-		}
-
-		public function edit_single_row(){
-
-	        if (!isset($this->data_widget['widget_description']))
-	        	$this->data_widget['widget_description'] = NULL;
-	        
-
-	        /**
-			 * @var $this->data_widget['widget_id'] 
-			 * Refiere al ID del componente no la ID del widget 
-			 * description
-			 */
-
-	        
-	        $edit = $this->w_m->edit_single_row(
-	        						$this->data_widget['widget_title'],
-	        						$this->data_widget['widget_subtitle'],
-									$this->data_widget['widget_description'],
-									$this->data_widget['btn_title'],
-									$this->data_widget['btn_link'], 
-									$this->data_widget['row_align'],
-									$this->data_widget['widget_video'],
-									$this->data_widget['widget_img'],
-									$this->data_widget['widget_id']);
-
-			return;
-
-		}
-
-
-		/**
-		 * Edit the portfolio
-		 */
-		public function edit_portfolio(){
-			$this->w_m->edit_portfolio(	$this->data_widget['widget_id'], 
-								   	$this->data_widget['widget_img'],
-								   	$this->data_widget['widget_title'], 
-								   	'', 
-								    '');
-
-			echo $this->data_widget['widget_id'];
-		}
-
-		
-		/**
-		 * Retorna el mayor valor ordenado
-		 * @return {number} 
-		 */
-		public function get_order(){
-			return $this->w_m->get_last_order($this->config['page_id']);
-		}
 
 	/**
 	 * -- New Widget(CRUD) --

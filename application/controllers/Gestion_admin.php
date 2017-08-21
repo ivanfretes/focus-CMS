@@ -1,18 +1,12 @@
 <?
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-//require 'Auth.php';
-
 /**
  * 
- * This class control a loggin admin
+ * Controlador de Admin
  * 
+ * @package GestionCMS/admin
  * @author Ivan Fretes
- * @example gestion/admin/create
- * 			gestion/login
- * 			gestion/login/auth
- * 			gestion/logout
  */
 class Gestion_admin extends CI_Controller { 
 
@@ -41,7 +35,7 @@ class Gestion_admin extends CI_Controller {
 		else {
 			$data['title'] = 'Inicio de Session';
 
-			$this->load->view('admin/users/login', $data);
+			$this->load->view('admin/users/user-login', $data);
 		}
 	}
 

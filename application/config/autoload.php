@@ -60,7 +60,9 @@ $autoload['packages'] = array();
 */
 $autoload['libraries'] = array(	'database','session',
 								'email', 'user_agent',
-								'form_validation', 'upload');
+								'form_validation', 'upload', 
+								'image_lib',
+								'pagination');
 
 /*
 | -------------------------------------------------------------------
@@ -91,8 +93,13 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
+
+// Agregar , 'string_custom', 'database_custom', 'date_custom'
 $autoload['helper'] = array('url','file','form', 'cookie', 'text', 
-							'util_custom', 'infosite_custom');
+							'util-manager', 'string-manager',
+							'db-manager', 'number-manager', 'image-manager',
+							'file-manager');
+
 
 /*
 | -------------------------------------------------------------------

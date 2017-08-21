@@ -3,14 +3,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * @package GestionCMS
- * @subpackage Website/pages 
- * @author Ivan Fretes
  * 
+ * Contralador de Gestion de los elementos relacionos con las páginas
+ * 
+ * @package GestionCMS
+ * @author Ivan Fretes
  */
 class Gestion_pages extends CI_Controller {
-
-	protected $error = 0;
 
 
 	public function __construct(){
@@ -21,257 +20,133 @@ class Gestion_pages extends CI_Controller {
             redirect('gestion/login');
         }
 
-        $this->load->model('General/page_model','p_m');
-        $this->load->model('General/widget_model','w_m');
+        $this->load->model('General/page_model','page_model');
 
-        $this->load->library('upload');
-
-       //	$this->output->enable_profiler(TRUE);
-
-       	//$this->link_route = print_link_route($this->uri);
+		//$this->output->enable_profiler(TRUE);
 	}
+
 
 	
 	/**
-	 * Lista todas las páginas
+	 * Listado de Páginas
+	 * 
+	 * @param {number} $page_index : Nro de Página
 	 * @return {void}
 	 */
-	public function index(){
-		$this->load->library('pagination');
-		$data['g_category'] = 'Páginas';
-
-
-		$config['base_url'] = base_url().'gestion/pages/';
-		$page_num = $this->uri->segment(3);
-
-		// Si el page num esta inicializada
-		if (NULL === $page_num) $page_num = 1;
-
-		// Cantidad de elementos a ser visualizados
-		$data['count_products'] =  $this->p_m->count_pages();
-		$config['total_rows'] = $data['count_products'];
-		$config = pagination_custom($config);
-
-		// Limite de items/pages a ser visualizados		
-		$limit_end = ($page_num - 1) * $config['per_page'];
-
-		/**
-		 * Valor inicial del primer item
-		 * @example page 2 page_init = 11
-		 */
-		$data['page_init'] = $limit_end + 1;
-
-		// Listado de páginas
-		$data['list_pages'] = $this->p_m->get_pages($config['per_page'],
-													$limit_end);
-
+	public function all($page_index = 1){
+		// Verificamos que el numero sea positivo
+		$page_index = get_minor_positive_number($page_index);
 		
-		//initializate the panination helper 
-		$this->pagination->initialize($config);
+		// Cantidad de registros por pagina 
+		$per_page = 25;
 
-		//load the view
-		$data['page_url'] = $this->base_url;
-		$data['main_content'] = 'admin/pages/page_list';
+		// Si el usuario solicita otra cantidad de registros a ser visualizado
+		if (NULL !== $this->input->get('rows'))
+			$per_page = $this->input->get('rows');
+
+
+		// Retorna el registro inicial, para inicial el conteo
+		$data['row_init'] = get_init_row($page_index, $per_page);
+		
+	
+		// Listado de páginas
+		$data['page_list'] = $this->page_model->get_all($data['row_init'], 
+														$per_page);
+		
+		// Generamos Pagination
+		$data['total_row'] = $this->page_model->get_count();
+		$pagination = pagination_custom($per_page, $data['total_row']);
+		$this->pagination->initialize($pagination);
+
+		//Cargamos la vista
+		$data['cant_row'] =  $this->page_model->get_count();
+		$data['main_content'] = 'admin/pages/page-list';
 		$this->load->view('admin/template', $data);
 		
 	}
 
 
+
 	/**
-	 * Data load in the page and respectives components 
-	 * of the page by ID
+	 * Inicio redireccion a all pages
+	 */
+	public function index(){
+		show_404();
+	}
+
+
+	/**
+	 * Editamos una página
+	 * 
+	 * @param {number} $page_id
 	 * @return {void} 
 	 */
-	public function get_page($page_id){ 
+	public function edit($page_id){
 
-		if (!$this->p_m->get_page_by_id($page_id)){
-			show_404();
+
+		// En caso que enviemos el formulario
+		if ($this->input->post('g-submit')){
+			$page_data = fieldname_to_entity(array('g-' => 'page_'), $_POST);
+
+			if (!$this->page_model->edit($page_id, $page_data))
+				echo json_encode(FALSE);
+			
 		}
 
-		$data['g_category'] = 'Páginas » Editar';
+		// Informacion de la pagina
+		$data = (array) $this->page_model->get($page_id);
 
-		// list component by page_id
-		$list_component = $this->w_m->get_widget_list($page_id);
+		// Cargamos la vista
+		$data['main_content'] = 'admin/pages/page-form';
+		$this->load->view('admin/template',$data);
 
-		// Load the page component library
-        $this->load->library('widget_custom');
 
-        //setting the component library
-        $config['page_id'] = $page_id;
-        $this->widget_custom->initialize($config);
-        
+	}
 
-        $data['components_name'] = $this->widget_custom->get_widget_name();
-		$data['page_detail'] = $this->p_m->get_page_by_id($page_id);
-		$data['array_component'] = $this->widget_custom->get_all_widgets();
+
+
+	/**
+	 * Creamos una nueva página
+	 * 
+	 * @return {void}
+	 */
+	public function create(){
 		
-		// Orden actual de los componentes creados
-		$data['order_component'] = $this->widget_custom->get_order();
-		
-		$data['page_url'] = $this->base_url;
+		// En caso que enviemos el formulario
+		if ($this->input->post('g-submit')){
+			$page_data = fieldname_to_entity(array('g-' => 'page_'), $_POST);
+			
 
-		
-		// load the view
-		$data['main_content'] = 'admin/pages/page_detail';
+			if ($last_page = $this->page_model->create($page_data))
+				//echo json_encode(TRUE);
+				redirect(base_url('gestion/pages/edit/'.$last_page));
+			else 
+				echo json_encode(FALSE);
+
+			exit();
+		}
+
+		// Cargamos la vista
+		$data['main_content'] = 'admin/pages/page-form';
 		$this->load->view('admin/template',$data);
 
 	}
 
+	
 
 	/**
-	 * Edit a page
-	 * @example gestion/pages/update Link logico / Route
-	 * @param {number} $page_id
-	 * @return {void} 
-	 */
-	public function edit_page(){
-
-
-		/**
-		 * @var {object} Contiene todos los camposs de la página por ID
-		 * 
-		 * component_id es un comodin, funciona para cualquier componente,
-		 * [*] todo es un componente en la gestion
-		 */
-		$page_id = $this->input->post('component_id');
-		$page = $this->p_m->get_page_by_id($page_id);
-
-		
-
-		// Verififica que exista la página y el boton este inicializado
-		if (NULL !== $page){
-
-			$page_title = $this->security->xss_clean(
-									$this->input->post('p_title'));
-			$page_subtitle = $this->security->xss_clean(
-									$this->input->post('p_subtitle'));
-			$page_description = trim($this->input->post('p_description'));
-
-
-
-			/**
-			 * @var {number} 
-			 * Valor de nueva página principal
-			 */
-			$page_main = $this->input->post('p_main');
-			
-
-			if (1 === intval($page_main)) {
-				// Seteamos a null la pagina principal
-				$this->p_m->set_index_page($page_id);
-			}
-
-
-			$page_portada = upload_custom($this->upload, 'page_portada');
-
-			// Creamos una nueva página
-			$add = $this->p_m->edit_page($page_id, $page_title, 
-										$page_subtitle, $page_description, 
-										'',$page_portada, 
-										date("Y-m-d H:i:s"), $page_main);
-
-			if ($add) 
-				$this->error = 0;
-			else 
-				$this->error = 1;
-
-		}
-		else {
-			$this->error = 1;	
-		}
-		
-
-
-		// Asigna el mensaje de error, dependiendo de la accion
-		if (!$this->error){
-			$msg = 'Se editó la página';
-		}
-		else {
-			$msg = 'No se editó la página';	
-		}
-		
-		
-		// Print the msg
-		$msg = htmlentities($msg);
-		echo json_encode(array('msg' => $msg, 'error' => $this->error ));
-	}
-
-
-	/**
-	 * Create a page
-	 * 
-	 * @return {void}
-	 */
-	public function create_page(){
-		
-
-		$page_url = $this->security->xss_clean(
-										$this->input->post('p_url'));
-
-		/**
-		 * Verifica que la URL se encuentre disponibled y no este
-		 * vacia
-		 */
-		if (NULL === $this->p_m->get_page_by_url($page_url) && 
-			strlen($page_url) > 0){
-
-			// remplzamos acentos
-			$page_url = convert_accented_characters($page_url);
-
-			$page_title = $this->security->xss_clean(
-									$this->input->post('p_title'));
-			$page_subtitle = $this->security->xss_clean(
-									$this->input->post('p_subtitle'));
-			$page_description = trim($this->security->xss_clean(
-									$this->input->post('p_description')));
-
-
-			// Realizamos el proceso de subida, cargamos el helper
-			$page_portada = upload_custom($this->upload, 'page_portada');
-
-			// Creamos una nueva página
-			$add = $this->p_m->create_page($page_title, $page_subtitle, 
-							   $page_description, $page_url,
-							   $page_portada, date("Y-m-d H:i:s"));
-			
-
-
-			// Mensaje de creacion de la página
-			if ($add) $msg = 'Se creó la página';
-			else {
-				
-				$msg = 'No se creó la página';
-				$this->error = 1;
-			}
-				
-		}
-		else {
-			$msg = 'No se creó la página';
-			$this->error = 1;
-		}
-
-
-		// Print the msg
-		$msg = htmlentities($msg);
-		echo json_encode(array('msg' => $msg, 'error' => $this->error ));
-		
-	}
-
-
-	/**
-	* Remove Page
+	* Elimina una página
 	* @return {void}
 	*/
-	public function remove_page(){
-		$page_id = intval($this->security->xss_clean(
-							$this->input->post('data_send')));
+	public function remove($page_id){
 		
-		//if (!$page_id) show_404();
+		if ($this->input->post('g-submit')){
+			$remove = $this->page_model->remove($page_id);
+			json_encode($remove);
+		}
+		else
+			redirect(base_url('gestion/pages'));
 
-		$remove = $this->p_m->remove_page($page_id);
-
-		if ($remove) json_encode('No se eliminó la página');
-		else json_encode('Se eliminó la página');
 	}	
 
 }

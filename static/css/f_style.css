@@ -11,11 +11,13 @@
   src: url('../fonts/TrashHand.ttf');
 }
 
+
+
 body {
 	height: 100%
 }
 
-/*@import url('https://fonts.googleapis.com/css?family=Molengo');font-family: 'Molengo', sans-serif;*/
+@import url('https://fonts.googleapis.com/css?family=Molengo');font-family: 'Molengo', sans-serif;
 
 /* -- FlexSlide --*/
 
@@ -96,6 +98,14 @@ section {
         padding: 30px;
         border:0px;
     }
+
+    .image iframe {
+        margin-top: 70px;
+        margin-left: 30px;
+        position: relative;
+        width: 640px;
+        height: 480px;
+    }
 }
 
 .footer-title {
@@ -134,18 +144,20 @@ section {
 .title-page{
     font-family: 'epuka';
     font-weight: bold;
-    font-size: 6vw;
+    font-size: 5vw;
     color:#fff;
-    letter-spacing: 0.2vw;
+    letter-spacing: 12px; /*0.2vw*/
     text-shadow: 1px -1px 0 rgba(165,54,201,1), 1px 1px 0 rgba(165,54,201,1), -1px -1px 0 rgba(165,54,201,1), -1px 1px 0 rgba(165,54,201,1), 2px -2px 0 rgba(165,54,201,1), 2px 2px 0 rgba(165,54,201,1), -2px -2px 0 rgba(165,54,201,1), -2px 1px 0 rgba(165,54,201,1), -1px 1px 0 rgba(165,54,201,1), -1px 2px 0 rgba(165,54,201,1), -2px 2px 0 rgba(165,54,201,1), -2px 3px 0 rgba(165,54,201,1), -3px 3px 0 rgba(165,54,201,1), -4px 4px 0 rgba(165,54,201,1);
 }
 
 .title-page:before {
     opacity: 0.65;
     position: absolute;
-    color: #000;
+    color: #444;
     z-index: -10;
-    text-shadow: #117864 1px 1px, black 2px 2px, black 3px 3px, black 4px 4px, black 5px 5px, black 6px 6px, black 7px 7px, black 8px 8px, black 9px 9px, black 10px 10px;
+    text-shadow: #00ffff 1px 1px, black 2px 2px, black 3px 3px, black 4px 4px, black 5px 5px, black 6px 6px, black 7px 7px, black 8px 8px, black 9px 9px, black 10px 10px;
+    margin-top: 0px;
+    text-align: center;
 }
 
  
@@ -169,6 +181,7 @@ input[type="button"], button, a.button{
     background: #444;
     font-weight: bold;
     color: #00ffff !important;
+	margin-top:30px;
 }
 
 input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover, button:hover, .button:hover {
@@ -239,7 +252,9 @@ iframe {
     }
 
     h2 {
-        font-family: epuka;
+        font-family: 'Ubuntu', sans-serif;
+		font-size: 2.0rem;
+		font-weight: bold;
     }
 
 
@@ -263,3 +278,13 @@ iframe {
 .container-fluid{
 	margin-top: 20px;
 }
+
+
+strong, b {
+	font-weight: bold;
+}
+
+.banner.style5 .content {
+    width: 60rem;
+}
+

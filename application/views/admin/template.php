@@ -1,10 +1,10 @@
-<? $this->load->view('admin/theme/header');?>
+<? $this->load->view('admin/theme/theme-header');?>
 
-<? $this->load->view('admin/theme/side_nav');?>
+<? $this->load->view('admin/theme/theme-sidenav');?>
 
-<? $this->load->view('admin/theme/top_nav');?>
+<? $this->load->view('admin/theme/theme-topnav');?>
 
-<? $this->load->view($main_content);?>
+<? $this->load->view('admin/theme/theme-container'); ?> 
 
-<? $this->load->view('admin/theme/footer');?>
+<? $this->load->view('admin/theme/theme-footer');?>
 

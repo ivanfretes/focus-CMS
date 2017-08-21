@@ -76,7 +76,7 @@
 		/**
 		 * Lista todos los menu, existentes
 		 */
-		public function get_all_menu(){
+		public function get_all(){
 			$this->db->order_by('menu_order','asc');
 			$query = $this->db->get('menu');
 
