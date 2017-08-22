@@ -340,9 +340,6 @@ if (! function_exists('generate_link_rel')){
 }
 
 
-
-
-
 /**
  * Genera la fila inicial, por página, teniendo 
  * en cuanta la cantidad de filas solicitadas,
@@ -396,9 +393,7 @@ if(! function_exists('not_value')){
 if(! function_exists('current_date')){
 
 	function current_date(){
-		
 		return date("Y-m-d H:i:s");
-
 	}
 
 }
@@ -416,22 +411,13 @@ if (!function_exists('number_in_string')){
 		try {
 			
 			if (!is_string($string))
-				throw new Exception("Error tipo de dato de la variable string");
+				throw new Exception("Error tipo de dato");
+
+			preg_match_all("/\d+/", $string, $matches);
+
+			// Retornamos los numeros encontrados
+			return $matches[0];
 			
-			// Los numeros separados en guiones	-
-			$n_underscore = preg_replace("/[^\d+]/", '-', $string."56");
-			
-			// Elementos parseados a array
-			$a = explode('-', $n_underscore);
-
-			// Filtramos los elementos numericos del array
-			$b = array_filter($a,function($n){
-				if (is_numeric($n))
-					return $n;
-			});
-
-			return $b;
-
 		} catch (Exception $e) {
 			echo $e->getMessage();
 		}

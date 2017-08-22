@@ -103,37 +103,33 @@ class Gestion_cuadricula extends CI_Controller {
 		show_404();
 	}
 
+
 	/**
-	 * Edita la cuadricula generada por widget
+	 * Editamos un widget del tipo CUADRICULA, el id de la 
+	 * cuadricula es enviado entre el nombre del key del $_REQUEST
 	 * 
 	 * @param {number} $widget_id
-	 * @return {void} 
 	 */
 	public function edit($widget_id){
-		
 
-		// Si el widget existe
-		if ($this->widget_model->get_exist($widget_id))
-			echo "string";
+		// Si se envia el formulario
+		if ($this->input->post('g-submit')){
+
+			// Id de la cuadricula
+			$numbers = number_in_string(key($_POST));
+			$cuadricula_id = $numbers[0];
+
+			// Datos a editar en la tabla
+			$widget_data = fieldname_to_entity(array("/g-(\d*)_/" => 'row_'), 
+											   $_POST, TRUE);
 
 
-		return;
-
-
-		// En caso que enviemos el formulario y existe la pagina
-		if (isset($_REQUEST['g-submit']) && 
-			$this->widget_model->get_exist($widget_id)){
-			
-
-			// Cargamos los datos del widget
-			var_dump($data);
-			return;
-			if ($this->page_model->edit($widget_id, $data)){
-
-			}
+			// Editamos la cuadricula
+			if ($this->cuadricula_model->edit($cuadricula_id,$widget_data))
+				echo json_encode(TRUE);
+			else 
+				echo json_encode(FALSE);
 		}
-
-		
 	}
 
 

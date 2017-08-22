@@ -38,29 +38,27 @@ class Gestion_row extends CI_Controller {
 
 
 
-
+	/**
+	 * Editamos un widget del tipo row, el id del row
+	 * es enviado entre el nombre del key del $_REQUEST
+	 * 
+	 * @param {number} $widget_id
+	 */
 	public function edit($widget_id){
 
 		// Si se envia el formulario
 		if ($this->input->post('g-submit')){
 
-			// Listado de numeros encontrados una cadena
+			// Id del row
 			$numbers = number_in_string(key($_POST));
-			
+			$row_id = $numbers[0];
 
-			return;
-
-			// Datos a modificar en widget
+			// Datos a editar en la tabla
 			$widget_data = fieldname_to_entity(array("/g-(\d*)_/" => 'row_'), 
-											  $_POST, TRUE);
+											   $_POST, TRUE);
 
-
-
-			var_dump($widget_data);
-			exit();
-			//$this->row_model->edit($widget_id,$widget_data);
+			$this->row_model->edit($row_id,$widget_data);
 		}
-
 	}
 
 	/**

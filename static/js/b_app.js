@@ -1,10 +1,8 @@
-
-// Inicializamos b_app.js
+// -- Main --
 $(function(){
 
-	
 	// Eliminamos cualquier elemento
-	remove_html_element('click');
+	removeElement('click');
 	
 	
     // Remove page
@@ -67,7 +65,7 @@ $(function(){
     });
    
     
-    // Modificamos le orden de menu
+    // Modificamos el orden den menu
     $("#menu_created").sortable({ 
         placeholder: "ui-state-highlight", 
         stop: function( event, ui ) {
@@ -78,8 +76,6 @@ $(function(){
             });
         }  
     });
-    
-   
  
     // Seleccionamos un nuevo componente para su creacion
     $('#select_component').on('change',function(){
@@ -107,47 +103,7 @@ $(function(){
             }
         }
     });
-    
-	// enviamos un formulario
-	
-	
-	//
-	
-    // Edit/Update form data, 
-    /*function send_form_grid(event, selector){
-        $('#component_created').delegate(selector, event, function(e){ 
-            var self = $(this);
-             
-            if (-1 !== selector.indexOf('input[type=file]')){
-                // Creating a blob image tmp
-                var getImagePath = URL.createObjectURL(e.target.files[0]);
-                component_li.css('background-image', 'url(' + getImagePath + ')');
-            }
-            
-            // Seleccionamos los datos del formulario
-            var parentForm = $(this).parents('form');
-            var formData = new FormData(document.getElementById(parentForm.attr('id')));
 
-            // Add the blob over the form data object, 
-            // El componente representa el id del tipo actual de widget creado, por ejemplo 
-            // el id de un item de portfolio
-            formData.append('component_id', component_li.attr('data-grid'));
-            
-            
-            $.ajax({
-                  url: parentForm.attr('action'),
-                  type: 'post',     
-                  dataType: 'text',
-                  data: formData,
-                  cache: false,
-                  contentType: false,
-                  processData: false
-            });
-//            .done(function(data){
-//                console.log(data);
-//            });
-        });
-    }*/
 });
 
 
@@ -158,7 +114,7 @@ $(function(){
 	
 	@param {string} :
 */
-function remove_html_element(event, elementRemove = null) {
+function removeElement(event, elementRemove = null) {
 
     $('body').delegate('a[data-action=remove]', event, function(e){
         e.preventDefault();      
@@ -166,14 +122,14 @@ function remove_html_element(event, elementRemove = null) {
 		// Accedemos a las propiedades del enlace <a>
         var a = $(this);
 
-        if (confirm('Está por eliminar este elemente, ¿Desea Continuar?')){
+        if (confirm('Está por eliminar este elemento, ¿Desea Continuar?')){
                 $.post(a.attr('href'), {
                     	param : a.attr('data-value')
                 	},function(data){
 						
 						// Si se inserto, eliminamos el elemento html
 						if (data){
-							// Si no se asigno elementRemove, elimina el propio enlace
+							// Si no se asigno elementRemove, elimina el elemento
 							if (elementRemove === null) 
 								a.remove();    
 							else 
@@ -213,7 +169,7 @@ function createSlug(words){
 	@param {number} 
 */
 
-function load_component(type_component,data_component, order){
+function newComponent(type_component,data_component, order){
     $('#component_created').append(data_component);
     location.assign('#button');
 }
@@ -365,16 +321,16 @@ function send_data_with_form(selector, event = 'submit'){
 /*
     Utilizamos 'summernote.js' para agregar un toolbar 
 	de edicion al contenido.
-	(*) utiliza un delegate por si el div, fuese generado desde el servidor
+	(*) utiliza un delegate por si el div, fuese generado dinamicamente
 	
 	@param {string} element : Representa al elemento que es seleccionado
-	@param {string} event : Evento realizo sobre el elemento(element)
+	@param {string} event : Evento realizado sobre el elemento(element)
 	
 	@return void 
 */
 
 function summernote_content(element, event = 'click'){
-    $('body').delegate(element, event, function(){
+    $('body').delegate(element, event, function(e){
         var self = $(this); 
 		
 		// Verficamos que el data action sea editable
@@ -457,8 +413,7 @@ function set_thumbnail(event, elementToSet, elementImg = true){
 	try {
 		// Generamos una excepcion si el elemento a selecciona no es inicializado
 		if (undefined === elementToSet)
-			throw (msgFnError('set_thumbnail', 'elementToSet', 
-							  'elemento a actualizar no esta inicializado'));
+			throw ('elementToSet no esta definido');
 
 		// 
 		var elementHTML = event.target.outerHTML; 
@@ -483,20 +438,35 @@ function set_thumbnail(event, elementToSet, elementImg = true){
 
 
 
-
 /*
 	Envia los datos del formulario, 
 	cuando se produce algun en un elemento del formulario
 */
 
-function send_form_auto(element, ){
+function send_form(element, event = 'change'){
 	
 	// Busca el primer formulario superior
-	var formParent = element.parents('form');
 	
-	// Creamos el formData
-	var formData = new FormData(document.getElementById(formParent.attr('id')));
+	// Creamos un formulario
+	var formData = new FormData();
 }
+
+
+
+/*
+	Envia datos de cualquier formulario, un elemento a la vez
+	
+	@param 
+*/	
+
+function send_form_data(element, event = 'click'){
+	$(body).delegate(element, event, function(){
+		console.log('Inicializamos la applizacion');
+	});
+	
+	
+}
+
 
 
 /*

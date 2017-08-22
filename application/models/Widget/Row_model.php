@@ -52,15 +52,15 @@ class Row_model extends CI_Model {
 	/**
 	 * Edita una row
 	 * 
-	 * @param {string} $widget_id 
+	 * @param {string} $row_id 
 	 * @param {array} $data :  Datos de edicion
 	 * @return {boolean}
 	 */
-	public function edit($widget_id, $data){
+	public function edit($row_id, $data){
 		
-		if (!not_value($widget_id)){
+		if (!not_value($row_id)){
 	    
-			$this->db->where('widget',$widget_id);
+			$this->db->where('id_row',$row_id);
 			if ($this->db->update($this->table,$data)) 
 				return TRUE;
 			

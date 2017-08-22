@@ -71,7 +71,6 @@ $route['gestion/pages/edit/(:num)'] = 'gestion_pages/edit/$1';
 $route['gestion/pages/remove/(:num)'] = 'gestion_pages/remove/$1';
 
 // -- Widgets --
-$route['gestion/widgets/(:num)'] = 'gestion_widget/get_all/$1';
 $route['gestion/pages/(:num)/widgets'] = 'gestion_widget/all/$1';
 $route['gestion/widgets/remove/(:num)'] = 'gestion_widget/remove/$1';
 

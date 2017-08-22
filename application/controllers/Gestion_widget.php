@@ -8,14 +8,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Gestion_widget extends CI_Controller {
 
+	/**
+	 * @var {array} Listado de vistas
+	 */
+	protected $list_views = [];
 
 
 	public function __construct(){
 		parent::__construct();
 		
-		// if(!$this->session->userdata('logged_in')){
-  //           redirect('gestion/login');
-  //       }
+		if(!$this->session->userdata('logged_in')){
+            redirect('gestion/login');
+        }
         
         $this->load->model('General/widget_model','widget_model');
 		$this->load->library('widget_custom');
@@ -34,15 +38,26 @@ class Gestion_widget extends CI_Controller {
 		// Si existe la pagina
 		if ($this->get_exist($page_id)){
 
+			// Listado de vistas generadas
+			$data['widget_list'] = [];
+
 			// Listado de widget
 			$widget_list = $this->widget_model->get_all($page_id);
 
+
+			// Cargamos las vista en un array
 			foreach ($widget_list as $index => $widget) {
-				
-				// Generamos la vista para cada widget
-				$this->get($widget['widget_type'], $widget['id_widget']);
+		
+				// Anexamos la vista del widget a un array
+				$a = $this->get_widget($widget['widget_type'], 
+								       $widget['id_widget']);
+
+				array_push($data['widget_list'], $a);
 					
 			}
+
+			$data['main_content'] = 'admin/widgets/widget-list-per-page';
+			$this->load->view('admin/template',$data);
 
 			
 		}
@@ -54,20 +69,34 @@ class Gestion_widget extends CI_Controller {
 
 
 	/**
-	 * Function comodin, ejecuta una funcion producto de la concatenacion
-	 * de la palabra get + $widget_type
+	 * Imprime una vista HTML de un widget generado dinamicamente
 	 * 
 	 * @param {string} $widget_type : e.g (row, slide, cuadricula, etc);
 	 * @param {number} $widget_id
 	 */
 	public function get($widget_type, $widget_id){
+		echo $this->get_widget($widget_type, $widget_id);
+	}
 
+
+
+	/**
+	 * Function comodin, ejecuta una funcion producto de la concatenacion
+	 * de la palabra get + $widget_type
+	 * 
+	 * @param {string} $widget_type : e.g (row, slide, cuadricula, etc);
+	 * @param {number} $widget_id
+	 * 
+	 * @return {string}
+	 */
+	protected function get_widget($widget_type, $widget_id){
 		// Nombre de la funcion a llamar
 		$fn_call = "get_$widget_type";
 
 		// Si el metodo existe
 		if (method_exists($this, $fn_call)){
-			call_user_func_array(array($this,$fn_call),array($widget_id));
+			$a = call_user_func_array(array($this,$fn_call),array($widget_id));
+			return $a;
 		}
 		else 
 			show_404();
@@ -76,52 +105,57 @@ class Gestion_widget extends CI_Controller {
 
 
 	/**
-	 * Imprime la vista del widget row
+	 * Retorna la vista de un widget row
 	 * 
 	 * @param {number} $widget_id
+	 * @return {string} 
 	 */
-	public function get_row($widget_id){
+	protected function get_row($widget_id){
 
 		$this->load->model('Widget/row_model','row_model');
 
 		$data = (array) $this->row_model->get($widget_id);					
+		
+		// Alineaciones posibles de la fila
 		$data['row_align'] = $this->row_model->get_row_align();
 		$data['widget_id'] = $widget_id;
 
 		// Cargamos la vista	
-		$this->load->view('admin/widgets/widget-row',$data);
+		return $this->load->view('admin/widgets/widget-row',$data, TRUE);
 	}
 
 
 	/**
 	 * 
-	 * Impreme la vista del widget slide
+	 * Retorna la vista del widget slide
 	 * 
 	 * @param {number} $widget_id
+	 * @return {string} 
 	 */
-	public function get_slide($widget_id){
+	protected function get_slide($widget_id){
 		$this->load->model('Widget/slide_model','slide_model');
 
 		$data['slide_list'] = $this->slide_model->get_all($widget_id);
 		$data['widget_id'] = $widget_id;
 
 		// Cargamos la vista	
-		$this->load->view('admin/widgets/widget-slide',$data);
-
+		return $this->load->view('admin/widgets/widget-slide',$data ,TRUE);
+		
 	}
 
 
 	/**
-	 * Impreme la vista del widget cuadricula
+	 * Retorna la vista del widget cuadricula
 	 */
-	public function get_cuadricula($widget_id){
+	protected function get_cuadricula($widget_id){
 		$this->load->model('Widget/cuadricula_model','cuadricula_model');
 
-		$data['cuadricula_list'] = $this->cuadricula_model->get_all($widget_id);
+		$data['cuadricula_list'] = $this->cuadricula_model->get_all(
+																$widget_id);
 		$data['widget_id'] = $widget_id;
 
 		// Cargamos la vista	
-		$this->load->view('admin/widgets/widget-cuadricula',$data);
+		return $this->load->view('admin/widgets/widget-cuadricula',$data,TRUE);
 	}
 
 

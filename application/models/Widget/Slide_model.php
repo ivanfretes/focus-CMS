@@ -40,15 +40,13 @@ class Slide_model extends CI_Model {
 	 * 
 	 * -- Modificar --
 	 * 
-	 * @param {string} $widget_id 
+	 * @param {string} $slide_id 
 	 * @param {array} $data :  Datos de edicion
 	 * @return {boolean}
 	 */
-	public function edit($widget_id, $data){
+	public function edit($slide_id, $data){
 		
-		var_dump($data);
-		return;
-		$this->db->where('widget',$widget_id);
+		$this->db->where('slide_id',$slide_id);
 		if ($this->db->update($this->table,$data)) 
 			return TRUE;
 		

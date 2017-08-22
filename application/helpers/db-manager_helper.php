@@ -46,8 +46,8 @@ if (! function_exists('fieldname_to_entity')){
 			// Array donde buscar las coincidencias 	
 			foreach ($list as $attr_name => $value) {
 
-				// Si no tiene la palabra submit y el valor no esta vacio
-				if (!strpos($attr_name, 'submit') && !not_value($value) ){
+				// Si no tiene la palabra submit /*&& !not_value($value)*/
+				if (!strpos($attr_name, 'submit')){
 
 					foreach ($remplace_prefix as $old_prefix => $new_prefix) {
 

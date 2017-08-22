@@ -38,14 +38,14 @@ class Cuadricula_model extends CI_Model {
 	/**
 	 * Edita una cuadricula
 	 * 
-	 * @param {string} $widget_id 
+	 * @param {string} $cuadricula_id
 	 * @param {array} $data :  Datos de edicion
 	 * @return {boolean}
 	 */
-	public function edit($widget_id, $data){
+	public function edit($cuadricula_id, $data){
 		
-		$this->db->where('widget',$widget_id);
-		if ($this->db->update($this->table,$data)) 
+		$this->db->where('cuadricula_id',$cuadricula_id);
+		if ($this->db->update($this->table, $data)) 
 			return TRUE;
 		
 		return FALSE;
