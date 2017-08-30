@@ -16,7 +16,10 @@ class Page extends CI_Controller {
 		parent::__construct();
 
         $this->load->model('General/page_model','page_model');
-		//$this->output->enable_profiler(TRUE);
+		
+        // Carpeta seleccionada para la vista
+		$this->folder_view = $this->session->view;
+		//$this->output->enable_profiler();	
 	}
 
 
@@ -61,10 +64,57 @@ class Page extends CI_Controller {
 
 
 	/**
-	 * Inicio redireccion a all pages
+	 * Lista todos los widget de una pagina
+	 * 
+	 * @param {number} $page_id
 	 */
-	public function index(){
-		show_404();
+	public function get_all_widget($page_id){
+		$this->load->model('General/widget_model','widget_model');
+		
+		
+		$data['folder_view'] = $this->folder_view;
+
+		// Listado de widget diferentes tipos de widgets
+		$data['widget_list'] = $this->widget_model->get_all_widget($page_id);
+
+		// Cargamos la vista, Lstado de widget por pagina
+		$this->load->view($this->folder_view.'widgets/widget-list-per-page',
+						  $data);
+	}
+
+	/**
+	 * Vista de la pagina
+	*/
+	public function index($param_url = NULL){
+
+		/**
+		  * Si no existe slug en el base url
+		  * Selecciona la pagina principal
+		  */ 
+
+		if (NULL === $param_url) {
+			$data = (array) $this->page_model->get_index_page();
+			$data['page_title'] = 'Inicio';
+		}
+		else 
+			$data = (array) $this->page_model->get_by_slug($param_url);
+		
+
+		// Retornamos el menu
+		$this->load->model('General/menu_model','menu_model');
+		$data['menu_list'] = (array) $this->menu_model->get_all();
+		
+
+		// Si existe la pagina
+		if (isset($data['id_page'])){
+
+			$data['main_content'] = 'frontend/index';
+			$this->load->view('frontend/template',$data);
+			
+		}
+		else 
+			show_404();
+
 	}
 
 
@@ -149,7 +199,6 @@ class Page extends CI_Controller {
 			// Si la imagen es un gif, no redimensiona
 			if ('gif' !== $portada_format)
 				$portada_route = resize_image_with_gd(1025,576, $portada_name);
-				#resize_image_with_gd(900,675, $portada_name);
 			else 
 				$portada_route = 'uploads/images/raw/'.$portada_name;
 
@@ -183,5 +232,14 @@ class Page extends CI_Controller {
 			redirect(base_url('gestion/pages'));
 
 	}	
+
+
+
+	/**
+	 * Listado de widgets por pagina
+	 */
+	public function get_widget(){
+
+	}
 
 }

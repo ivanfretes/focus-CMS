@@ -12,9 +12,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $hook['post_controller_constructor'] = array(
-        'class'    => 'Gestion_access',
-        'function' => 'login',
-        'filename' => 'Gestion_access.php',
+        'class'    => 'Access',
+        'function' => 'space_area',
+        'filename' => 'Access.php',
         'filepath' => 'hooks',
         'params'   => array('beer', 'wine', 'snacks')
 );

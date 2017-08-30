@@ -4,7 +4,7 @@
  */
 
 
-class Gestion_row extends CI_Controller {
+class Widget_row extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();

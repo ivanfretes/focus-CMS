@@ -46,7 +46,7 @@ class Widget extends CI_Controller {
 		
 				// Anexamos la vista del widget a un array
 				$a = $this->get_widget($widget['widget_type'], 
-								       $widget['id_widget']);
+								       $widget['widget_id']);
 
 				array_push($data['widget_list'], $a);
 					

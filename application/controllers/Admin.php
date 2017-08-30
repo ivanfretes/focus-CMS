@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @package GestionCMS/admin
  * @author Ivan Fretes
  */
-class Gestion_admin extends CI_Controller { 
+class Admin extends CI_Controller { 
 
 	/**
 	 * Encrypt the string password
@@ -33,7 +33,6 @@ class Gestion_admin extends CI_Controller {
 		}
 		else {
 			$data['title'] = 'Inicio de Session';
-
 			$this->load->view('admin/users/user-login', $data);
 		}
 	}

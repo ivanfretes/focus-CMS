@@ -398,7 +398,7 @@ if(! function_exists('not_value')){
 	function not_value(&$data){
 		
 		// No esta inicializado, o el dato es nulo
-		if (!isset($data) || NULL === $data)
+		if (NULL === $data)
 			return TRUE;
 
 		// Es un array y esta vacio
@@ -406,7 +406,7 @@ if(! function_exists('not_value')){
 			return TRUE;
 
 
-		// Si es un string y esta vacio
+		// Si es un string y esta vacio 
 		if (is_string($data) && '' === $data)
 			return TRUE;
 

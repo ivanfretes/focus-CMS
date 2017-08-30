@@ -64,7 +64,7 @@
 
         <? // Link a creacion / Listado de widgets ?>
         <td class="text-center">
-            <a href="<?= base_url("gestion/pages/$page->id_page/widgets");?>"
+            <a href="<?= base_url("gestion/pages/$page->page_id/widgets");?>"
                id="p_remove">                
                 <span class="glyphicon glyphicon-plus-sign"></span> Agregar
             </a>
@@ -79,11 +79,11 @@
         <? // Edicion de la pagina ?>
         <td class="text-center">
 
-            <a href='<?= base_url('gestion/pages/edit/'.$page->id_page);?>'> 
+            <a href='<?= base_url('gestion/pages/edit/'.$page->page_id);?>'> 
                <span class="glyphicon glyphicon-edit"></span> Editar 
             </a> |
             
-            <a href="<?= base_url('gestion/pages/remove/'.$page->id_page); ?>"
+            <a href="<?= base_url('gestion/pages/remove/'.$page->page_id); ?>"
                data-action="remove">
                 <span class="glyphicon glyphicon-trash" ></span> Eliminar
             </a>

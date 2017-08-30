@@ -79,6 +79,60 @@ class Widget_model extends CI_Model {
 	}
 
 
+	/**
+	 * Genera el query para ingresar a la table de un widget 
+	 * en particular los datos de cualquier widget (Comodin)
+	 * 
+	 * @param {number} $widget_id
+	 * @param {string} $widget_type : Representa el nombre de la tabla
+	 * @return {mixed} Retorna todos los elementos de los widgets
+	 */
+	public function get_widget($widget_id, $widget_type){
+
+		$this->db->where('widget', $widget_id);
+		$query = $this->db->get('widget_'.$widget_type);
+
+		return $query->result();
+	}
+
+
+	/**
+	 * Retorna todos los widget por pagina
+	 * 
+	 * @param {number} $numero de página
+	 * @return {array} : Registros de varios tipos de widget
+	 */
+	public function get_all_widget($page_id){
+		
+		$this->db->select('widget_id,widget_type, widget_slug')	
+			 ->where('page', $page_id);
+
+		$query = $this->db->get($this->table);
+		$widget_list = $query->result();
+
+		// Widgets generados, de tablas diferentes
+		$widget_result = array();
+
+		// Recorremos los widgets existentes y generamos los widget
+		foreach ($widget_list as $widget_data) {
+
+			// Retorna todos los registro/s dependiendo del tipo
+			$widget_row = $this->get_widget($widget_data->widget_id,
+							   				$widget_data->widget_type);
+			
+			// Anexamos al objeto generado, el tipo de widget
+			$widget_row['type'] = $widget_data->widget_type;
+			$widget_row['id'] = $widget_data->widget_id;
+			$widget_row['slug'] = $widget_data->widget_slug;
+
+			array_push($widget_result, $widget_row);
+			
+		}
+
+		return $widget_result;
+	}
+
+
 
 	/**
 	 * Asigna el valor correspondiente al orden de un widget
@@ -107,7 +161,7 @@ class Widget_model extends CI_Model {
 	 * @param {number} $widget_id
 	 */
 	public function remove($widget_id){
-		$this->db->where('id_widget', $widget_id);
+		$this->db->where('widget_id', $widget_id);
 
 		if ($this->db->delete($this->table)) 
 			return TRUE;
@@ -124,7 +178,7 @@ class Widget_model extends CI_Model {
 	 * @return {boolean}
 	 */
 	public function get_exist($widget_id){
-		$this->db->where('id_widget',$widget_id);
+		$this->db->where('widget_id',$widget_id);
 		$query = $this->db->get($this->table);
 
 		if (NULL !== $query->row())

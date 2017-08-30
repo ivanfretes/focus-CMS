@@ -72,39 +72,39 @@ $route['gestion/pages/edit/(:num)'] = 'page/edit/$1';
 $route['gestion/pages/remove/(:num)'] = 'page/remove/$1';
 
 // -- Widgets --
-$route['gestion/pages/(:num)/widgets'] = 'gestion_widget/all/$1';
-$route['gestion/widgets/remove/(:num)'] = 'gestion_widget/remove/$1';
+$route['gestion/pages/(:num)/widgets'] = 'widget/all/$1';
+$route['gestion/widgets/remove/(:num)'] = 'widget/remove/$1';
 
 	// e.g gestion/row/183
-	$route['gestion/(:any)/(:num)'] = 'gestion_widget/get/$1/$2';
+	$route['gestion/(:any)/(:num)'] = 'widget/get/$1/$2';
 
 	// Cuadricula
-	$route['gestion/cuadricula/new/(:num)'] = 'gestion_cuadricula/create/$1';
-	$route['gestion/cuadricula/edit/(:num)'] = 'gestion_cuadricula/edit/$1';
+	$route['gestion/cuadricula/new/(:num)'] = 'widget_cuadricula/create/$1';
+	$route['gestion/cuadricula/edit/(:num)'] = 'widget_cuadricula/edit/$1';
 
 	// Row
-	$route['gestion/row/new/(:num)'] = 'gestion_row/create/$1';
-	$route['gestion/row/edit/(:num)'] = 'gestion_row/edit/$1';
+	$route['gestion/row/new/(:num)'] = 'widget_row/create/$1';
+	$route['gestion/row/edit/(:num)'] = 'widget_row/edit/$1';
 
 	// Slide
-	$route['gestion/slide/new/(:num)'] = 'gestion_slide/create/$1';
-	$route['gestion/slide/edit/(:num)'] = 'gestion_slide/edit/$1';
+	$route['gestion/slide/new/(:num)'] = 'widget_slide/create/$1';
+	$route['gestion/slide/edit/(:num)'] = 'widget_slide/edit/$1';
 
 	
 
 
 
 // Contacts
-$route['gestion/contacts'] =  'gestion_contacts/index';
-$route['gestion/contacts/(:num)'] =  'gestion_contacts/index/$1';
-$route['gestion/contacts/detail/(:num)'] =  'gestion_contacts/get_contact/$1';
-$route['gestion/contacts/create'] =  'gestion_contacts/index';
+$route['gestion/contacts'] =  'contact/index';
+$route['gestion/contacts/(:num)'] =  'contact/index/$1';
+$route['gestion/contacts/detail/(:num)'] =  'contact/get_contact/$1';
+$route['gestion/contacts/create'] =  'contact/index';
 
 // Menu
-$route['gestion/menu'] =  'gestion_menu/index';
-$route['gestion/menu/new'] =  'gestion_menu/create';
-$route['gestion/menu/ordered'] =  'gestion_menu/order';
-$route['gestion/menu/remove/(:num)'] =  'gestion_menu/remove/$1';
+$route['gestion/menu'] =  'widget_menu/index';
+$route['gestion/menu/new'] =  'widget_menu/create';
+$route['gestion/menu/ordered'] =  'widget_menu/order';
+$route['gestion/menu/remove/(:num)'] =  'widget_menu/remove/$1';
 
 
 
@@ -122,20 +122,14 @@ $route['fracciones/cuadricula'] = 'fracciones/get_cuadricula';
 $route['fracciones/mapa-svg'] = 'fracciones/get_mapa_svg';
 
 // Contacto
-$route['contacto'] = 'contacts/index';
-$route['contacto/send'] = 'contacts/create'; // recibimos un nuevo contacto
-$route['contacto/message'] = 'contacts/get_success_msg'; // recibimos un nuevo contacto
+$route['contacto'] = 'contact/index';
+$route['contacto/send'] = 'contact/create'; // recibimos un nuevo contacto
+$route['contacto/message'] = 'contact/get_success_msg'; // recibimos un nuevo contacto
 
 // Infosite
 $route['la-empresa'] = 'infosite/index';
 
-// Encasular carpetas imagenes
-$route['uploads'] = 'pages/index';
-$route['uploads/images'] = 'pages/index';
-$route['uploads/images/resized'] = 'pages/index';
-
-
 // Paginas
-$route['(:any)'] = 'pages/index/$1';
+$route['(:any)'] = 'page/index/$1';
 
 

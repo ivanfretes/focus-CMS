@@ -25,7 +25,7 @@
 			</div>
 			
 			<div class="col-md-1 text-center">
-				<a href="<?= base_url("gestion/pages/$id_page/widgets"); ?>">
+				<a href="<?= base_url("gestion/pages/$page_id/widgets"); ?>">
 						<span class="glyphicon glyphicon-plus-sign"></span>
 						<br>Agregar Widget
 				</a>

@@ -60,7 +60,7 @@ class Row_model extends CI_Model {
 		
 		if (!not_value($row_id)){
 	    
-			$this->db->where('id_row',$row_id);
+			$this->db->where('row_id',$row_id);
 			if ($this->db->update($this->table,$data)) 
 				return TRUE;
 			

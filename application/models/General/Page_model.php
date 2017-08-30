@@ -46,7 +46,7 @@ class Page_model extends CI_Model {
 	 * @return {number}
 	 */
 	public function get_max_id(){
-		$this->db->select_max('id_page','max_id');
+		$this->db->select_max('page_id','max_id');
 		$query = $this->db->get($this->table);
 
 		return $query->row()->max_id;
@@ -126,7 +126,7 @@ class Page_model extends CI_Model {
 	    	$data['page_main'] = $this->new_index_page($data['page_main']);
 	    
 	    $data['page_date_modified'] = current_date();
-		$this->db->where('id_page',$page_id);
+		$this->db->where('page_id',$page_id);
 		if ($this->db->update($this->table,$data)) return TRUE;
 		
 		return FALSE;
@@ -140,7 +140,7 @@ class Page_model extends CI_Model {
 	 * @param {number} $page_id
 	 */
 	public function remove($page_id){
-		$this->db->where('id_page', $page_id);
+		$this->db->where('page_id', $page_id);
 
 		if ($this->db->delete($this->table)) return TRUE;
 		return FALSE;
@@ -154,7 +154,7 @@ class Page_model extends CI_Model {
 	 * @return {object} 
 	 */
 	public function get($page_id){
-		$this->db->where('id_page',$page_id);
+		$this->db->where('page_id',$page_id);
 		$query = $this->db->get($this->table);
 
 		return $query->row();
@@ -211,7 +211,7 @@ class Page_model extends CI_Model {
 	 * @return {boolean}
 	 */
 	public function get_exist($page_id){
-		if (isset($this->get($page_id)->id_page))
+		if (isset($this->get($page_id)->page_id))
 			return TRUE;
 
 		return FALSE;
