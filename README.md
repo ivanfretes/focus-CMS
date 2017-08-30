@@ -23,7 +23,7 @@ Widget Creados hasta el momento
 
 Widget
 
-<b>Lista un widget</b>
+*Lista un widget*
 
 	/**
 	 * Retorna un array de objetos, en caso que se necesite un objeto, el 
@@ -37,7 +37,7 @@ Widget
 	get_widget($widget_id, $widget_type)
 
 
-<b>Listar los 'n' widgets de una pagina</b>
+*Listar los 'n' widgets de una pagina*
 
 
 	/**
