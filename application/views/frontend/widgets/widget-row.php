@@ -79,6 +79,8 @@
 
 
 			/**
+			 * 
+			 * -- Modificar/Mejorar --
 			 * Si el video esta inicializado, damos prioridad
 			 */
 			if ($video_init){

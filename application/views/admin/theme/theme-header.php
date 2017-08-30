@@ -25,11 +25,10 @@
     <script src="<?= base_url('static/js/jquery.min.js'); ?>"></script>
     <script src="<?= base_url('static/js/jquery-ui.min.js'); ?>"></script>
     <script src="<?= base_url('static/vendors/bootstrap/js/bootstrap.min.js');?>"></script>
-    <!-- <script src="<?= base_url(); ?>static/vendors/fastclick/lib/fastclick.js"></script> -->
     
     <!-- nprogress -->
-    <link href="<?= base_url('static/vendors/nprogress/nprogress.css'); ?>" rel="stylesheet">
-    <script src="<?= base_url('static/vendors/nprogress/nprogress.js'); ?>"></script>  
+<!--     <link href="<?= base_url('static/vendors/nprogress/nprogress.css'); ?>" rel="stylesheet">
+    <script src="<?= base_url('static/vendors/nprogress/nprogress.js'); ?>"></script>   -->
 
     <!-- pnotify -->
     <link rel="stylesheet" type="text/css" href="<?= base_url('static/vendors/pnotify/dist/pnotify.css'); ?>">

@@ -43,7 +43,7 @@ class Cuadricula_model extends CI_Model {
 	 * @return {boolean}
 	 */
 	public function edit($cuadricula_id, $data){
-		
+
 		$this->db->where('cuadricula_id',$cuadricula_id);
 		if ($this->db->update($this->table, $data)) 
 			return TRUE;

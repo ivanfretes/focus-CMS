@@ -61,8 +61,7 @@ $autoload['packages'] = array();
 $autoload['libraries'] = array(	'database','session',
 								'email', 'user_agent',
 								'form_validation', 'upload', 
-								'image_lib',
-								'pagination');
+								'image_lib');
 
 /*
 | -------------------------------------------------------------------

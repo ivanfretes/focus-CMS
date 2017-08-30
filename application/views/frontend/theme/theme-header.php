@@ -1,8 +1,3 @@
-<?
-    // cargamos datos por defecto
-
-    //load_infosite();
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="Tag epuka">
     <meta name="description" content="Web de Epuka">
-    <meta name="author" content="<?=
-            $this->session->userdata('data_infosite')['page_info_name']; ?>">
+    <meta name="author" content="">
 
 	<!-- css -->
 	<link rel="stylesheet" href="<?= base_url('static/css/font-awesome.min.css'); ?>">
@@ -32,8 +26,7 @@
     <script defer src="<?= base_url(); ?>/static/vendors/FlexSlider/jquery.flexslider.js"></script>
 
 
-    <title><?=  $page_title.' - '. 
-                $this->session->userdata('data_infosite')['page_info_name']; ?></title>
+    <title><?= $page_title.' - ' ?></title>
          
 </head>
 <body>

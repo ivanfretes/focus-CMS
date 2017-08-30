@@ -17,23 +17,34 @@
  * 					  o en caso contrario ''
  */
 if (!function_exists('resize_image_with_gd')){
-	function resize_image_with_gd($width, $height, $source_image, 
+	function resize_image_with_gd($width, $height, $image_name, 
 								  $custom_config = NULL){
 		$ci = & get_instance();
 
 		
-		if (!not_value($source_image)){
+		if (!not_value($image_name)){
 
+			// Path base de las imagenes
+			$bpath = './uploads/images/';
+			
+			// Renombramos la imagen a ser redefinida, imagen temporal (datos)
+			$itmp = remove_extension_image($image_name);
+
+			// Nombre de imagen _size_ y el tipo extension
+			$iname = $itmp[0]."_size_".$width."_x_".$height.$itmp[1];
+			$ipath = $bpath."resized/".$iname;
+			
+			
 			// Configuraciones por defecto
-			$config['image_library'] = 'gd2';
-			$config['source_image'] =  './uploads/images/'.$source_image;
+			$config['source_image'] =  $bpath.'raw/'.$image_name;
 			$config['create_thumb'] = FALSE;
 			$config['maintain_ratio'] = FALSE;
 			$config['width']         = $width;
 			$config['height']       = $height;
 			$config['image_library'] = 'GD2';
-			$config['new_image'] = './uploads/images/resized/'.$source_image;
-		
+			$config['new_image'] = $ipath;
+			
+			
 			// Agrega o remplazamos confiraciones 
 			if (0 < count($custom_config)){
 				foreach ($custom_config as $key => $value) {
@@ -62,52 +73,34 @@ if (!function_exists('resize_image_with_gd')){
 	}
 }
 
-	
+
+
 
 /**
- * Sube una imagen - Retorna el nombre del archivo que fue subido
- * @param {string} $file_tab_name : $_REQUEST[field_tab_name
+ * Sube n cantidad de imagenes, en base a sus etiquetas
+ * Retorna las rutas de los archivos subidos
+ * 
+ * @param {string} $file_list : Listado de archivos - $_FILES
  * @param {array} $custom_config : configuraciones personalizadas
  * 
- * @return {string} 
+ * @return {array} 
  */
-if (! function_exists('upload_image')){
-	function upload_image($file_tag_name, 
-						  $custom_config = array()){
+if (! function_exists('upload_images')){
+	function upload_images(){
+		$array_return = [];
 
-		$ci = & get_instance();
-		
-		// Configuraciones por defecto
-		$config['upload_path']	=  './uploads/images/';
-  		$config['allowed_types'] = 'gif|jpg|png';
-  		$config['remove_spaces'] = TRUE;
-  		$config['file_permissions'] = '0777';
+		// Listado de tags generados de los archivos subidos
+		$file_tag_list = file_tag_list($_FILES);
 
-        // Agrega o remplazamos configuraciones 
-		if (0 < count($custom_config)){
-			foreach ($custom_config as $key => $value) {
-				$config[$key] = $value;
-			}	
-		}
+		foreach ($file_tag_list as $tag_name) {
 
-		$ci->upload->initialize($config);
+			if (!not_value($_FILES[$tag_name]['tmp_name']))
+				
+				// Datos del archivo {array}
+				$array_return[$tag_name] = upload_file($tag_name);
+		} 
 
-
-
-		// -- Modificar --
-		// Remplazar por una excepcion, de carga de la imagen
-		
-		// Subimos el archivo en caso que no existan inc
-		if (!$ci->upload->do_upload(trim($file_tag_name))){
-	        $img_name = '';
-		}
-		else {
-			$file = $ci->upload->data();
-			$img_name = $file['file_name'];
-		}
-
-		return $img_name;
-
+		return $array_return;
 	}
 }
 
@@ -137,6 +130,26 @@ if (! function_exists('resize_with_width')){
 	/**
 	 * Code
 	 */
+}
+
+
+
+
+/**
+ * Verificar funcion
+ * Redimensiona una imagen en base al width
+ * de forma proporcional
+ * @param {string} $file_name : Nombre de archivo 
+ * @param {array} $extension_list : conjunto de extensiones a buscar
+ * @return {array} or NULL
+ */
+if (! function_exists('remove_extension_image')){ 
+	
+	function remove_extension_image($file_name){
+
+		$a = array('.JPG', '.jpg', '.JPEG','.jpeg','.PNG','.png');
+		return remove_extension_files($file_name, $a);
+	}	
 }
 
 

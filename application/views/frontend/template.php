@@ -13,6 +13,8 @@
 	 * 
 	 */
 
+	var_dump($list_components);
+
 	if (isset($list_components)){
 		foreach ($list_components as $component) 
 			echo $component;

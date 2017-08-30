@@ -57,18 +57,19 @@ $route['translate_uri_dashes'] = FALSE;
 /**
  * -- Backend --
  */
-$route['gestion'] = 'gestion_admin/index';
-$route['gestion/login'] = 'gestion_admin/index';
-$route['gestion/login/auth'] = 'gestion_admin/validate_credentials';
-$route['gestion/logout'] = 'gestion_admin/logout';
+$route['gestion'] = 'admin/index';
+$route['gestion/login'] = 'admin/index';
+$route['gestion/login/auth'] = 'admin/validate_credentials';
+$route['gestion/logout'] = 'admin/logout';
 
 
 // Pages
-$route['gestion/pages'] = 'gestion_pages/all';
-$route['gestion/pages/(:num)'] = 'gestion_pages/all/$1';
-$route['gestion/pages/new'] = 'gestion_pages/create';
-$route['gestion/pages/edit/(:num)'] = 'gestion_pages/edit/$1';
-$route['gestion/pages/remove/(:num)'] = 'gestion_pages/remove/$1';
+$route['gestion/pages'] = 'page/all';
+$route['gestion/pages/(:num)'] = 'page/all/$1';
+$route['gestion/pages/(:num)/(:num)'] = 'page/all/$1/$2';
+$route['gestion/pages/new'] = 'page/create';
+$route['gestion/pages/edit/(:num)'] = 'page/edit/$1';
+$route['gestion/pages/remove/(:num)'] = 'page/remove/$1';
 
 // -- Widgets --
 $route['gestion/pages/(:num)/widgets'] = 'gestion_widget/all/$1';
@@ -103,7 +104,7 @@ $route['gestion/contacts/create'] =  'gestion_contacts/index';
 $route['gestion/menu'] =  'gestion_menu/index';
 $route['gestion/menu/new'] =  'gestion_menu/create';
 $route['gestion/menu/ordered'] =  'gestion_menu/order';
-$route['gestion/menu/remove'] =  'gestion_menu/remove';
+$route['gestion/menu/remove/(:num)'] =  'gestion_menu/remove/$1';
 
 
 

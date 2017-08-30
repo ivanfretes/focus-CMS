@@ -84,7 +84,9 @@ class Widget_model extends CI_Model {
 	 * Asigna el valor correspondiente al orden de un widget
 	 * 
 	 * @param {number} $widget_id
-	 * @param {number} $order_index
+	 * @param {number} $order_index : Valor del nuevo orden
+	 * 
+	 * @return {boolean} Si se modifico el orden
 	 */
 	public function set_order($widget_id,$order_index){
 
@@ -125,7 +127,7 @@ class Widget_model extends CI_Model {
 		$this->db->where('id_widget',$widget_id);
 		$query = $this->db->get($this->table);
 
-		if (!not_value($query->row()))
+		if (NULL !== $query->row())
 			return TRUE;
 
 		return FALSE;	

@@ -32,9 +32,8 @@
             </a>
 
             <?
-                if (NULL !== $portfolio->portfolio_title &&
-                    '' !== $portfolio->portfolio_title) : ?>
-                     <div class="caption">
+                if (!not_value($portfolio->portfolio_title)) : ?>
+                    <div class="caption">
                         <h3><?= $portfolio->portfolio_title ;?></h3>
                     </div>
             <?    endif

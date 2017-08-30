@@ -1,17 +1,33 @@
-<?
-	defined('BASEPATH') OR exit('No direct script access allowed');
+s<?
 
-	class Users extends CI_Controller {
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-		public function __construct(){
-			parent::__construct();
-		}
+//require 'Auth.php';
 
-		public function check_email(){
-			
-		}
+/**
+ * @author Ivan Fretes
+ */
+class Gestion_users extends CI_Controller { 
+
+	public function login(){
+		
+	}
+
+
+	/**
+	 * Listado de usuario(clientes/no clientes) disponibles en la plataforma
+	 */
+	public function index(){
 
 	}
 
 
-?>
+	public function get_user_access(){
+		// Listado de acceso a la plataforma
+
+	}
+
+	
+
+
+}

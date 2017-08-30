@@ -35,12 +35,12 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="<?= base_url().'gestion/contacts'; ?>">
+                <!-- <li>
+                    <a href="<? //base_url().'gestion/contacts'; ?>">
                         <i class="fa fa-envelope-o"></i> 
                         Contactos <span class="fa fa-chevron-right"></span>
                     </a>
-                </li>
+                </li> -->
 
                 <li>
                     <a href="<?= base_url().'gestion/menu'; ?>">

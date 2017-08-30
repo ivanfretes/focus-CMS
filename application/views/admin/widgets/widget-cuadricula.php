@@ -1,7 +1,7 @@
 <form action="<?= base_url("gestion/cuadricula/edit/$widget_id"); ?>"
       enctype="multipart/form-data" method="post">
 
-	<ul class="grid_sortable">
+	<ul class="grid-sortable">
 <?  
 
     // Cuadricula - Listado de cuadros
@@ -34,6 +34,5 @@
 
 <?   endforeach   ?>
 
-    <input type="submit" name="g-submit" value="Guardar">
 	</ul>
 </form>

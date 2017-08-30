@@ -3,97 +3,122 @@
 	/**
 	* 
 	*/
-	class Menu_model extends CI_Model {
-		
-		public function __construct(){
-			parent::__construct();
-		}
+class Menu_model extends CI_Model {
+	
+	public function __construct(){
+		parent::__construct();
 
-
-		/**
-		 * Crea un nuevo item del menu
-		 */
-		public function create_menu($menu_name,$menu_link,$menu_order){
-
-			$this->db->set('menu_name',$menu_name);
-			$this->db->set('menu_link',$menu_link);
-			$this->db->set('menu_order',$menu_order);
-
-			if($this->db->insert('menu')) return TRUE;
-			return FALSE;
-		}
-
-
-
-		/**
-		 * Retorna un menu en particular con el nuevo ID
-		 * 
-		 * @param {number} $menu_id
-		 * @return {object} 
-		 */
-		public function get_menu($menu_id){
-			$this->db->where('id_menu',$menu_id);
-
-			$query = $this->db->get('menu');
-			return $query->row();
-		}
-
-
-		/**
-		 * Elimina cualquier elemento del menu
-		 * @param {number} $menu_id
-		 */
-		public function remove_menu($menu_id){
-
-			$this->db->where('id_menu',$menu_id);
-			$this->db->delete('menu');
-		}
-
-
-
-		/**
-		 * @param {string} $menu_name
-		 * @param {string} $menu_link
-		 * @param {number} $menu_order
-		 * 
-		 * @return {boolean}
-		 */
-		public function edit_menu($menu_name,$menu_link,$menu_order = -1){
-
-			$this->db->set('menu_name',$menu_name);
-			$this->db->set('menu_link',$menu_link);
-
-			if (-1 !== $menu_order)	
-				$this->db->set('menu_order');
-
-			$this->db->update('menu');
-
-
-
-		}
-
-
-		/**
-		 * Lista todos los menu, existentes
-		 */
-		public function get_all(){
-			$this->db->order_by('menu_order','asc');
-			$query = $this->db->get('menu');
-
-			return $query->result();
-		}
-
-
-		/**
-		 * Order the menu asc
-		 * @param $paramname description
-		 */
-		public function ordered($menu_id, $menu_order){
-			$this->db->set('menu_order', $menu_order);
-			$this->db->where('id_menu', $menu_id);
-
-			$this->db->update('menu');
-		}
+		$this->table = 'menu';
 	}
+
+
+	/**
+	 * Retorna el mayor orden de menu
+	 * 
+	 * @return {number} 
+	 */
+	public function get_max_order(){
+		$this->db->select_max('menu_order','menu_order');
+		$query = $this->db->get($this->table);
+
+		return $query->row()->menu_order;
+	}
+
+	/**
+	 * Crea un nuevo item del menu
+	 * 
+	 * @param {array} $Datos del menu
+	 * @return {boolean} 
+	 */
+	public function create($data){
+
+		// Orden Menu
+		$data['menu_order'] = $this->get_max_order();
+
+		if($this->db->insert($this->table,$data)) 
+			return TRUE;
+		
+		return FALSE;
+	}
+
+
+
+	/**
+	 * Retorna un menu por ID
+	 * 
+	 * @param {number} $id
+	 * @return {object} : Datos del menu
+	 */
+	public function get($id){
+		$this->db->where('id_menu',$id);
+
+		$query = $this->db->get($this->table);
+		return $query->row();
+	}
+
+
+	/**
+	 * Elimina cualquier elemento del menu
+	 * @param {number} $menu_id
+	 * @return {boolean} 
+	 */
+	public function remove($id){
+
+		$this->db->where('id_menu',$id);
+		if ($this->db->delete($this->table))
+			return TRUE;
+
+		return FALSE;
+	}
+
+
+
+	/**
+	 * 
+	 * Edita un elemento del menu
+	 * 
+	 * @param {number} $id _ Id del Menu
+	 * @param {array} : Elemento a ser editado
+	 * @return {boolean}
+	 */
+	public function edit($id, $data){
+
+		if ($this->db->update($this->table,$data))
+			return TRUE;
+
+		return FALSE;
+
+	}
+
+
+	/**
+	 * Lista todos los menu, existentes
+	 * 
+	 * @return {array}
+	 */
+	public function get_all(){
+		$this->db->order_by('menu_order','asc');
+		$query = $this->db->get($this->table);
+
+		return $query->result();
+	}
+
+
+	/**
+	 * Ordena el menu ascendentemente
+	 * 
+	 * @param {number} $id : Id del Menu
+	 * @param {number} $index : Nro de orden del menu
+	 * @return {boolean} Si asigno el index al menu
+	 */
+	public function set_order($id, $index){
+		$this->db->set('menu_order', $index);
+		$this->db->where('id_menu', $id);
+
+		if ($this->db->update($this->table))
+			return TRUE;
+		return FALSE;
+	}
+}
 
 ?>

@@ -20,7 +20,7 @@
 
 
 <form action="<?= base_url("gestion/row/edit/$widget_id"); ?>"
-      enctype="multipart/form-data" method="post">
+      enctype="multipart/form-data"  method="post">
 
 	<div class="row">
 		
@@ -47,7 +47,7 @@
 
 	    	<label for="<?= $content ?>">Contenido: </label>
             <div id="<?= $content ?>" data-action="editable" 
-                 class="box-editable">
+                 class="box-editable" data-fieldname="<?= $content ?>">
                 <?= $row_content ;?>
             </div>
 
@@ -79,7 +79,7 @@
 
 
 		<!-- Imagen de la fila -->
-		<div class="col-md-8" >
+		<div class="col-md-8 container-widget-portada" data-value="<?= $widget_id ?>">
             
             <div class="col-md-8">
                 <label for="<?= $image; ?>" class="control-label">
@@ -97,9 +97,9 @@
     <?
         
         if (!not_value($row_image))
-            $row_image = base_url('static/images/default_column.png');
+            $row_image = base_url($row_image);            
         else 
- 			$row_image = base_url($row_image);            
+ 			$row_image = base_url('static/images/default_column.png');
         
     ?>
 
@@ -123,6 +123,5 @@
 
 
 	</div>
-		
-	<input type="submit" name="g-submit" value="Guardar">
+
 </form>

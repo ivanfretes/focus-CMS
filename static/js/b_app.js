@@ -1,321 +1,138 @@
-// -- Main --
 $(function(){
-
-	// Eliminamos cualquier elemento
-	removeElement('click');
 	
+	// Seleccionamos un widget a generar
+	$("#select-widget div").on('click', function(e){
+		console.log($(this).html());
+	});
 	
-    // Remove page
-//    removeItem( 'click', 'data-page', 'a.btn-danger', '#page_list tr');
-//    
-    // Remove a page component
-//    removeItem( 'click', 'data-widget', 'a[data-type=remove]' , 
-//                'ul#component_created', 'ul#component_created li');
-//    
-    
-    // Remove a menu    
-    //remove_item('click', '#menu_created li a', 'li');
-    
-    // Set the grid data
-    // Actualizamos el componente del tipo imagen
-    // elemento paterno li[data-structure=grid]
-    //send_form_grid('change', 'li[data-structure=grid] input[type=file]');
-    //send_form_grid('keyup', 'li[data-structure=grid] input[type=text]');
-    
-    
-    // Set the row
-    // Actualizamos el componente del tipo fila
-    // li[data-type-widget=single_row] podria se elemento paterno si no ajusta a 
-    // las actuales necesidades
-    send_row('keyup', 'li[data-type-widget=single_row] input[type=text]'); //
-    send_row('change', 'li[data-type-widget=single_row] select'); 
-    send_row('change', 'li[data-type-widget=single_row] input[type=file]');
-  
-    //ssend_row('change', ' input[type=file]');
-    
-    /**
-    * -- Pages -- 
-    */
-    
-    // Seleccionamos el componente a ser creado para generar sus caracteristicas
-    $('input[name=p_title]').keyup(function(){
-         $('input[name=p_url]').val(createSlug($(this).val()));
-        
-    });
-    
-    $('input[name=p_url]').keyup(function(){
-        $(this).val(createSlug($(this).val()));
-    });
-    
-    
-    /*
-        -- Edit/adding and send data --
-    */
-    
-    // Enviamos datos a traves del formulario
-    send_data_with_form('#menu_form, #p_form');
-    
-    
-    // Volvemos editable 'summernote' al componente seleccionado
-    summernote_content('div[data-action=editable]');
-    
-    // Modificar
-    $('#p_btn_modal').click(function(){
-        $('#p_errors').html('');
-    });
-   
-    
-    // Modificamos el orden den menu
-    $("#menu_created").sortable({ 
-        placeholder: "ui-state-highlight", 
+	// Actualiza la barra del titulo
+	min_scroll_head_bar(null, 57);
+	$(window).scroll(function(e){
+		min_scroll_head_bar($(this),57);
+	});
+		
+	
+	// Seleccionamos un widget, Creamos un widget
+	$('#widget-select li').click(function(e){
+		var widget_name = $(this).attr('data-value');
+		var page_id = $('.widget-container').attr('data-page');
+		get_widget(page_id, widget_name);
+	});
+	
+	// Ordenamos el menu 
+	$("#menu_created").sortable({ 
+        placeholder: "ui-sortable-menu", 
         stop: function( event, ui ) {
-            set_order({
-                url : GESTION_URL+'menu/ordered',
+            /*set_order(GESTION_URL+'widgets/ordered',
                 selected : '#menu_created li',
-                selected_data : 'data-menu'
-            });
+            );*/
+			console.log('Test');
         }  
     });
- 
-    // Seleccionamos un nuevo componente para su creacion
-    $('#select_component').on('change',function(){
-		var self = $(this);
-		// Componente seleccionado 'portfolio'
-        var component = self.val();
-        
-        //NProgress.start();
-        
-        if ('' !== component){
-            if (confirm('Desea crear un nuevo componente')){
-                order_component++;
-                
-                // type_component a string for example 'single_row' or 'portfolio'
-                $.post(GESTION_URL+'widgets/add/'+component, 
-                {
-                    page : page_id,
-                    order : order_component 
-                })
-                .done(function(data,status) {
-                    load_component(component,data,order_component);
-                    //NProgress.done();
-					self.val('');
-                });
-            }
-        }
-    });
-
+	
+	
+	// Funciones embebidas
+	_main();
+	
+	console.log('Loaded b_app.js');
 });
 
 
-/*
-	Remueve, eliminamos un elemento HTML
-	El elemento a ser removido depende del link <a href=".."></a>
-	que contiene la ruta, para eliminar el archivo
-	
-	@param {string} :
-*/
-function removeElement(event, elementRemove = null) {
-
-    $('body').delegate('a[data-action=remove]', event, function(e){
-        e.preventDefault();      
-		
-		// Accedemos a las propiedades del enlace <a>
-        var a = $(this);
-
-        if (confirm('Está por eliminar este elemento, ¿Desea Continuar?')){
-                $.post(a.attr('href'), {
-                    	param : a.attr('data-value')
-                	},function(data){
-						
-						// Si se inserto, eliminamos el elemento html
-						if (data){
-							// Si no se asigno elementRemove, elimina el elemento
-							if (elementRemove === null) 
-								a.remove();    
-							else 
-								$(elementRemove).remove();
-								return;
-						}
-						else {
-							console.log('Elemento no fue eliminado');
-						}
-						
-                });
-		
-			console.log('Eliminamos el elemento');
-			
-		}
-    });
-}
+// -- Funciones de la app --
 
 
+function min_scroll_head_bar(element = null, min_val){
 
-/*
-	Crea el slug de la url GESTION_URL/slug, remplaza los espacios
-	
-	@param {string} words : Frase para la url
-	@return {string} : slug modificado
-*/	
-function createSlug(words){
-    return words.replace(/\s/g,"-").toLowerCase(); 
-}
+	if($(this).scrollTop() > min_val) { 
+		$(".theme-container-head").addClass('theme-container-fixed');
+	}
+	else {
+		$(".theme-container-head").removeClass('theme-container-fixed');
+	}
 
-    
-/*
-	Creamos un nuevo componente
-	
-	@param {number} widget_id : Id del widget
-	@param {}
-	@param {number} 
-*/
-
-function newComponent(type_component,data_component, order){
-    $('#component_created').append(data_component);
-    location.assign('#button');
-}
-
-
-
-
-/*
-	Ordenamos los widgets
-*/
-@example obj_param = {
-		url : destiny
-		selected : li or div to each ,
-		selected_data : field/attr data_[any] of the selector       
-    }
-*/
-
-function set_order(obj_param = {}, e = null){
-	
-	// Listado de widgets
-    var item_list = [];
-	
-    // Recorre todos los elementos 
-    $.each($(obj_param.selected), function(k, v) {
-       order_component.push($(v).attr(obj_param.selected_data));
-    });
-
-	// Anexamos el array con los id dispuestos
-	obj_param.order = order_component;
-
-    $.post(obj_param.url, obj_param, function(data){
-        var data = JSON.parse(data);
-        new PNotify({
-            title: 'Ordenado!',
-            text: data.msg,
-            type: 'success'
-        });
-        
-    })
-}
-
-
-
-
-/*
-	Envia datos del component tipo fila
-	
-	@param {string} event : 
-*/
-function send_row(event, element){
-    
-    $('#component_created').delegate(element, event, function(e){ 
-        
-        var self = $(this);
-        var form = self.parents('form'); // formulario padre
-		
-		//datos del formulatio, indicamos cual
-        var formData = new FormData(document.getElementById(form.attr('id')));  
-        
-		set_thumbnail(e, '.row-image-container img');
-		
-		
-		console.log('Limpiamos el componente fila');
-		return;
-		
-        // Add the blob over the form data object, 
-        // El componente representa el id del tipo actual de widget creado, por ejemplo 
-        // el id de un item de portfolio
-        formData.append('component_id', form.attr('data-component'));
-
-        $.ajax({
-            url: form.attr('action'),
-            type: "post",   
-            dataType: "html",
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false
-        })
-        .done(function(data){
-			console.log(data);
-			$('input[type=file]').val(null);
-        });
-
-    });
-    
 }
 
 /*
-    Envia los datos contenidos en un formulario
+	@param {number} : Id de la pagina
+	@param {string} : Nombre del widget
 */
-function send_data_with_form(selector, event = 'submit'){
-
-    try {
-        
-        //if (null === selector) 
-        //    var err = 'Formulario no inicializado';
-        
-        $(selector).on(event, function(e){
-            var f = $(this); // form selected
-            e.preventDefault();
-            
-            var formData = new FormData(document.getElementById(f[0].id));
-            
-            
-            // Se inicializa para editar cualquier componente
-            if ('undefined' !== typeof f.attr('data-component')){
-                formData.append('component_id',f.attr('data-component'));
-            }
-            
-            
-            // Send the data
-            $.ajax({
-                url: f[0].action,
-                type: "post",   
-                dataType: "text",
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false
-            })
-            .done(function(data){
-                var data = JSON.parse(data);
-                
-                if (0 !== data.error){
-                    $('#p_errors').html(`
-                        <div class="alert alert-danger alert-dismissible fade in" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                            `+data.msg+`
-                        </div>`);
-                }
-                else {
-                    location.reload();
-                }
-
-            });
-        });
-                       
-    }
-    catch(err){
-        console.log(err);
-    }
+function get_widget(page_id,widget_name){
+	
+	var url = GESTION_URL+widget_name+'/new/'+page_id;
+	
+	$.post(url, {
+		'g-submit': true
+	}, function(data){
+		$('#widget-list').append(data);
+	});
 }
 
+
+function set_order(url, element, event = 'click'){
+	$('body').delegate(element, event, function(){
+		var order_list = [];
+		
+		$.each($(element), function(k, v) {
+		   order_list.push($(v).attr('data-value'));
+		});
+		
+		
+		console.log(order_list);
+		/*$.post(url,
+			   {'g-submit': true}, function(){
+			new PNotify({
+				title: 'Ordenado!',
+				text: '',
+				type: success
+			});
+		});*/
+	});
+}
+
+// -- end fn de la app --
+
+function _main(){
+	
+	// Creamos un slug para la pagina
+	create_slug('.page-container #g-title', '.page-container #g-url');
+	create_slug('.page-container #g-url');
+	
+	// Volvemos editable cualquier div['data-action=editable']
+	set_summernote("div[data-action=editable]");
+	
+	// Envio automatico de cualquier elemento que pertenezca a widget-container
+	send_single_form('.widget-container input', 'post');
+	send_single_form('.widget-container input[type=file]', 'post', 'change');
+	
+	
+	// Envio automatico de cualquier elemento select que pertenezca a widget-container
+	send_single_form('.widget-container select', 'post', 'change');
+	
+	// Actualizamos las thumbnail del tipo imagen
+	set_image('.container-portada input[type=file]', '.container-portada img');
+	
+	// Se actualiza thumbnail de pordada de la pagina
+	set_image_background('#g-portada_url', 
+						 '.page-portada-container .page-portada-image');
+	
+	
+	// Se actualiza el thumbnail de una fila
+	set_image('.container-widget-portada input[type=file]',
+			 '.container-widget-portada img');
+	
+	// Eliminamos una fila de page
+	remove_element('#page-table-list tr');
+	
+	// Eliminamos un widget
+	remove_element('#widget-list li');
+	
+	// Eliminamos un elemento del menu
+	remove_element('#menu_created li');
+
+}
+
+
+// -- Funciones genericas --
 
 
 /*
@@ -329,72 +146,251 @@ function send_data_with_form(selector, event = 'submit'){
 	@return void 
 */
 
-function summernote_content(element, event = 'click'){
+function set_summernote(element, event = 'click'){
     $('body').delegate(element, event, function(e){
+		
+		// Valor del elemento seleccionado
         var self = $(this); 
 		
 		// Verficamos que el data action sea editable
-        if ('editable' === self.attr('data-action')){
+        if (e.target.outerHTML.indexOf('editable')){
 			
-			console.log(self.attr('data-action'));
-			
-            // Summernote setting
-            $(this).summernote({
-                //height: 300, 
+			// configuracion de SUMMERNOTE.js 
+            self.summernote({
                 minHeight: null,
                 maxHeight: null, 
                 focus: true,
                 lang: 'es-ES',
                 placeholder: 'Editar Contenido [ aquí ]',
+				fontNames: ["Helvetica", "sans-serif", "Arial", "Arial Black", "Comic Sans MS", "Courier New"],
                 callbacks: {
-                    onInit: function() {
-                        console.log('Summernote is launched');
-                    },
-					// Envia los datos, del box si son modificados
-                    onChange: function(content){
+					onInit: function() {
+						console.log('SUMMERNOTE.js is launched');
+					},
+					onChange: function(content){
+						// Envia los datos a la db, si son modificados
+						send_single_data(self, content, 'post');
+					},
+					onBlur: function(c) {
 						
-						var form =  self.parents('form'); //form padre
-						// Llama a los datos del for  
-						var formData = new FormData(
-							 			document.getElementById(form.attr('id')));
-						
-
-                        // El componente representa el id del tipo actual de widget creado, por ejemplo 
-                        // el id de un item de portfolio
-						
-                        formData.append('component_id', form.attr('data-component'));
-                        
-                        // Extrae del id, el 'keyname' que enviar mediante el ajax
-                        // por ejemplo 'page_name', y le asigna su contenido 'content'
-						
-						
-                        var component_name = self.attr('id');
-                        formData.append(component_name, content); 
-
-                        
-                        $.ajax({
-                            url: form.attr('action'),
-                            type: 'post',
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false
-                        })
-                        .done(function(data){
-                            console.log(data);
-                        });
-                        
-                    },
-                    onBlur: function(c) {
-                        console.log(c);
-                    }
+						console.log(c);
+						//self.summernote('destroy');
+					},
+					onImageUpload: function(files) {
+					  // upload image to server and create imgNode...
+					  //$summernote.summernote('insertNode', imgNode);
+					}
                 }
             });
-            
-
 
         }
     });
+}
+
+
+/*
+	
+	-- Modificar --
+	// Verificar
+	
+	Envia todos los datos de un formulario en particular
+	@param {mixed} formElement : Formulario/s que son seleccionado
+	@param {string} mixed : 
+	
+	@return {void} 
+*/
+function send_form(formElement){
+	
+	$(formElement).submit(function(e){
+		e.preventDefault();
+		
+		var form = $(this);
+		
+		// Definimos la forma/method de envio post/get
+		var formMethod = form.attr('method');
+		if (undefined === formMethod)
+			formMethod = 'post';
+		
+		// Definimos el action del formulario
+		var formAction = form.attr('action');
+		if (undefined === formAction)
+			formAction = e.target.baseURI;
+		
+		
+		// Generamos el formulario a ser enviado
+		var formData = new FormData(
+			document.getElementById(formElement));
+		formData.append('g-submit', true);
+
+		$.ajax({
+			url: formAction,
+			type: formMethod,
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		})
+		.done(function(data){
+			console.log('Se envio el formulario');
+		});
+		
+	});
+	
+}
+
+/*
+	Envia cualquier dato dentro en un html, relacionando su nombre 
+	de la etiqueta id, esta hecho para el summernote
+	
+	@param {string} element : Elemento seleccionado
+	@param {string} data : contentido a ser enviado
+	@param {string} method : Por defecto el metodo es GET
+	
+	@return {void}
+*/	
+function send_single_data(element, data, method = 'get'){
+	
+	// Valor en la etiqueta id del elemento
+	var elementId = element.attr('id');
+	
+	// Formulario padre encontrado
+	var form = element.parents('form'); 
+	var formAction = form.attr('action');
+	
+	// Generamos el formulario que sea enviado
+	var formData = new FormData();
+	
+	formData.append(elementId, data);
+	formData.append('g-submit', true);
+	
+	// Enviamos los datos
+	$.ajax({
+		url: formAction,
+		type: method,
+		data: formData,
+		cache: false,
+		contentType: false,
+		processData: false
+	})
+	.done(function(data){
+		console.log('Test');
+	});
+}
+
+/*
+	Envia UN campo de un formulario
+	
+	@param {string} element : Elemento seleccionado, sin apostrofes
+	@param {string} method : Por defecto el metodo es GET
+*/
+function send_single_form(element, method = 'get', event = 'keyup'){
+
+	$('body').delegate(element, event, function(){
+		var self = $(this);
+		
+		// Valor en la etiqueta id del elemento
+		var elementName = self.attr('name');
+		var elementValue = self.val();
+		
+		// Formulario padre encontrado
+		var form = self.parents('form'); 
+		var formAction = form.attr('action');
+		
+		// Generamos el formulario que sea enviado
+		var formData = new FormData();
+		formData.append(elementName, elementValue);
+		formData.append('g-submit', true);
+
+		// Enviamos los datos
+		$.ajax({
+			url: formAction,
+			type: method,
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		})
+		.done(function(data){
+			console.log(data);
+		});
+		
+	});
+}
+
+/*
+	Remueve, eliminamos un elemento HTML
+	El elemento a ser removido depende del link <a href=".."></a>
+	que contiene la ruta, para eliminar el archivo
+	
+	@param {string} : element, Elemento a ser eliminado
+	@param {string} : event
+	@param {string} : msg : Mensaje al eliminar elemento
+*/
+function remove_element(element,  msg = null, event = 'click') {
+	
+	// Si el mensaje no esta inicializado
+	if (null === msg)
+		msg = 'Está por eliminar el elemento, ¿Desea Continuar?';
+	
+	
+    $('body').delegate(element+' a[data-action=remove]', event, function(e){
+        e.preventDefault();      
+		var a = $(this);
+		
+		// Pariente a ser eliminado
+		var elementRemove =  a.parents(element);
+		
+        if (confirm(msg)){
+			$.post(a.attr('href'), { 'g-submit' : true },function(data){
+				
+				// Si data es true, eliminamos el html
+				if (data){
+					
+					// Si no se asigno element, se elimina a si mismo
+					if (null === element) 
+						a.remove();    
+					else 
+						elementRemove.remove();
+					
+					// Actualizamos el numero de cantidad de filas
+					$('#total_row').text(parseInt(
+											$('#total_row').text() - 1));
+					console.log('Elemento eliminado');
+
+				}
+				else {
+					console.log('Elemento no eliminado');
+				}
+
+			});
+
+
+		}
+    });
+}
+
+
+
+/*
+	Crea el slug de la url/slug, remplaza los espacios por guinos
+	
+	@param {string} element : Elemento desde donde modificar URL
+	@param {string} elementToSet : Elemento a actualizar
+	@param {string} event 
+
+*/	
+function create_slug(element, elementToSet = null, event = 'keyup'){
+	
+	// Si no se inicializa elementToSet, el element se modifica a si mismo
+	if (null === elementToSet)
+		elementToSet = element;
+	
+	$('body').delegate(element, event, function(){
+		var a = $(this).val();
+		var b= a.replace(/\s/g,"-").toLowerCase(); 	
+		$(elementToSet).val(b);
+	});
+	
 }
 
 
@@ -415,20 +411,22 @@ function set_thumbnail(event, elementToSet, elementImg = true){
 		if (undefined === elementToSet)
 			throw ('elementToSet no esta definido');
 
-		// 
+		// Elemento Seleccionado
 		var elementHTML = event.target.outerHTML; 
 		
 		// Verificamos que el tipo de input sea file
 		if (-1 !== elementHTML.indexOf('type="file"')){
 
 			// Llamamos el path de la imagen blob
-			var imageBlobPath = URL.createObjectURL(event.target.files[0]);
+			var imageBlobPath = URL.createObjectURL(
+										event.target.files[0] );
 			
 			// Verifica si actualizamos un <img src=""> u otro elemento background
 			if (elementImg)
 				$(elementToSet).attr('src', imageBlobPath);
 			else 
-				$(elementToSet).css('background-image', 'url(' + imageBlobPath + ')');
+				$(elementToSet).css('background-image', 
+									'url(' + imageBlobPath + ')');
 		}
 	}
 	catch(e){
@@ -437,50 +435,41 @@ function set_thumbnail(event, elementToSet, elementImg = true){
 }
 
 
-
 /*
-	Envia los datos del formulario, 
-	cuando se produce algun en un elemento del formulario
+	Envia una imagen al servidor
+	
+	@param {string} element : input file seleccionado
+	@param {string} elementToSet : Elemento a actualizar
+	@param {string} event : Por defecto click
 */
-
-function send_form(element, event = 'change'){
-	
-	// Busca el primer formulario superior
-	
-	// Creamos un formulario
-	var formData = new FormData();
-}
-
-
-
-/*
-	Envia datos de cualquier formulario, un elemento a la vez
-	
-	@param 
-*/	
-
-function send_form_data(element, event = 'click'){
-	$(body).delegate(element, event, function(){
-		console.log('Inicializamos la applizacion');
+function set_image(element, elementToSet, event = 'change'){
+	$('body').delegate(element, event, function(e){
+		
+		var elementValue = $(element).attr('data-value');
+		console.log(elementValue);
+		return;
+		if (elementValue.attr('data-value'));
+		return;
+		
+		set_thumbnail(e, elementToSet);
+		console.log('<IMG> Actualizado');
 	});
-	
-	
 }
-
-
 
 /*
+	Actualiza el background de un elemento
 	
-	@param {string} fn : nombre de la funcion
-	@param {string} param : nombre de el/los parametros
-	@param
-
+	@param {string} element : input file seleccionado
+	@param {string} elementToSet : Elemento a actualizar
+	@param {string} event : Por defecto click
 */
-function msgFnError(fn,param,msg = '--'){
-	return 'Fn: '+fn+' \nParam: '+param+' \nMsg: '+msg;
+function set_image_background(element, elementToSet, event = 'change'){
+	
+	$('body').delegate(element, event, function(e){
+		set_thumbnail(e, elementToSet, false);
+		console.log('Background Actualizado');
+	});
 }
 
-// Seleccionamos la nueva portada
-$('#page_portada_input').change(function(e){
-	set_thumbnail(e, '#page-portada-image');
-});
+// end fn genericas --
+

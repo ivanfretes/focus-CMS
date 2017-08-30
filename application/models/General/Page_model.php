@@ -21,28 +21,43 @@ class Page_model extends CI_Model {
 	 * @param {array} $data : Datos a ser insertados en la db
 	 * @return {mixed} : El id o False en caso de no insertarse la pagina 
 	 */
-	public function create($data){
+	public function create(){
+		$slug_id = $this->get_max_id() + 1;
 
 		// Verificamos que la página que queremos crear sea index (principal)
-		$data['page_main'] = $this->new_index_page($data['page_main']);
+		$data['page_date_modified'] = current_date();
+		$data['page_url'] = 'pagina-sin-ser-verificada-'.$slug_id;
+		$data['page_main'] = NULL;
 
-
-		// Verifica si el slug ya se asigno a otra pagina
-		if (!$this->get_exist_slug($data['page_url'])){
-
-			if ($this->db->insert($this->table,$data)) {
-				return $this->db->insert_id();
-			}	
-
-		}
+		// Verifica si el slug ya existe a otra pagina
+		if ($this->db->insert($this->table,$data)) {
+			return $this->db->insert_id();
+		}	
 
 		return FALSE;
 
 	}	
 
 
+
+	/**
+	 * Retorna el mayor Id de la tabla
+	 * 
+	 * @return {number}
+	 */
+	public function get_max_id(){
+		$this->db->select_max('id_page','max_id');
+		$query = $this->db->get($this->table);
+
+		return $query->row()->max_id;
+	}
+
+
 	/**
 	 * Actualiza la nueva pagina de inicio
+	 * 
+	 * @param {number} $page_main
+	 * @return {mixed}
 	 */
 	protected function new_index_page(&$page_main){
 
@@ -51,9 +66,8 @@ class Page_model extends CI_Model {
 
 			return 1;
 		}	
-		else{
+		else
 			return NULL;
-		}
 
 	}
 
@@ -111,6 +125,7 @@ class Page_model extends CI_Model {
 	    if (isset($data['page_main']))
 	    	$data['page_main'] = $this->new_index_page($data['page_main']);
 	    
+	    $data['page_date_modified'] = current_date();
 		$this->db->where('id_page',$page_id);
 		if ($this->db->update($this->table,$data)) return TRUE;
 		
@@ -153,6 +168,7 @@ class Page_model extends CI_Model {
 	public function get_all($start, $cant){
 
 		$this->db->limit($cant, $start);
+		$this->db->order_by('page_date_modified', 'DESC');
 		$query = $this->db->get($this->table);
 
 		return $query->result();	

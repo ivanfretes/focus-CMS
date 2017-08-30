@@ -2,11 +2,9 @@
 <form action="<?= base_url("gestion/slide/edit/$widget_id");?>" 
       enctype="multipart/form-data" method="post">
 	
-    <ul class="grid_sortable">
-    
-    
-<?  
+    <ul class="grid-sortable">
 
+<?  
 
     // Listado de todas las diapositivas
     foreach ($slide_list as $slide) : 
@@ -36,7 +34,7 @@
             </div>        
 			</li>
 		<? endforeach ?>
-        <input type="submit" name="g-submit" value="Guardar">
+
         
 	</ul>
 </form>

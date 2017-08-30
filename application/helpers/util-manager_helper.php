@@ -62,18 +62,22 @@ if (! function_exists('video_embed_provider')){
 
 /**
  * Paginacion por defecto
+ * Por defecto muestra 25 elementos
+ * 
+ * -- Modificar --
+ * La cantidad de elementos visibles debe ser modificable
  * 
  * @param {number} : cantidad de filas
  */
 if (! function_exists('pagination_custom')){
-	function pagination_custom($per_page, $total_row,$custom_config = array()){
-		
-		//$ci = & get_instance();
+	function pagination_custom($base_path, $total_row,
+							   $custom_config = array()){
 
-		// Cantidad total de Filas
-		$config['total_rows'] = $total_row;
+		//pagination settings
+        $config['per_page'] = 25;
+        $config['base_url'] = base_url($base_path);
+        $config['total_rows'] = $total_row;
 
-        $config['base_url'] = '';
         $config['use_page_numbers'] = TRUE;
         $config['num_links'] = 2;
         $config['full_tag_open'] = `<nav aria-label="Pagination">
@@ -91,18 +95,20 @@ if (! function_exists('pagination_custom')){
         $config['last_link'] = '»';
         $config['next_link'] = '';
         $config['prev_link'] = '';
-		
 
-        // Agregamos o sobreescribimos la configuracion por defecto
+
 		if (0 < count($custom_config)){
 			foreach ($custom_config as $key => $value) {
 				$config[$key] = $value;
 			}	
 		}
 		
-		//$ci->load->library('pagination');
-		//$ci->pagination->initialize($config);
-		return $config;
+		
+		$ci = & get_instance();
+		$ci->load->library('pagination');
+		$ci->pagination->initialize($config);
+		
+		return $ci->pagination->create_links();
 		
 	}
 } 
@@ -158,6 +164,23 @@ if (! function_exists('default_value_input')){
 			return '';
 
 		return "value=\"$value\"";
+	}
+}
+
+
+/**
+ * Retorna si existe contenid por defecto
+ * 
+ * @param {mixed} $value referencia al valor del campo
+ * @return {string} : 
+ */
+if (! function_exists('default_value')){
+	function default_value(&$value){
+		
+		if (not_value($value))
+			return '';
+
+		return $value;
 	}
 }
 
@@ -372,10 +395,26 @@ if (! function_exists('set_init_row')){
 
 if(! function_exists('not_value')){
 
-	function not_value($data){
+	function not_value(&$data){
 		
-		if (!isset($data) || NULL === $data || 0 === $data || '' === $data)
+		// No esta inicializado, o el dato es nulo
+		if (!isset($data) || NULL === $data)
 			return TRUE;
+
+		// Es un array y esta vacio
+		if (is_array($data) && NULL == $data)
+			return TRUE;
+
+
+		// Si es un string y esta vacio
+		if (is_string($data) && '' === $data)
+			return TRUE;
+
+
+		// Si es un numero y es cero
+		if (is_numeric($data) && 0 === $data)
+			return TRUE;
+
 
 		return FALSE;
 
