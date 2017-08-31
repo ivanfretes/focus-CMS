@@ -71,16 +71,15 @@ if (! function_exists('remove_extension_files')){
 	
 	function remove_extension_files($string_value, $extension_list = array()){
 		foreach ($extension_list as $extension) {
-			$array_result = [];
 
 			$a = explode($extension, $string_value);
 
-			if (1 < count($a)){
+			// Si encuentra una coincidencia con la extesion
+			if (1 < count($a))
 				return array( $a[0] , $extension);
-
-			}
 			else 
 				continue;
+
 		}
 
 		return NULL;

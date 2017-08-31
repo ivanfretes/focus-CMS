@@ -26,7 +26,7 @@ $(function(){
             /*set_order(GESTION_URL+'widgets/ordered',
                 selected : '#menu_created li',
             );*/
-			console.log('Test');
+			console.log('ordenado correctamente');
         }  
     });
 	
@@ -108,17 +108,13 @@ function _main(){
 	// Envio automatico de cualquier elemento select que pertenezca a widget-container
 	send_single_form('.widget-container select', 'post', 'change');
 	
-	// Actualizamos las thumbnail del tipo imagen
-	set_image('.container-portada input[type=file]', '.container-portada img');
-	
 	// Se actualiza thumbnail de pordada de la pagina
-	set_image_background('#g-portada_url', 
-						 '.page-portada-container .page-portada-image');
+	set_image_background('.page-portada-container');
 	
+	// Se actualiza el thumbail de un widget del tipo grid
+	set_image_background('.grid-sortable','li');
+	set_image('.container-image','img.img-portada');
 	
-	// Se actualiza el thumbnail de una fila
-	set_image('.container-widget-portada input[type=file]',
-			 '.container-widget-portada img');
 	
 	// Eliminamos una fila de page
 	remove_element('#page-table-list tr');
@@ -162,7 +158,6 @@ function set_summernote(element, event = 'click'){
                 focus: true,
                 lang: 'es-ES',
                 placeholder: 'Editar Contenido [ aquí ]',
-				fontNames: ["Helvetica", "sans-serif", "Arial", "Arial Black", "Comic Sans MS", "Courier New"],
                 callbacks: {
 					onInit: function() {
 						console.log('SUMMERNOTE.js is launched');
@@ -172,7 +167,7 @@ function set_summernote(element, event = 'click'){
 						send_single_data(self, content, 'post');
 					},
 					onBlur: function(c) {
-						
+							
 						console.log(c);
 						//self.summernote('destroy');
 					},
@@ -273,7 +268,7 @@ function send_single_data(element, data, method = 'get'){
 		processData: false
 	})
 	.done(function(data){
-		console.log('Test');
+		console.log('Datos Modificados correctamente');
 	});
 }
 
@@ -410,22 +405,22 @@ function set_thumbnail(event, elementToSet, elementImg = true){
 		// Generamos una excepcion si el elemento a selecciona no es inicializado
 		if (undefined === elementToSet)
 			throw ('elementToSet no esta definido');
+		
 
 		// Elemento Seleccionado
 		var elementHTML = event.target.outerHTML; 
-		
+
 		// Verificamos que el tipo de input sea file
 		if (-1 !== elementHTML.indexOf('type="file"')){
 
 			// Llamamos el path de la imagen blob
-			var imageBlobPath = URL.createObjectURL(
-										event.target.files[0] );
+			var imageBlobPath = URL.createObjectURL(event.target.files[0]);
 			
 			// Verifica si actualizamos un <img src=""> u otro elemento background
-			if (elementImg)
-				$(elementToSet).attr('src', imageBlobPath);
+			if (elementImg)				
+				elementToSet.attr('src', imageBlobPath);
 			else 
-				$(elementToSet).css('background-image', 
+				elementToSet.css('background-image', 
 									'url(' + imageBlobPath + ')');
 		}
 	}
@@ -442,19 +437,18 @@ function set_thumbnail(event, elementToSet, elementImg = true){
 	@param {string} elementToSet : Elemento a actualizar
 	@param {string} event : Por defecto click
 */
-function set_image(element, elementToSet, event = 'change'){
-	$('body').delegate(element, event, function(e){
+function set_image(element, elementToSet = '', event = 'change'){
+
+	$('body').delegate(element+' input[type=file]', event, function(e){
 		
-		var elementValue = $(element).attr('data-value');
-		console.log(elementValue);
-		return;
-		if (elementValue.attr('data-value'));
-		return;
-		
-		set_thumbnail(e, elementToSet);
-		console.log('<IMG> Actualizado');
+		var elementParent = $(this).parents(element);
+		var elementSetter = $(elementParent).find(elementToSet);
+
+		if (0 !== elementSetter)
+			set_thumbnail(e, elementSetter);
 	});
 }
+
 
 /*
 	Actualiza el background de un elemento
@@ -463,13 +457,18 @@ function set_image(element, elementToSet, event = 'change'){
 	@param {string} elementToSet : Elemento a actualizar
 	@param {string} event : Por defecto click
 */
-function set_image_background(element, elementToSet, event = 'change'){
+function set_image_background(element, elementToSet = '', event = 'change'){
 	
-	$('body').delegate(element, event, function(e){
-		set_thumbnail(e, elementToSet, false);
-		console.log('Background Actualizado');
+	$('body').delegate(element+' input[type=file]', event, function(e){
+		
+		var elementParent = $(this).parents(element+' '+elementToSet);
+		
+		if (0 !== elementParent)
+			set_thumbnail(e, elementParent, false);
 	});
 }
+
+
 
 // end fn genericas --
 

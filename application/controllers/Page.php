@@ -67,31 +67,29 @@ class Page extends CI_Controller {
 	 * Lista todos los widget de una pagina
 	 * 
 	 * @param {number} $page_id
+	 * @return {array} : Contiene una matriz de objetos
 	 */
-	public function get_all_widget($page_id){
+	protected function _list_widget($page_id){
 		$this->load->model('General/widget_model','widget_model');
 		
 		
 		$data['folder_view'] = $this->folder_view;
 
 		// Listado de widget diferentes tipos de widgets
-		$data['widget_list'] = $this->widget_model->get_all_widget($page_id);
+		return $this->widget_model->get_all_widget($page_id);
 
-		// Cargamos la vista, Lstado de widget por pagina
-		$this->load->view($this->folder_view.'widgets/widget-list-per-page',
-						  $data);
 	}
 
 	/**
-	 * Vista de la pagina
-	*/
+	 * Pagina por 
+	 * 
+	 */
 	public function index($param_url = NULL){
 
 		/**
 		  * Si no existe slug en el base url
 		  * Selecciona la pagina principal
 		  */ 
-
 		if (NULL === $param_url) {
 			$data = (array) $this->page_model->get_index_page();
 			$data['page_title'] = 'Inicio';
@@ -105,12 +103,16 @@ class Page extends CI_Controller {
 		$data['menu_list'] = (array) $this->menu_model->get_all();
 		
 
-		// Si existe la pagina
-		if (isset($data['id_page'])){
+		// Si existe el id de la pagina
+		if (isset($data['page_id'])){
 
-			$data['main_content'] = 'frontend/index';
+			// Listado de widget generados
+			$data['widget_list'] = $this->_list_widget($data['page_id']);
+
+			// Cargamos la vista, Lstado de widget por pagina
+			$data['main_content'] = 'frontend/widgets/widget-list-per-page';
 			$this->load->view('frontend/template',$data);
-			
+
 		}
 		else 
 			show_404();
@@ -128,6 +130,7 @@ class Page extends CI_Controller {
 
 		// En caso que enviemos el formulario
 		if ($this->input->post('g-submit')){
+
 			$text_data = fieldname_to_entity(array('g-' => 'page_'), $_POST);
 
 			// Subimos las imagenes, generamos los nombres de los campos
@@ -234,12 +237,5 @@ class Page extends CI_Controller {
 	}	
 
 
-
-	/**
-	 * Listado de widgets por pagina
-	 */
-	public function get_widget(){
-
-	}
 
 }

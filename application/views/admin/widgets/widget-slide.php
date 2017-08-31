@@ -28,13 +28,15 @@
             <div style="margin-top: 60px;">
 
                 <input type="file" name="<?= "g-{$id}_image"; ?>" />
-                <input <?= default_value_input($slide->slide_title); ?> 
-                type="text" name="<?= "g-{$id}_title"; ?>" class="form-control" >
+                <input type="text" name="<?= "g-{$id}_title"; ?>" 
+                       class="form-control" 
+                       <?= default_value_input($slide->slide_title); ?> >
 
             </div>        
-			</li>
+		</li>
 		<? endforeach ?>
-
+    
+       <? /* <input type="submit" name="g-submit" value="Enviar"> */ ?>
         
 	</ul>
 </form>

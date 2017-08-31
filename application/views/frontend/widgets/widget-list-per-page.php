@@ -11,7 +11,7 @@ foreach ($widget_list as $widget_data) {
 
 	$data['widget'] = $widget_data;
 
-	$this->load->view($folder_view.'widgets/widget-'.$data['widget']['type'],
+	$this->load->view('frontend/widgets/widget-'.$data['widget']['type'],
 					  $data);
 	
 }

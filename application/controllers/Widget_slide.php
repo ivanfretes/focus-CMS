@@ -26,26 +26,68 @@ class Widget_slide extends CI_Controller {
 
 
 	/**
+	 * 
+	 * Retorna un array con los nombre de campos y las rutas generadas
+	 * @return {array} description 
+	 */
+	protected function _image_upload(){
+		// Subimos los archivos, y generamos las rutas
+		$image_uploaded = upload_images();
+
+		if (!not_value($image_uploaded)){
+
+			// Retorna el indice del primer elemento eliminado
+			$image_data = array_shift($image_uploaded);
+			$iname = $image_data['file_name'];
+			$iformat = $image_data['image_type'];
+
+			// Si la imagen es un gif, no redimensiona
+			if ('gif' !== $iformat)
+				$iroute = resize_image_with_gd(1025, 576, $iname);
+			else 
+				$iroute = 'uploads/images/raw/'.$iname;
+
+			// Retorna el campo con 
+			return array('slide_image' => $iroute);
+		}
+
+		return NULL;
+
+	}
+
+	/**
 	 * Editamos un widget del tipo slide
+	 * @param {number} $widget_id
 	 */
 	public function edit($widget_id){
-
-		// El dato que desea modificar de la base de datos
-		fieldname_to_entity(array('g-' => 'row_'),$_POST);
-
-
 		// Si se envia el formulario
 		if ($this->input->post('g-submit')){
+
+			// Datos del slide
+			$text_data = fieldname_to_entity(array("/g-(\d*)_/" => 'slide_'),
+											   $_POST, TRUE);
+
 
 			// Id del slide
 			$numbers = number_in_string(key($_POST));
 			$slide_id = $numbers[0];
 
-			// Datos a editar en la tabla
-			$widget_data = fieldname_to_entity(array("/g-(\d*)_/" => 'slide_'),
-											   $_POST, TRUE);
+			// Sube la imagen y retorna la ruta
+			$image_data = $this->_image_upload();
+			var_dump($image_data);
 
-			$this->slide_model->edit($slide_id,$widget_data);
+			// Generamos los datos de la pagina para la db
+			if (NULL !== $image_data)
+				$widget_data = array_merge($image_data,$text_data);
+			else 
+				$widget_data = $text_data;
+
+
+			// Insertamos el slide
+			if ($this->slide_model->edit($slide_id,$widget_data))
+				echo json_encode(TRUE);
+			else
+				echo json_encode(FALSE);
 		}
 	}
 

@@ -78,11 +78,15 @@
     </footer>
 
     <style type="text/css">
-        /* -- Custom  Miscelaneas--*/
+        /* -- Custom  Miscelaneas --*/
+        
+        <?  if (!not_value($page->page_title)){?>
 
-        .title-page:before {
-            content: '<?= $page->page_title; ?>';
-        }
+            .title-page:before {
+                content: '<?= $page->page_title; ?>';
+            }
+
+        <?  }   ?>
     </style>
 
     <!-- Js -->

@@ -3,7 +3,7 @@
 	 * Formulario de edición de una fila
 	 */
 
-	$id = $widget->row_id;
+	$id = $row_id;
 
 	// Nombre de los labels e id's
 	$title = "g-{$id}_title";
@@ -16,10 +16,6 @@
 	$image = "g-{$id}_image";
 	$image_position = "g-{$id}_image_position";
 	$video_url = "g-{$id}_video_url";
-
-
-
-	var_dump($widget);
 ?>
 
 
@@ -34,7 +30,7 @@
     		<input type="text" name="<?= $title ;?>" 
     			   class="form-control input-lg" id="<?= $title ;?>"
     			   placeholder="Título" 
-    			   <?= default_value_input($widget->row_title);?>>
+    			   <?= default_value_input($row_title);?>>
 
 		</div>
 
@@ -45,7 +41,7 @@
 	        <input type="text" name="<?= $subtitle; ?>" 
 	               class="form-control input-lg" 
 	               placeholder="Subtítulo" id="<?= $subtitle; ?>" 
-	               <?= default_value_input($widget->row_subtitle) ;?>>
+	               <?= default_value_input($row_subtitle) ;?>>
 	    </div>
 
 		<!-- Contenido / Descripcion del documento -->
@@ -54,7 +50,7 @@
 	    	<label for="<?= $content ?>">Contenido: </label>
             <div id="<?= $content ?>" data-action="editable" 
                  class="box-editable" data-fieldname="<?= $content ?>">
-                <?= default_value($widget->row_content) ;?>
+                <?= default_value($row_content) ;?>
             </div>
 
 	    </div>
@@ -65,7 +61,7 @@
 	    	<label for="<?= $video_url; ?>" >Link del Video [URL]: </label>
             <input type="text" name="<?= $video_url ;?>" 
                    class="form-control input-lg" id="<?= $video_url ;?>" 
-                   <?= default_value_input($widget->row_video) ;?>>
+                   <?= default_value_input($row_video_url) ;?>>
 	    </div>
 		
 		<!-- Texto del Boton -->
@@ -73,7 +69,7 @@
 	    	<label for="<?= $btn_title; ?>" >Título del Botón: </label>
             <input type="text" name="<?= $btn_title; ?>" 
                    class="form-control input-lg" id="<?= $btn_title; ?>" 
-                   <?= default_value_input($widget->row_btn_title) ;?>>
+                   <?= default_value_input($row_btn_title) ;?>>
 	    </div>
 
 
@@ -82,13 +78,14 @@
 	    	<label for="<?= $btn_link; ?>" >Enlace del Botón: </label>
             <input type="text" name="<?= $btn_link; ?>" 
                    class="form-control input-lg" id="<?= $btn_link; ?>" 
-                   <?= default_value_input($widget->row_btn_link) ;?>>
+                   <?= default_value_input($row_btn_link) ;?>>
 	    </div>
 		
 
 
 		<!-- Imagen de la fila -->
-		<div class="col-md-8 container-widget-portada" data-value="<?= $widget_id ?>">
+		<div class="col-md-8 container-image" 
+		     data-value="<?= $widget_id ?>">
             
             <div class="col-md-8">
                 <label for="<?= $image; ?>" class="control-label">
@@ -105,14 +102,14 @@
     
     <?
         
-        if (!not_value($widget->row_image))
-            $widget->row_image = base_url($widget->row_image);            
+        if (!not_value($row_image))
+            $row_image = base_url($row_image);            
         else 
- 			$widget->row_image = base_url('static/images/default_column.png');
+ 			$row_image = base_url('static/images/default_column.png');
         
     ?>
 
-              <img src="<?= $widget->row_image; ?>" class="img-responsive img-portada">
+              <img src="<?= $row_image; ?>" class="img-responsive img-portada">
             </div>
         </div>
 
@@ -124,7 +121,7 @@
 			<select name="<?= $orientation; ?>" id="<? $orientation; ?>" 
 					class="form-control input-lg" >
 	<?  
-		default_value_select2($widget->row_align,$widget->row_orientation);	
+		default_value_select2($row_align,$row_orientation);	
 	?>
 			</select>
 

@@ -343,7 +343,7 @@ label {
 		margin-bottom: 0px !important;
 	}
 
-.page-portada-image {
+.page-portada-container {
     position: relative;
     background-color: azure;
     width: 80%;
@@ -355,10 +355,17 @@ label {
     background-size: cover;
 }
 
-.page-portada-image input[type=file] {
-    width: 200px;
-    text-align: center;
-}
+    .page-portada-container input[type=file] {
+        width: 200px;
+        text-align: center;
+    }
+
+    .page-portada-file {
+        background: rgba(255,255,255,.15);
+        border-bottom: 1px solid rgba(0,0,0,.075);
+        padding: 10px;
+        color: #333;
+    }
 
 .page-container {
 	

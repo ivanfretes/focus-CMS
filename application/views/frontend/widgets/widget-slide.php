@@ -1,12 +1,12 @@
 <?
+
+    // Listado de item del widget, siempre y cuando sean objetos
     $slide_list = $widget;
 
 
     // Id del widget
     $widget_id = $widget['id'];
 
-    var_dump($widget);
-    return;
 ?>
 
 <a name="<?= $widget['slug'] ;?>"></a>
@@ -14,31 +14,36 @@
 
     <div id="main" role="main">
         <section class="slider">
-            <!-- List slide element -->
-            <div id="slider_<?= $slide_tag_id ;?>" class="flexslider">
+            <div id="slider_<?= $widget_id ;?>" class="flexslider">
                 <ul class="slides">
-                <?  foreach ($slide_list as $slide) : 
 
-                    if (NULL !== $slide->slide_image)
-                        $slide_img = 
-                        base_url($slide->slide_image);
-                    else 
-                        $slide_img = 
-                        base_url('static/images/default_slide.png');
+<?  
 
-                ?>
+    // Listado de elementos del slide
+    foreach ($slide_list as $slide) : 
+
+        if (!is_object($slide))
+            break;
+
+        if (NULL !== $slide->slide_image)
+            $slide_img = base_url($slide->slide_image);
+        else 
+            $slide_img = base_url('static/images/default_slide.png');
+
+?>
                     <li>
                         <img src="<?= $slide_img; ?>" />
                         <p class="flex-caption">
                             <?= $slide->slide_title ;?>
                         </p>
                     </li>    
-                <?  endforeach ?>
+<?  endforeach  ?>
+
                 </ul>
             </div>
 
             <!-- Listado de miniaturas -->
-            <div id="carousel_<?= $slide_tag_id ;?>" class="flexslider">
+            <div id="carousel_<?= $widget_id ;?>" class="flexslider">
                 <ul class="slides">
                 <? foreach ($slide_list as $slide) : ?>
                     <li>
@@ -56,25 +61,27 @@
 <!-- jQuery FlexSlider Feature -->
 <script type="text/javascript">
     $(window).load(function(){
-        var slide_tag_id = <?= $slide_tag_id; ?>;
 
-        $('#carousel_'+slide_tag_id).flexslider({
+        // Id del slide
+        var slide_id = <?= $widget_id; ?>;
+
+        $('#carousel_'+slide_id).flexslider({
             animation: "slide",
             controlNav: false,
             animationLoop: false,
             slideshow: false,
-            itemWidth: parseInt($(window).width() / 3),
+            itemWidth: parseInt( $(window).width() / 3),
             itemMargin: 0,
-            asNavFor: '#slider_'+slide_tag_id
+            asNavFor: '#slider_'+slide_id
         });
 
-        $('#slider_'+slide_tag_id).flexslider({
+        $('#slider_'+slide_id).flexslider({
             animation: "slide",
             controlNav: false,
             animationLoop: false,
             slideshow: false,
-            sync: '#carousel_'+slide_tag_id,
-            start: function(slider){
+            sync: '#carousel_'+slide_id,
+            start : function(slider){
                 $('body').removeClass('loading');
             }
         });

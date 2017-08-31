@@ -8,19 +8,8 @@
 
 
 <? 
-
-	/**
-	 * 
-	 */
-
-	var_dump($list_components);
-
-	if (isset($list_components)){
-		foreach ($list_components as $component) 
-			echo $component;
-			
-	}
-	else if (isset($main_content)) 
+	
+	if (!not_value($main_content))
 		$this->load->view($main_content);
 		
 ?>

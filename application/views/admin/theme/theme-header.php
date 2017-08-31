@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Gestion v1.0.1</title>
+    <title>Gestion v1.0.2</title>
 
     <!-- Bootstrap & Font -->
     <link href="<?= base_url('static/vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet');?>">
@@ -25,10 +25,13 @@
     <script src="<?= base_url('static/js/jquery.min.js'); ?>"></script>
     <script src="<?= base_url('static/js/jquery-ui.min.js'); ?>"></script>
     <script src="<?= base_url('static/vendors/bootstrap/js/bootstrap.min.js');?>"></script>
-    
+
+ <? /*   
     <!-- nprogress -->
+    
+
 <!--     <link href="<?= base_url('static/vendors/nprogress/nprogress.css'); ?>" rel="stylesheet">
-    <script src="<?= base_url('static/vendors/nprogress/nprogress.js'); ?>"></script>   -->
+    <script src="<?= base_url('static/vendors/nprogress/nprogress.js'); ?>"></script>   --> */ ?>
 
     <!-- pnotify -->
     <link rel="stylesheet" type="text/css" href="<?= base_url('static/vendors/pnotify/dist/pnotify.css'); ?>">

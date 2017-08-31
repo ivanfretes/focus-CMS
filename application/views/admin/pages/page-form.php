@@ -57,19 +57,15 @@
 				$portada_url = base_url('static/images/default_cover.png');
 		?>
 		
-		<div class="page-portada-container">
+		<div class="page-portada-container"
+		     style="background-image: url('<?= $portada_url;?>')">
 					
 			<!-- <a href="" id="" data data-action="remove">[ Eliminar Portada ]</a> -->
 
-			<div class="page-portada-image" 
-			     style="background-image: url('<?= $portada_url;?>')">
-			</div>
-
-			<div class="form-group">
+			<div class="page-portada-file" >
 				<label for="g-portada_url">Portada:</label>
 				<input type="file" name="g-portada_url" id="g-portada_url">
 			</div>
-			
 	
 		</div>
 		

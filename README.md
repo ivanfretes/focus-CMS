@@ -1,6 +1,8 @@
 ## Framework codeigniter-super ##
 
-
+BACKEND : 
+ 1. Codeignter
+ 2. Super-Helper : Conjunto de librerias, para el manejo string, db, numeros
 
 ### Widget ###
 	* Para crear widget, se crean vacios por defecto, con el fin de llamar con JS, y que el usuario ya lo pueda editar.
@@ -47,3 +49,15 @@ Widget
 	 * @return {array} : Registros de varios tipos de widget
 	 */
 	 get_all_widget($page_id)
+
+
+
+FRONTEND
+
+Obs : Trabaja con Template.JS
+	Es un framework propio, que contiene funciones de envio de datos, imagenes,
+	eliminacion de elementos, etc
+
+ Dependencia
+ 1. jQuery 1.11 o superior
+ 2. jQuery UI
