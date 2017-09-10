@@ -1,13 +1,12 @@
-
-
 /*
     -- Custom Style --
 */ 
 
 body {
     /*color: #73879C;*/
-    background-image: -webkit-linear-gradient(right,#cc2b5e,#753a88);
-    background-image: linear-gradient(to left,#cc2b5e,#753a88);
+/*    background-image: -webkit-linear-gradient(right,#cc2b5e,#753a88);
+    background-image: linear-gradient(to left,#cc2b5e,#753a88);*/
+    background: #fff !important;
     font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
     font-size: 13px;
     font-weight: 400;
@@ -204,35 +203,35 @@ div[data-action=edit]{
 }
 
 
-#menu_created {
+#menu-created {
     margin-left: auto;
     margin-right: auto;
     max-width: 600px;
 }
 
-#menu_created li{
+#menu-created li{
     list-style: none;
     margin-left: -30px;
     margin-top: 20px;
 	
 }
 
-	#menu_created li div.div-container-menu{
-		background: #ffd710;
-		min-height: 40px;
-		padding: 10px;
-		border: 1px solid #e0bf19;
-		font-weight: bold;
-		color: #000;
+	#menu-created li div.div-container-menu{
+		background: #1abb9c;
+        min-height: 40px;
+        padding: 10px;
+        border: 1px solid rgba(0,0,0,.075);
+        font-weight: bold;
+        color: #ffffff;
 	}
 
-	#menu_created li input[disabled]{
+	#menu-created li input[disabled]{
 		color #ca2b5f;
 		background:#fafafa;
 		margin-top: -6px;
 	}
 
-	#menu_created li .remove_menu {
+	#menu-created li .remove_menu {
         position: absolute;
         margin-top: -29px;
         margin-left: 215px;
@@ -425,3 +424,29 @@ label {
         list-style: none;
         margin: 20px 0px 0px -40px; 
 	}
+
+
+.image-logo {
+    background: #fff;
+    padding:10px;
+    border-radius: 5px;
+}
+
+
+.sidebar-footer a.view-home-page {
+    padding: 7px 0 3px;
+    text-align: center;
+    width: 100%;
+    font-size: 17px;
+    display: block;
+    float: left;
+    background: #444444;
+    color: #fff;
+}
+
+a.link-slug {
+    color: #c52c61;
+    font-weight: bold;
+    background: #e5e5e5;
+    padding: 5px;
+}

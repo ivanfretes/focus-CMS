@@ -10,7 +10,7 @@ class Cuadricula_model extends CI_Model {
 
 	public function __construct(){
 		parent::__construct();
-		$this->table = 'widget_cuadricula';
+		$this->table = 'widget_cuadriculas';
 	}
 
 

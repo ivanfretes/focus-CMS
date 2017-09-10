@@ -31,7 +31,10 @@
                 <div class="col-lg-4 col-lg-offset-4 
                             col-md-10 col-md-offset-1
                             text-center">    
-                    <h1 class="footer-title">EPUKA!</h1>
+                        
+                    <img src="<?= base_url('uploads/images/static/logo-footer.png') ;?>" alt="EPUKA!" width="70%" >
+                    <br><br>
+    
                     <ul class="list-inline text-center">
                         
                         <li>

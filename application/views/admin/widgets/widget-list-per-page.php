@@ -6,7 +6,7 @@
 	<!-- Barra fija -->
 	<div class="theme-container-head">
 	    <div class="row">
-	        <div class="col-md-9">
+	        <div class="col-md-6 col-md-offset-3">
 	            <ul id="widget-select">
 					<li data-value="row">
 						<span class="glyphicon glyphicon-list-alt"></span>
@@ -24,29 +24,48 @@
 					</li>
 				</ul>
 	        </div>
+
+			<div class="col-md-3 text-center">
+				<div class="col-md-5">
+					<span class="glyphicon glyphicon-edit"></span>
+					<a href="<?= base_url("focus/pages/edit/$page_id") ;?>"><br>Editar Página</a>
+	
+				</div>
+				<div class="col-md-5">
+					<span class="glyphicon glyphicon-eye-open"></span>
+					<a href="<?= base_url($page_url) ;?>"
+					   target="parent" ><br>Ver Página</a>
+					
+				</div>
+				
+			</div>        
+	
+			
+
 	    </div>
 	</div>
 
+	<div class="col-md-12 text-center">
+		<h3 style="color: #753a88;font-weight: bold; text-shadow: 1px 1px 1px #777; font-size:30px"><?= $page_title; ?></h3>
+	</div>
 
 	<? // Listado de vistas generadas ?>
 	<div class="col-md-9">
+	
+	
+
 	<ul id="widget-list">
 <?
 
 	// Verificamos que se hayan creados widgets para la pagina 
 	if (!not_value($widget_list)){
 
-		// Listao de vistas de todos los widgets
-		foreach ($widget_list as $widget_view) {
+		foreach ($widget_list as $widget_data) { 
 
-			// Anexamos la vista del widget a un array
-			echo $widget_view;
-				
-		}	
+			// -- Contenedor de widget -- 
+			$this->load->view('admin/widgets/widget-form', $widget_data);	
+		}
 
-	}
-	else {
-		// La pagina aun no cuenta con widgets
 	}
 
 ?>

@@ -7,40 +7,40 @@ class Menu_model extends CI_Model {
 	
 	public function __construct(){
 		parent::__construct();
-
-		$this->table = 'menu';
+		$this->table = 'menus';
 	}
 
 
 	/**
-	 * Retorna el mayor orden de menu
+	 * Retorna el mayor elemento del menu, del orden generado
 	 * 
-	 * @return {number} 
+	 * @return {number} 1 o el numero actual del orden
 	 */
 	public function get_max_order(){
 		$this->db->select_max('menu_order','menu_order');
 		$query = $this->db->get($this->table);
+		$order = $query->row()->menu_order;
 
-		return $query->row()->menu_order;
+		if (!not_value($order))
+			return 1;
+
+		return intval($order);
 	}
 
 	/**
 	 * Crea un nuevo item del menu
 	 * 
-	 * @param {array} $Datos del menu
-	 * @return {boolean} 
+	 * @param {array} $data : Datos del menu
+	 * @return {array} : Retorna los datos insertado 
 	 */
 	public function create($data){
-
-		// Orden Menu
-		$data['menu_order'] = $this->get_max_order();
-
+		// Orden actual del menu
+		$data['menu_order'] = $this->get_max_order() + 1;
 		if($this->db->insert($this->table,$data)) 
-			return TRUE;
+			return $data;
 		
 		return FALSE;
 	}
-
 
 
 	/**
@@ -50,7 +50,7 @@ class Menu_model extends CI_Model {
 	 * @return {object} : Datos del menu
 	 */
 	public function get($id){
-		$this->db->where('id_menu',$id);
+		$this->db->where('menu_id',$id);
 
 		$query = $this->db->get($this->table);
 		return $query->row();
@@ -63,8 +63,7 @@ class Menu_model extends CI_Model {
 	 * @return {boolean} 
 	 */
 	public function remove($id){
-
-		$this->db->where('id_menu',$id);
+		$this->db->where('menu_id',$id);
 		if ($this->db->delete($this->table))
 			return TRUE;
 
@@ -100,7 +99,7 @@ class Menu_model extends CI_Model {
 		$this->db->order_by('menu_order','asc');
 		$query = $this->db->get($this->table);
 
-		return $query->result();
+		return $query->result_array();
 	}
 
 
@@ -111,12 +110,13 @@ class Menu_model extends CI_Model {
 	 * @param {number} $index : Nro de orden del menu
 	 * @return {boolean} Si asigno el index al menu
 	 */
-	public function set_order($id, $index){
+	public function set_order($menu_id, $index){
 		$this->db->set('menu_order', $index);
-		$this->db->where('id_menu', $id);
+		$this->db->where('menu_id', $menu_id);
 
 		if ($this->db->update($this->table))
 			return TRUE;
+
 		return FALSE;
 	}
 }

@@ -4,9 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * 
- * Contralador de Gestion de los elementos relacionos con las páginas
+ * Contralador de Pagina, Crea, lista y elimina
  * 
- * @package GestionCMS
+ * @package focusCMS
  * @author Ivan Fretes
  */
 class Page extends CI_Controller {
@@ -14,7 +14,6 @@ class Page extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-
         $this->load->model('General/page_model','page_model');
 		
         // Carpeta seleccionada para la vista
@@ -52,8 +51,11 @@ class Page extends CI_Controller {
 		
 		// Generamos Pagination
 		$data['total_row'] = $this->page_model->get_count();
-		$data['pagination'] = pagination_custom('gestion/pages/', 
-											    $data['total_row']);
+		$data['pagination'] = pagination_custom(
+			'focus/pages/', 
+			$data['total_row'],
+			$per_page
+		);
 
 		// Cargamos la vista
 		$data['main_content'] = 'admin/pages/page-list';
@@ -70,9 +72,7 @@ class Page extends CI_Controller {
 	 * @return {array} : Contiene una matriz de objetos
 	 */
 	protected function _list_widget($page_id){
-		$this->load->model('General/widget_model','widget_model');
-		
-		
+		$this->load->model('General/widget_model','widget_model');		
 		$data['folder_view'] = $this->folder_view;
 
 		// Listado de widget diferentes tipos de widgets
@@ -80,9 +80,29 @@ class Page extends CI_Controller {
 
 	}
 
+
 	/**
-	 * Pagina por 
+	 * Genera los datos de todos los widget
 	 * 
+	 * @param {number} $page_id
+	 */
+	public function get_all_widget($page_id){
+
+		// Listado de widgets generados, con sus respectivos subtipos
+		$data = (array) $this->page_model->get($page_id);
+
+		$data['widget_list'] = $this->_list_widget($page_id);
+		$data['main_content'] = 'admin/widgets/widget-list-per-page';
+
+		// Cargamos la vista
+		$this->load->view('admin/template',$data);
+
+	}
+
+	/**
+	 * Muestra la pagina genera para el usuario
+	 * 
+	 * @param {string} $param_url : Slug de URL recibido
 	 */
 	public function index($param_url = NULL){
 
@@ -92,23 +112,27 @@ class Page extends CI_Controller {
 		  */ 
 		if (NULL === $param_url) {
 			$data = (array) $this->page_model->get_index_page();
-			$data['page_title'] = 'Inicio';
+			$data['title'] = 'Inicio';
 		}
-		else 
+		else {
 			$data = (array) $this->page_model->get_by_slug($param_url);
-		
 
-		// Retornamos el menu
+			if (!not_value($data))
+				$data['title'] = $data['page_title'];
+			
+		} 
+
+		// Generamos el menu
 		$this->load->model('General/menu_model','menu_model');
 		$data['menu_list'] = (array) $this->menu_model->get_all();
 		
 
 		// Si existe el id de la pagina
-		if (isset($data['page_id'])){
+		if (isset($data['page_id']) && !not_value($data['page_status'])){
 
 			// Listado de widget generados
 			$data['widget_list'] = $this->_list_widget($data['page_id']);
-
+			
 			// Cargamos la vista, Lstado de widget por pagina
 			$data['main_content'] = 'frontend/widgets/widget-list-per-page';
 			$this->load->view('frontend/template',$data);
@@ -173,7 +197,7 @@ class Page extends CI_Controller {
 		
 		// Redimencionamos la imagen,a la edicion si se creo 
 		if ($last_page = $this->page_model->create()){
-			redirect(base_url('gestion/pages/edit/'.$last_page));
+			redirect(base_url('focus/pages/edit/'.$last_page));
 		}
 		// else 
 		// 	echo json_encode(FALSE);
@@ -201,7 +225,7 @@ class Page extends CI_Controller {
 
 			// Si la imagen es un gif, no redimensiona
 			if ('gif' !== $portada_format)
-				$portada_route = resize_image_with_gd(1025,576, $portada_name);
+				$portada_route = resize_image(1025,576, $portada_name);
 			else 
 				$portada_route = 'uploads/images/raw/'.$portada_name;
 
@@ -213,26 +237,18 @@ class Page extends CI_Controller {
 
 	}
 
-	
 
 	/**
 	* Elimina una página
-	* @return {void}
+	* @param {number} $page_id
 	*/
 	public function remove($page_id){
-		
 
-		// Si boton de la pagina se activo
 		if ($this->input->post('g-submit')){
-
-			// Si se elimina la pagina, mostramos true
-			if ($this->page_model->remove($page_id))
-				json_encode(TRUE);
-			else
-				json_encode(FALSE);
+			msg_boolean_json($this->page_model->remove($page_id));
 		}
 		else
-			redirect(base_url('gestion/pages'));
+			redirect(base_url('focus/pages'));
 
 	}	
 

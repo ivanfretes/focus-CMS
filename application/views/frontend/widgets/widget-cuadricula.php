@@ -4,7 +4,7 @@
 
 ?>
 
-<a name="<?= $widget['slug'] ;?>"></a>
+<a name="<?= $widget_slug ;?>"></a>
 <section class="wrapper style1 align-center">
 
     <div class="gallery lightbox onscroll-fade-in style1 medium">

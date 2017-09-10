@@ -2,32 +2,60 @@ s<?
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-//require 'Auth.php';
-
 /**
+ * 
+ * -- No Activo --
+ * @package focusCMS
  * @author Ivan Fretes
  */
-class Gestion_users extends CI_Controller { 
+class User extends CI_Controller { 
 
-	public function login(){
-		
+
+	public function __construct(){
+		parent::__construct();
+
+
+		// Por el momento redireccionamos a pages
+		redirect(base_url('focus/pages'));
 	}
 
 
 	/**
-	 * Listado de usuario(clientes/no clientes) disponibles en la plataforma
+	 * Lista todos los usuarios generados
 	 */
-	public function index(){
+	public function all(){
 
 	}
 
 
-	public function get_user_access(){
-		// Listado de acceso a la plataforma
+	/**
+	 * Crea un nuevo usuario
+	 */
+	public function create(){
 
 	}
 
-	
+
+
+	/**
+	 * Edita un usuario por ID
+	 * 
+	 * @param {number} $user_id
+	 */
+	public function edit($user_id){
+
+	}
+
+
+
+	/**
+	 * Elimina un usuario por ID
+	 * 
+	 * El ID se recibe por POST
+	 */
+	public function remove(){
+
+	}
 
 
 }

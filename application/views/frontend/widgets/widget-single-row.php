@@ -1,3 +1,4 @@
+<!-- Inactivo -->
     <section class="bg-primary" id="about">
         <div class="container">
             <div class="row">

@@ -17,7 +17,7 @@ body {
 	height: 100%
 }
 
-@import url('https://fonts.googleapis.com/css?family=Molengo');font-family: 'Molengo', sans-serif;
+/*@import url('https://fonts.googleapis.com/css?family=Molengo');font-family: 'Molengo', sans-serif;*/
 
 /* -- FlexSlide --*/
 
@@ -288,3 +288,19 @@ strong, b {
     width: 60rem;
 }
 
+
+.slide-image {
+    object-fit: cover;
+    object-position: center;
+    max-height: 500px;
+}
+
+.edit-page {
+    padding:10px; 
+    position:fixed; 
+    color:#000; 
+    font-weight: bold;
+    z-index: 10000; 
+    background: rgba(255,255,255,.8); 
+    right: 0px;
+}

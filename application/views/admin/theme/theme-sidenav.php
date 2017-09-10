@@ -1,23 +1,24 @@
-<!-- Sidebar -->
+
+
+
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
             <a href="<?= base_url(); ?>" class="site_title  ">
-                GESTION CMS <span class="title_betha">ßetha</span>
+                FOCUS CMS <span class="title_betha">ßetha</span>
             </a>
         </div>
 
         <div class="clearfix"></div>
 
-        <!-- menu profile quick info -->
+        <!-- Logo de la empresa  -->
         <div class="profile">
             <div class="profile_info_business">
-        <?= 
-            $this->session->userdata('data_infosite')['page_info_name'];
-        ?>
+                <img src="<?= base_url('uploads/images/static/logo.png');?>"
+                    width="100px" class="image-logo">
             </div>
         </div>
-        <!-- end menu profile -->
+
 
         <br />
 
@@ -29,33 +30,25 @@
             <ul class="nav side-menu">
                 
                 <li>
-                    <a href="<?= base_url().'gestion/pages'; ?>">
+                    <a href="<?= base_url('focus/pages'); ?>">
                         <i class="fa fa-file"></i> 
                         Páginas <span class="fa fa-chevron-right"></span>
                     </a>
                 </li>
 
-                <!-- <li>
-                    <a href="<? //base_url().'gestion/contacts'; ?>">
+                <li>
+                    <a href="<?= base_url('focus/contacts'); ?>">
                         <i class="fa fa-envelope-o"></i> 
                         Contactos <span class="fa fa-chevron-right"></span>
                     </a>
-                </li> -->
+                </li>
 
                 <li>
-                    <a href="<?= base_url().'gestion/menu'; ?>">
+                    <a href="<?= base_url('focus/menu'); ?>">
                         <i class="fa fa-list"></i> 
                         Menú<span class="fa fa-chevron-right"></span>
                     </a>
                 </li>
-
-                <!-- <li>
-                    <a href="<?= base_url().'gestion/infosite'; ?>">
-                        <i class="fa fa-envelope-o"></i> 
-                        Mi Negocio<span class="fa fa-chevron-right"></span>
-                    </a>
-                </li> -->
-
 
 
                 
@@ -66,8 +59,8 @@
     <!-- /sidebar menu -->
 
     <!-- menu footer buttons -->
-    <!-- <div class="sidebar-footer hidden-small">
-    <a data-toggle="tooltip" data-placement="top" title="Settings">
+    <div class="sidebar-footer hidden-small">
+    <!-- <a data-toggle="tooltip" data-placement="top" title="Settings">
     <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
     </a>
     <a data-toggle="tooltip" data-placement="top" title="FullScreen">
@@ -75,14 +68,12 @@
     </a>
     <a data-toggle="tooltip" data-placement="top" title="Lock">
     <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+    </a> -->
+    <a href="<?= base_url(); ?>" target="parent" class="view-home-page" title="Ir a Página">
+    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
     </a>
-    <a data-toggle="tooltip" data-placement="top" title="Logout">
-    <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-    </a>
-    </div> -->
+    </div>
     <!-- menu footer buttons -->
 </div>
 </div>
 
-
-<!-- End Sidebar -->

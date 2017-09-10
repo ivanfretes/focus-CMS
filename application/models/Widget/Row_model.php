@@ -11,13 +11,6 @@
 class Row_model extends CI_Model {
 
 
-	// agregar cover
-	// Alineacion posible del row de dos columnas
-	protected $row_align = array('left' => 'Izq.',
-								 'right' => 'Der.',
-								 'center' => 'Cen'); 
-
-
 	/**
 	 * Retorna las orientaciones del widget row
 	 */
@@ -27,10 +20,8 @@ class Row_model extends CI_Model {
 
 	public function __construct(){
 		parent::__construct();
-		$this->table = 'widget_row';
+		$this->table = 'widget_rows';
 	}
-
-
 
 	/**
 	 * Creamos una nueva row, por el valor de widget_id
@@ -59,7 +50,13 @@ class Row_model extends CI_Model {
 	public function edit($row_id, $data){
 		
 		if (!not_value($row_id)){
-	    
+
+			// Solucionamos el x frame del video
+			if (isset($data['row_video_url'])){
+				$data['row_video_url'] = video_embed_provider(
+											$data['row_video_url']);	
+			}
+
 			$this->db->where('row_id',$row_id);
 			if ($this->db->update($this->table,$data)) 
 				return TRUE;

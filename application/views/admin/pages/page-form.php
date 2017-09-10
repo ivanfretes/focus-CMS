@@ -19,13 +19,14 @@
 					   name="g-title" id="g-title"
 					   <?= default_value_input($page_title); ?>
 					   placeholder="Título"><br>
+					   
 				<input type="text" class="form-control" name="g-url" 
 				   id="g-url" <?= default_value_input($page_url); ?>
 				   required>
 			</div>
 			
 			<div class="col-md-1 text-center">
-				<a href="<?= base_url("gestion/pages/$page_id/widgets"); ?>">
+				<a href="<?= base_url("focus/pages/$page_id/widgets"); ?>">
 						<span class="glyphicon glyphicon-plus-sign"></span>
 						<br>Agregar Widget
 				</a>

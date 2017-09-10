@@ -1,11 +1,11 @@
 <?
 
 /**
- * Verifica antes de cualquier 
+ * Si la session no esta activa, envia a la pantalla del login
  */
 
 class Access {
-	var $CI;
+	protected $CI;
 
 
 	public function __construct(){
@@ -26,7 +26,8 @@ class Access {
 	 * 
 	 */
 	public function space_area(){
-		if (0 !== strpos($_SERVER['PHP_SELF'], '/gestion/')){
+		
+		if (FALSE !== strpos($_SERVER['PHP_SELF'], '/focus/')){
 			$this->CI->session->set_userdata('view', 'admin/');
 			$this->_login();
 		}
@@ -41,7 +42,7 @@ class Access {
 		if (!$this->CI->session->userdata('logged_in') && 
 			FALSE == strpos($_SERVER['PATH_INFO'],'login')) {
 			
-			redirect(base_url('gestion/login'));
+			redirect(base_url('focus/login'));
 
 		}
 

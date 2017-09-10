@@ -49,7 +49,7 @@ if (! function_exists('fieldname_to_entity')){
 				// Si no tiene la palabra submit /*&& !not_value($value)*/
 				if (!strpos($attr_name, 'submit')){
 
-					foreach ($remplace_prefix as $old_prefix => $new_prefix) {
+					foreach ($remplace_prefix as $old_prefix => $new_prefix){
 
 
 						// Si es una expresion regular

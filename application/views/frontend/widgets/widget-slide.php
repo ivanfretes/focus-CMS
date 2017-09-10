@@ -3,19 +3,15 @@
     // Listado de item del widget, siempre y cuando sean objetos
     $slide_list = $widget;
 
-
-    // Id del widget
-    $widget_id = $widget['id'];
-
 ?>
 
-<a name="<?= $widget['slug'] ;?>"></a>
+<a name="<?= $widget_slug ;?>"></a>
 <div id="container" class="cf">
 
     <div id="main" role="main">
         <section class="slider">
             <div id="slider_<?= $widget_id ;?>" class="flexslider">
-                <ul class="slides">
+                <ul class="slides" >
 
 <?  
 
@@ -32,7 +28,7 @@
 
 ?>
                     <li>
-                        <img src="<?= $slide_img; ?>" />
+                        <img src="<?= $slide_img; ?>" class="slide-image" />
                         <p class="flex-caption">
                             <?= $slide->slide_title ;?>
                         </p>

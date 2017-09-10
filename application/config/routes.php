@@ -57,54 +57,53 @@ $route['translate_uri_dashes'] = FALSE;
 /**
  * -- Backend --
  */
-$route['gestion'] = 'admin/index';
-$route['gestion/login'] = 'admin/index';
-$route['gestion/login/auth'] = 'admin/validate_credentials';
-$route['gestion/logout'] = 'admin/logout';
+$route['focus'] = 'admin/index';
+$route['focus/login'] = 'admin/index';
+$route['focus/login/auth'] = 'admin/validate_credentials';
+$route['focus/logout'] = 'admin/logout';
 
 
 // Pages
-$route['gestion/pages'] = 'page/all';
-$route['gestion/pages/(:num)'] = 'page/all/$1';
-$route['gestion/pages/(:num)/(:num)'] = 'page/all/$1/$2';
-$route['gestion/pages/new'] = 'page/create';
-$route['gestion/pages/edit/(:num)'] = 'page/edit/$1';
-$route['gestion/pages/remove/(:num)'] = 'page/remove/$1';
+$route['focus/pages'] = 'page/all';
+$route['focus/pages/(:num)'] = 'page/all/$1';
+$route['focus/pages/(:num)/(:num)'] = 'page/all/$1/$2';
+$route['focus/pages/new'] = 'page/create';
+$route['focus/pages/edit/(:num)'] = 'page/edit/$1';
+$route['focus/pages/remove/(:num)'] = 'page/remove/$1';
 
 // -- Widgets --
-$route['gestion/pages/(:num)/widgets'] = 'widget/all/$1';
-$route['gestion/widgets/remove/(:num)'] = 'widget/remove/$1';
+$route['focus/pages/(:num)/widgets'] = 'page/get_all_widget/$1';
+$route['focus/widgets/remove/(:num)'] = 'widget/remove/$1';
 
-	// e.g gestion/row/183
-	$route['gestion/(:any)/(:num)'] = 'widget/get/$1/$2';
 
-	// Cuadricula
-	$route['gestion/cuadricula/new/(:num)'] = 'widget_cuadricula/create/$1';
-	$route['gestion/cuadricula/edit/(:num)'] = 'widget_cuadricula/edit/$1';
 
-	// Row
-	$route['gestion/row/new/(:num)'] = 'widget_row/create/$1';
-	$route['gestion/row/edit/(:num)'] = 'widget_row/edit/$1';
+// Cuadricula
+$route['focus/cuadricula/new/(:num)'] = 'widget_cuadricula/create/$1';
+$route['focus/cuadricula/edit/(:num)'] = 'widget_cuadricula/edit/$1';
+$route['focus/cuadricula/(:num)'] = 'widget_cuadricula/detail/$1';
 
-	// Slide
-	$route['gestion/slide/new/(:num)'] = 'widget_slide/create/$1';
-	$route['gestion/slide/edit/(:num)'] = 'widget_slide/edit/$1';
+// Row
+$route['focus/row/new/(:num)'] = 'widget_row/create/$1';
+$route['focus/row/edit/(:num)'] = 'widget_row/edit/$1';
+$route['focus/row/(:num)'] = 'widget_row/detail/$1';
 
+// Slide
+$route['focus/slide/new/(:num)'] = 'widget_slide/create/$1';
+$route['focus/slide/edit/(:num)'] = 'widget_slide/edit/$1';
+$route['focus/slide/(:num)'] = 'widget_slide/detail/$1';
 	
 
-
-
 // Contacts
-$route['gestion/contacts'] =  'contact/index';
-$route['gestion/contacts/(:num)'] =  'contact/index/$1';
-$route['gestion/contacts/detail/(:num)'] =  'contact/get_contact/$1';
-$route['gestion/contacts/create'] =  'contact/index';
+$route['focus/contacts'] =  'contact/all';
+$route['focus/contacts/(:num)'] =  'contact/all/$1';
+$route['focus/contacts/remove/(:num)'] =  'contact/remove/$1';
+//$route['focus/contacts/create'] =  'contact/index';
 
 // Menu
-$route['gestion/menu'] =  'widget_menu/index';
-$route['gestion/menu/new'] =  'widget_menu/create';
-$route['gestion/menu/ordered'] =  'widget_menu/order';
-$route['gestion/menu/remove/(:num)'] =  'widget_menu/remove/$1';
+$route['focus/menu'] =  'widget_menu/index';
+$route['focus/menu/new'] =  'widget_menu/create';
+$route['focus/menu/ordered'] =  'widget_menu/set_order';
+$route['focus/menu/remove/(:num)'] =  'widget_menu/remove/$1';
 
 
 
@@ -116,18 +115,13 @@ $route['gestion/menu/remove/(:num)'] =  'widget_menu/remove/$1';
  */
 
 // Fracciones
-$route['fracciones'] = 'fracciones/index';
-$route['fracciones/distrito'] = 'fracciones/get_por_distrito';
-$route['fracciones/cuadricula'] = 'fracciones/get_cuadricula';
-$route['fracciones/mapa-svg'] = 'fracciones/get_mapa_svg';
+// $route['fracciones'] = 'fracciones/index';
+// $route['fracciones/distrito'] = 'fracciones/get_por_distrito';
+// $route['fracciones/cuadricula'] = 'fracciones/get_cuadricula';
+// $route['fracciones/mapa-svg'] = 'fracciones/get_mapa_svg';
 
-// Contacto
-$route['contacto'] = 'contact/index';
-$route['contacto/send'] = 'contact/create'; // recibimos un nuevo contacto
-$route['contacto/message'] = 'contact/get_success_msg'; // recibimos un nuevo contacto
+$route['contactanos'] = 'contact/index';
 
-// Infosite
-$route['la-empresa'] = 'infosite/index';
 
 // Paginas
 $route['(:any)'] = 'page/index/$1';

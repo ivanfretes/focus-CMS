@@ -1,17 +1,7 @@
 <?
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-/**
- * 
- *
- * @package		GestionCMS
- * @category	Helpers
- * @author		Ivan Fretes
- */
-
-
-
+                  
 // Verify the 'Ñ' letter	
 if (! function_exists('verify_chars')){
 	function verify_chars($value){
@@ -44,12 +34,12 @@ if (! function_exists('video_embed_provider')){
 		$video_providers = array('youtu.be' =>  'www.youtube.com/embed'); 
 
 		foreach ($video_providers as $abbr_url => $embed_url ) {
-			// Si coincide el enlace abreviado con el del proveedor
 			if (FALSE !== strpos(strtolower($video_abbr_url) , $abbr_url)){
-
-				// Nueva url del video
-				$video_url = str_replace($abbr_url, $embed_url, 
-										 $video_abbr_url);
+				$video_url = str_replace(
+					$abbr_url, 
+					$embed_url, 
+					$video_abbr_url
+				);
 				return $video_url;
 			}
 		}
@@ -70,14 +60,12 @@ if (! function_exists('video_embed_provider')){
  * @param {number} : cantidad de filas
  */
 if (! function_exists('pagination_custom')){
-	function pagination_custom($base_path, $total_row,
-							   $custom_config = array()){
+	function pagination_custom($base_path, $total_row, $per_page, 
+							   $custom_config = []){
 
-		//pagination settings
-        $config['per_page'] = 25;
+        $config['per_page'] = $per_page;
         $config['base_url'] = base_url($base_path);
         $config['total_rows'] = $total_row;
-
         $config['use_page_numbers'] = TRUE;
         $config['num_links'] = 2;
         $config['full_tag_open'] = `<nav aria-label="Pagination">
@@ -98,18 +86,15 @@ if (! function_exists('pagination_custom')){
 
 
 		if (0 < count($custom_config)){
-			foreach ($custom_config as $key => $value) {
+			foreach ($custom_config as $key => $value)
 				$config[$key] = $value;
-			}	
 		}
-		
 		
 		$ci = & get_instance();
 		$ci->load->library('pagination');
 		$ci->pagination->initialize($config);
-		
+
 		return $ci->pagination->create_links();
-		
 	}
 } 
 
@@ -159,7 +144,6 @@ if (! function_exists('print_json_msg')){
  */
 if (! function_exists('default_value_input')){
 	function default_value_input(&$value){
-		
 		if (not_value($value))
 			return '';
 
@@ -401,6 +385,10 @@ if(! function_exists('not_value')){
 		if (NULL === $data)
 			return TRUE;
 
+		// Si es boolean y es falso, es considerado vacio
+		if (is_bool($data) && FALSE === $data)
+			return TRUE;
+
 		// Es un array y esta vacio
 		if (is_array($data) && NULL == $data)
 			return TRUE;
@@ -412,7 +400,7 @@ if(! function_exists('not_value')){
 
 
 		// Si es un numero y es cero
-		if (is_numeric($data) && 0 === $data)
+		if (is_numeric($data) && 0 === (int) $data)
 			return TRUE;
 
 
@@ -432,36 +420,43 @@ if(! function_exists('not_value')){
 if(! function_exists('current_date')){
 
 	function current_date(){
+		return date("Y-m-d");
+	}
+
+}
+
+
+/**
+ * Retorna la fecha actual. hora, minutos y segundos
+ * 
+ * @return {string}
+ */
+
+if(! function_exists('current_datetime')){
+
+	function current_datetime(){
 		return date("Y-m-d H:i:s");
 	}
 
 }
 
+
+
 /**
- * Retorna todos los numeros encontrtados en un string,
- * y los convierte en array
- * @param {string} $string 
+ * Condicion para imprimir TRUE or FALSE - JSON
  * 
- * @return {array}
+ * @param {boolean} $condition
  */
-if (!function_exists('number_in_string')){
-	function number_in_string($string){
+if (! function_exists('msg_boolean_json')){
+	function msg_boolean_json($condition){
 
-		try {
-			
-			if (!is_string($string))
-				throw new Exception("Error tipo de dato");
+		if ($condition)
+			echo json_encode(TRUE);
+		else 
+			echo json_encode(FALSE);
 
-			preg_match_all("/\d+/", $string, $matches);
-
-			// Retornamos los numeros encontrados
-			return $matches[0];
-			
-		} catch (Exception $e) {
-			echo $e->getMessage();
-		}
-		
 	}
+
 }
 
 ?>

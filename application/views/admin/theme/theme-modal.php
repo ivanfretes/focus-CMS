@@ -17,13 +17,9 @@
                 <h4 class="modal-title">Title Modal</h4>
             </div>
 
-
         <!-- Modal Body -->
-        <div class="modal-body">
-            <? $this->load->view($modal_body)?>
-        </div>
+        <div class="modal-body"></div>
         
-
         <!-- Modal Footer -->
         <div class="modal-footer" >
            

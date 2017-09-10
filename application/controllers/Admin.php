@@ -3,9 +3,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * 
- * Controlador de Admin
+ * Verifica el acceso, e inicia la session de acceso, en caso de que los 
+ * datos sean correctos
  * 
- * @package GestionCMS/admin
+ * @package focusCMS
  * @author Ivan Fretes
  */
 class Admin extends CI_Controller { 
@@ -26,10 +27,10 @@ class Admin extends CI_Controller {
 	 * else 
 	 */
 	public function index(){
-		// Para no generar conflicto con el autoload de session
-	
+		
+		// Si la session esta no esta activa, muestra la pantalla del login
 		if ($this->session->has_userdata('logged_in')){
-			redirect('gestion/pages');
+			redirect('focus/pages');
 		}
 		else {
 			$data['title'] = 'Inicio de Session';
@@ -44,13 +45,13 @@ class Admin extends CI_Controller {
 	 */
 	public function logout(){
 		$this->session->sess_destroy();
-		redirect('gestion/login');
+		redirect('focus/login');
 	}
 
 
 	/**
 	 * Validate send data form, the login
-	 * @example gestion/login/auth
+	 * @example focus/login/auth
 	 * 
 	 * if data is incorrect reload the login
 	 */
@@ -71,14 +72,13 @@ class Admin extends CI_Controller {
 				'logged_in' => true
 			);
 
-			
 			$this->session->set_userdata($data);
 
-			// Redireccionamos por defecto a gestion/pages
-			redirect('gestion/pages');
+			// Redireccionamos a la pantalla principal
+			redirect('focus/pages');
 		}
 		else { 
-			redirect('gestion/login');
+			redirect('focus/login');
 		}
 	}	
 	

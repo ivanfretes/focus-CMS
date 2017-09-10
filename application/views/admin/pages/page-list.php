@@ -3,11 +3,12 @@
 <div class="theme-container-head">
     <div class="row">
         <div class="col-md-9">
-            <h3>Listado de Páginas (<spam id="total_row" data-value="<?= $total_row ;?>"><?= $total_row ;?></spam>)</h3>
+            <h3>Listado de Páginas (<spam id="total_row" 
+            data-value="<?= $total_row ;?>"><?= $total_row ;?></spam>)</h3>
         </div>
 
         <div class="col-md-2">
-            <a href="<?= base_url('gestion/pages/new'); ?>"
+            <a href="<?= base_url('focus/pages/new'); ?>"
                class="btn btn-lg btn-success"
                data-action="create">
                 Nueva Página
@@ -41,7 +42,8 @@
 
             //Agrega un icono de estrella a la página principal
             if (1 == $page->page_main){
-                $main_print = '<span style="color:#cc2b5f;padding:5px;"><i class="fa fa-star" ></i></span>';
+                $main_print = '<span style="color:#cc2b5f;padding:5px;">
+                <i class="fa fa-star" ></i></span>';
             }
     
         ?>
@@ -64,9 +66,10 @@
 
         <? // Link a creacion / Listado de widgets ?>
         <td class="text-center">
-            <a href="<?= base_url("gestion/pages/$page->page_id/widgets");?>"
+            <a href="<?= base_url("focus/pages/$page->page_id/widgets");?>"
                id="p_remove">                
-                <span class="glyphicon glyphicon-plus-sign"></span> Agregar
+                <span class="glyphicon glyphicon-plus-sign"></span> 
+                Agregar
             </a>
         </td>
         
@@ -79,11 +82,11 @@
         <? // Edicion de la pagina ?>
         <td class="text-center">
 
-            <a href='<?= base_url('gestion/pages/edit/'.$page->page_id);?>'> 
+            <a href='<?= base_url('focus/pages/edit/'.$page->page_id);?>'> 
                <span class="glyphicon glyphicon-edit"></span> Editar 
             </a> |
             
-            <a href="<?= base_url('gestion/pages/remove/'.$page->page_id); ?>"
+            <a href="<?= base_url('focus/pages/remove/'.$page->page_id);?>"
                data-action="remove">
                 <span class="glyphicon glyphicon-trash" ></span> Eliminar
             </a>

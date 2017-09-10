@@ -18,7 +18,7 @@ if (! function_exists('file_tag_list')){
 	
 
 /**
- * Sube un archivo
+ * Sube un archivo, con la libreria uplaod file de CodeIgniter
  * Retorna todos los datos del archivo subido
  * 
  * @param {string} $file_tag_name : $_REQUEST[field_tab_name]
@@ -87,6 +87,35 @@ if (! function_exists('remove_extension_files')){
 }
 
 
+
+/**
+ * Elimina los elementos vacios del $_FILES
+ * 
+ * @return {array} : returna una array con los archivos que 
+ * 					 estan inicializados
+ */
+if (!function_exists('remove_empty_files')){
+
+	function remove_empty_files(){
+
+		foreach ($_FILES as $file_index => $file_data) {
+
+			if (not_value($file_data['tmp_name'])){
+				unset($_FILES[$file_index]);
+			}
+			else 
+				continue;
+		}
+
+		// Comodin para inicializar el primer elemento
+		$array_result = $_FILES;
+
+		return $array_result;
+		
+	}
+
+	
+}
 
 
 ?>

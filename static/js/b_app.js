@@ -3,7 +3,7 @@ $(function(){
 	// Seleccionamos un widget a generar
 	$("#select-widget div").on('click', function(e){
 		console.log($(this).html());
-	});
+		});
 	
 	// Actualiza la barra del titulo
 	min_scroll_head_bar(null, 57);
@@ -12,7 +12,7 @@ $(function(){
 	});
 		
 	
-	// Seleccionamos un widget, Creamos un widget
+	// Se crea el widget que es seleccionado (Oprimido)
 	$('#widget-select li').click(function(e){
 		var widget_name = $(this).attr('data-value');
 		var page_id = $('.widget-container').attr('data-page');
@@ -20,21 +20,19 @@ $(function(){
 	});
 	
 	// Ordenamos el menu 
-	$("#menu_created").sortable({ 
+	$("#menu-created").sortable({ 
         placeholder: "ui-sortable-menu", 
         stop: function( event, ui ) {
-            /*set_order(GESTION_URL+'widgets/ordered',
-                selected : '#menu_created li',
-            );*/
-			console.log('ordenado correctamente');
+			var url = FOCUS_URL+'menu/ordered';
+            send_order(url, '#menu-created li');
         }  
     });
-	
+
 	
 	// Funciones embebidas
 	_main();
 	
-	console.log('Loaded b_app.js');
+	console.log('-- Focus CMS loaded --');
 });
 
 
@@ -56,42 +54,66 @@ function min_scroll_head_bar(element = null, min_val){
 	@param {number} : Id de la pagina
 	@param {string} : Nombre del widget
 */
-function get_widget(page_id,widget_name){
+function get_widget(page_id, widget_name){
 	
-	var url = GESTION_URL+widget_name+'/new/'+page_id;
+	var url = FOCUS_URL+widget_name+'/new/'+page_id;
 	
 	$.post(url, {
 		'g-submit': true
-	}, function(data){
-		$('#widget-list').append(data);
+	}, function(data){		
+		
+		console.log(data);
+		
+		if ('false' !== data){
+			
+			
+			$('#widget-list').append(data);
+			
+			new PNotify({
+				title: 'Widget creado!',
+				text: 'El Widget '+widget_name+' se creo correctamente',
+				type: 'success'
+			});	
+			
+		}
 	});
 }
 
 
-function set_order(url, element, event = 'click'){
-	$('body').delegate(element, event, function(){
-		var order_list = [];
-		
-		$.each($(element), function(k, v) {
-		   order_list.push($(v).attr('data-value'));
-		});
-		
-		
-		console.log(order_list);
-		/*$.post(url,
-			   {'g-submit': true}, function(){
+function send_order(url, element, event = 'click'){
+	// Array de elementos ordenados
+	var order_list = [];
+
+	// Anexamos los datos al array de elementos
+	$(element).each(function(){
+		order_list.push($(this).attr('data-order'));	
+	});
+	
+	$.post(url, {
+		'g-submit': true , 
+		order : order_list 
+	}, function(data){
+
+		var a = JSON.parse(data);
+		if (true === a)
 			new PNotify({
 				title: 'Ordenado!',
-				text: '',
-				type: success
-			});
-		});*/
+				text: 'Elemento ordenado correctamente',
+				type: ''
+			});	
+		else
+			console.log('Problema al ordenar el menu');	
+		
 	});
+
 }
 
 // -- end fn de la app --
 
 function _main(){
+	
+	// Enviamos archivos de forma automatica
+	send_files();	
 	
 	// Creamos un slug para la pagina
 	create_slug('.page-container #g-title', '.page-container #g-url');
@@ -102,7 +124,6 @@ function _main(){
 	
 	// Envio automatico de cualquier elemento que pertenezca a widget-container
 	send_single_form('.widget-container input', 'post');
-	send_single_form('.widget-container input[type=file]', 'post', 'change');
 	
 	
 	// Envio automatico de cualquier elemento select que pertenezca a widget-container
@@ -123,8 +144,14 @@ function _main(){
 	remove_element('#widget-list li');
 	
 	// Eliminamos un elemento del menu
-	remove_element('#menu_created li');
-
+	remove_element('#menu-created li');
+	
+	// Eliminamos una fila de un contacto
+	remove_element('#contact-table-list tr');
+	
+	// Enviamos el formulario del menu
+	send_form('#menu-form');
+	
 }
 
 
@@ -188,13 +215,13 @@ function set_summernote(element, event = 'click'){
 	-- Modificar --
 	// Verificar
 	
-	Envia todos los datos de un formulario en particular
+	Envia todos  datos de un formulario, no complementos, estructuras adicionales
 	@param {mixed} formElement : Formulario/s que son seleccionado
 	@param {string} mixed : 
 	
 	@return {void} 
 */
-function send_form(formElement){
+function send_form(formElement, fn){
 	
 	$(formElement).submit(function(e){
 		e.preventDefault();
@@ -206,17 +233,21 @@ function send_form(formElement){
 		if (undefined === formMethod)
 			formMethod = 'post';
 		
+		
 		// Definimos el action del formulario
 		var formAction = form.attr('action');
 		if (undefined === formAction)
 			formAction = e.target.baseURI;
 		
 		
+		// Generamos el formulario a enviar
+		var formId = form.attr('id');
+		var formElementById = document.getElementById(formId);
+		
 		// Generamos el formulario a ser enviado
-		var formData = new FormData(
-			document.getElementById(formElement));
+		var formData = new FormData(formElementById);
 		formData.append('g-submit', true);
-
+		
 		$.ajax({
 			url: formAction,
 			type: formMethod,
@@ -226,7 +257,14 @@ function send_form(formElement){
 			processData: false
 		})
 		.done(function(data){
-			console.log('Se envio el formulario');
+			
+			data = JSON.parse(data);
+			
+			// Si se recibio el request correctamente
+			if (data)
+				location.reload();
+			else 
+				alert('Error');
 		});
 		
 	});
@@ -295,7 +333,8 @@ function send_single_form(element, method = 'get', event = 'keyup'){
 		var formData = new FormData();
 		formData.append(elementName, elementValue);
 		formData.append('g-submit', true);
-
+		
+		
 		// Enviamos los datos
 		$.ajax({
 			url: formAction,
@@ -348,8 +387,9 @@ function remove_element(element,  msg = null, event = 'click') {
 						elementRemove.remove();
 					
 					// Actualizamos el numero de cantidad de filas
-					$('#total_row').text(parseInt(
-											$('#total_row').text() - 1));
+					$('#total_row').text(
+						parseInt($('#total_row').text() - 1)
+					);
 					console.log('Elemento eliminado');
 
 				}
@@ -423,6 +463,7 @@ function set_thumbnail(event, elementToSet, elementImg = true){
 				elementToSet.css('background-image', 
 									'url(' + imageBlobPath + ')');
 		}
+
 	}
 	catch(e){
 		console.log(e);
@@ -461,10 +502,62 @@ function set_image_background(element, elementToSet = '', event = 'change'){
 	
 	$('body').delegate(element+' input[type=file]', event, function(e){
 		
-		var elementParent = $(this).parents(element+' '+elementToSet);
+		var self = $(this);
+		var elementParent = self.parents(element+' '+elementToSet);
 		
-		if (0 !== elementParent)
-			set_thumbnail(e, elementParent, false);
+		if (0 !== elementParent){
+			var imageBlog = set_thumbnail(e, elementParent, false);
+			
+		}
+			
+	});
+}
+
+function send_files(){
+	$('body').delegate('input[type=file]','change', function(){
+		var self = $(this);
+		
+		var form = $(this).parents('form');
+		var formAction = form.attr('action');
+		var formIdStr = form.attr('id');
+		var formDOM = document.getElementById(formIdStr);
+
+		
+		// Verificamos el metodo de envio
+		var formMethod = form.attr('method')
+		if (undefined === formMethod)
+			formMethod = 'post';
+		
+		// Inicializamos el formulario a enviar
+		var formData = new FormData(formDOM);
+		formData.append('g-submit', true);
+		
+		// Enviamos los datos
+		$.ajax({
+			url: formAction,
+			type: formMethod,
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		})
+		.done(function(data){
+			
+			if ('false' !== data){
+				// Actualizamos el valor del input file
+				self.val(null);
+				
+				new PNotify({
+					title: 'Subido!',
+					text: 'Archivo subido correctamente',
+					type: ''
+				});
+				
+			}
+			
+				
+		});
+		
 	});
 }
 

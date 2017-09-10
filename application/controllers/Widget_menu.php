@@ -1,5 +1,13 @@
 <?
 
+/**
+ * 
+ * Controlador de Menu, se considera un widget para evitar ambiguedad con el 
+ * termino menu, en caso de una entidad gastronomica
+ * 
+ * @package focusCMS
+ * @author Ivan Fretes
+ */
 class Widget_menu extends CI_Controller {
 	
 	public function __construct(){
@@ -13,9 +21,10 @@ class Widget_menu extends CI_Controller {
 	 * Listado de Menus Generados
 	 */
 	public function index(){
+
 		$data['list_menu'] = $this->menu_model->get_all();
 		
-		$data['main_content'] = 'admin/pages/page-menu';
+		$data['main_content'] = 'admin/menu/menu-list';
 		$this->load->view('admin/template',$data);
 	}
 
@@ -31,13 +40,9 @@ class Widget_menu extends CI_Controller {
 		// En caso que enviemos el formulario
 		if ($this->input->post('g-submit')){
 			$menu_data = fieldname_to_entity(array('g-' => 'menu_'), $_POST);
-			
+
 			// Redimencionamos la imagen,a la edicion si se creo 
-			if ($last_page = $this->menu_model->create($menu_data)){
-				echo json_encode(TRUE);
-			}
-			else 
-				echo json_encode(FALSE);
+			msg_boolean_json($this->menu_model->create($menu_data));
 		}
 
 	}
@@ -66,21 +71,30 @@ class Widget_menu extends CI_Controller {
 
 
 	/**
-	 * ordena los datos del menu
-	 */
-	public function ordered(){
-		$arr_order = $this->input->post('order');
+	 * Ordena los items del menu
 
-		if (count($arr_order) > 0){
-			foreach ($arr_order as $index => $menu_id) {
-				$this->menu_model->ordered($menu_id, $index + 1);
+	 */	
+	public function set_order(){
+
+		// Listado de elementos recibidos en orden, con sus id menu
+		$order_element = $this->input->post('order');
+
+
+		// Si se enviaron elementos del menu, y el submit esta inicializado
+		if (!not_value($order_element) &&  isset($_POST['g-submit'])){
+
+			foreach ($order_element as $index => $menu_id) {
+				
+				$a = $this->menu_model->set_order($menu_id, $index + 1);
+				if (FALSE  === $a)
+					break;
 			}
 
-			return print_json_msg('Se ordenó el ménu correctamente' , 0);
+
+			msg_boolean_json($a);
+
 		}
 
-		return print_json_msg('No se ordenó el ménu correctamente',1);
-		
 	}
 }
 

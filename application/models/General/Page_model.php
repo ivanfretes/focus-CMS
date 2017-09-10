@@ -10,7 +10,7 @@ class Page_model extends CI_Model {
 
 	public function __construct(){
 		parent::__construct();
-		$this->table = 'page';
+		$this->table = 'pages';
 	}
 
 
@@ -125,7 +125,13 @@ class Page_model extends CI_Model {
 	    if (isset($data['page_main']))
 	    	$data['page_main'] = $this->new_index_page($data['page_main']);
 	    
-	    $data['page_date_modified'] = current_date();
+	    // Si no existe Slug, eliminamos el indice
+	    if (!not_value($data['page_url'])){
+	    	$a = convert_accented_characters($data['page_url']);
+	    	$data['page_url'] = $a;
+	    }
+
+	    $data['page_date_modified'] = current_datetime();
 		$this->db->where('page_id',$page_id);
 		if ($this->db->update($this->table,$data)) return TRUE;
 		
@@ -144,7 +150,6 @@ class Page_model extends CI_Model {
 
 		if ($this->db->delete($this->table)) return TRUE;
 		return FALSE;
-
 	}
 
 	/**
@@ -190,7 +195,7 @@ class Page_model extends CI_Model {
 
 	/**
 	 * Verifica si el slug ya fue creado
-	 * 
+	 * p
 	 * @param {string} $slug 
 	 * @return {boolean}
 	 */

@@ -10,7 +10,7 @@ class Slide_model extends CI_Model {
 
 	public function __construct(){
 		parent::__construct();
-		$this->table = 'widget_slide';
+		$this->table = 'widget_slides';
 	}
 
 
@@ -23,15 +23,13 @@ class Slide_model extends CI_Model {
 	 */
 	public function create($widget_id, $order){
 		$this->db->set('slide_order',$order);
-		
 		$this->db->set('widget',$widget_id);	
+		
 		if ($this->db->insert($this->table)) {
 			return $this->db->insert_id();
 		}	
 
-	
 		return FALSE;
-
 	}	
 
 

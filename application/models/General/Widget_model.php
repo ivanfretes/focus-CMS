@@ -17,40 +17,55 @@ class Widget_model extends CI_Model {
 	 * 
 	 * @param {number} $page_id
 	 * @param {string} $widget_name : Nombre del widget a insertar
-	 * @return {boolean}
+	 * @return {mixed} : El Widget Generado, o FALSE en caso de error
 	 */
 	public function create($page_id,$widget_name){
-		$order = 1;
 
-		// Generamos el ultimo widget ordenado
-		if (!not_value($this->get_last_order($page_id)))
-			$order = $this->get_last_order($page_id) + 1;
-			
+		// Valor de orden del ultimo elemento
+		$order = $this->get_last_order($page_id) + 1;
 
-		$this->db->set('widget_order',$order);
-		$this->db->set('widget_type',$widget_name);
-		$this->db->set('page',$page_id);
+		$data = array(
+			'widget_order' => $order,
+			'widget_slug'=> $this->get_slug(),
+			'widget_type'=> $widget_name,
+			'page' => $page_id 
+		);
+
 		$this->db->set('widget_date_modified', current_date());
 
-		if ($this->db->insert($this->table)) {
-			return $this->db->insert_id();
+		if ($this->db->insert($this->table, $data)) {
+			$data['widget_id'] = $this->db->insert_id();
+			
+			return $data;
 		}	
+
 		return FALSE;
 	}	
 
 
+	/**
+	 * Genera un slug aleatorio para los widgets
+	 * @return {string}
+	 */
+	protected function get_slug(){
+		$widget_slug = sha1(current_datetime());
+		$widget_slug = substr($widget_slug, 0, 16);
+
+		return $widget_slug;
+	}
+
 
 	public function __construct(){	
 		parent::__construct();
-		$this->table = 'widget';
+		$this->table = 'widgets';
 	}
 
 
 	/**
-	 * Retorna el valor del ultimo widget ordenado(mayot)
+	 * Retorna el valor del ultimo widget ordenado(mayor)
 	 * 
 	 * @return {number} $page_id
-	 * @return {number}d
+	 * @return {number}
 	 */
 
 	public function get_last_order($page_id){
@@ -58,7 +73,12 @@ class Widget_model extends CI_Model {
 			->where('page',$page_id);
 
 		$query = $this->db->get($this->table);
-		return $query->row()->last_order;
+		
+		$last_order = $query->row()->last_order;
+		if (!not_value($last_order))
+			return $last_order; 
+
+		return 1;
 	}
 
 	/**
@@ -80,50 +100,54 @@ class Widget_model extends CI_Model {
 
 
 	/**
-	 * Genera el query para ingresar a la table de un widget 
-	 * en particular los datos de cualquier widget (Comodin)
+	 * Retorna los datos de los items de un widget
 	 * 
-	 * @param {number} $widget_id
+	 * @example row, slide, cuadricula, etc
+	 * 
+	 * @param {number} $widget_id ,
 	 * @param {string} $widget_type : Representa el nombre de la tabla
 	 * @return {mixed} Retorna todos los elementos de los widgets
 	 */
 	public function get_widget($widget_id, $widget_type){
 
 		$this->db->where('widget', $widget_id);
-		$query = $this->db->get('widget_'.$widget_type);
+		$query = $this->db->get('widget_' . $widget_type . 's');
 
 		return $query->result();
 	}
 
 
 	/**
-	 * Retorna todos los widget por pagina
+	 * Retorna todos los widget por pagina, con sus subcomponentes
 	 * 
 	 * @param {number} $numero de página
 	 * @return {array} : Registros de varios tipos de widget
 	 */
 	public function get_all_widget($page_id){
 		
-		$this->db->select('widget_id,widget_type, widget_slug')	
+		// Query de listado de widgets
+		$this->db->select('widget_id,widget_type,widget_slug')	
 			 ->where('page', $page_id);
 
 		$query = $this->db->get($this->table);
-		$widget_list = $query->result();
-
-		// Widgets generados, de tablas diferentes
+		$widget_list = $query->result_array();
 		$widget_result = array();
 
-		// Recorremos los widgets existentes y generamos los widget
-		foreach ($widget_list as $widget_data) {
+		// Recorremos los widgets existentes y generamos los subwidget (row)
+		// widget_row no hace referencia al widget del tipo row
+		foreach ($widget_list as $widget_row) {
 
 			// Retorna todos los registro/s dependiendo del tipo
-			$widget_row = $this->get_widget($widget_data->widget_id,
-							   				$widget_data->widget_type);
-			
-			// Anexamos al objeto generado, el tipo de widget
-			$widget_row['type'] = $widget_data->widget_type;
-			$widget_row['id'] = $widget_data->widget_id;
-			$widget_row['slug'] = $widget_data->widget_slug;
+			$widget_data = $this->get_widget(
+				$widget_row['widget_id'],
+				$widget_row['widget_type']
+			);
+
+			// En caso que solo el widget cuente con un elemento -> un objeto
+			if (not_value($widget_data[1]))
+				$widget_row['widget'] = $widget_data[0];
+			else 
+				$widget_row['widget'] = $widget_data;
 
 			array_push($widget_result, $widget_row);
 			

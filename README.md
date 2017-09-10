@@ -21,6 +21,7 @@ Widget Creados hasta el momento
 
 
 
+
 ## Documentacion ##
 
 Widget
@@ -61,3 +62,56 @@ Obs : Trabaja con Template.JS
  Dependencia
  1. jQuery 1.11 o superior
  2. jQuery UI
+
+--
+
+### Crear un nuevo widget ###
+
+* Crear la clase **controlador** con el prefijo Widget_{nombre}
+* Cargar el modelo del widget
+* Incluir el methodo protedigo _create_widget($page_id)
+* Agregar el methodo **create** para generar el nuevo widget
+
+
+	<?
+		
+		class Widget_custom extends{
+
+			public function __construct(){
+				$this->load->model('model/custom_model', 'custom_model');
+				
+			}
+	
+			
+			// Inserta un nuevo widget y retorna el widget generado
+			protected function _create_widget($page_id){
+
+				// Verifica si existe la página
+				if ($this->_get_page_exist($page_id)){
+
+					// widget data
+					$widget = $this->widget_model->create(
+												$page_id,'cuadricula'))
+					return $widget;
+
+				}
+
+				return FALSE;
+
+			}
+
+			public function create(){
+				if ($_POST['g-submit']){
+					$widget = $this->_create_widget($page_id);
+
+					if (FALSE !== $widget){
+
+					}
+
+				}
+			}
+		}
+	
+	?>
+
+* Verificar el sistema horario y/o actualizar

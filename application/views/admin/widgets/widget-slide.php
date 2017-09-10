@@ -1,10 +1,13 @@
 
-<form action="<?= base_url("gestion/slide/edit/$widget_id");?>" 
-      enctype="multipart/form-data" method="post">
+<form action="<?= base_url("focus/slide/edit/$widget_id");?>" 
+      enctype="multipart/form-data" method="post" 
+      id="widget-form-<?= $widget_id; ?>">
 	
     <ul class="grid-sortable">
 
 <?  
+
+    $slide_list = $widget;
 
     // Listado de todas las diapositivas
     foreach ($slide_list as $slide) : 
@@ -15,12 +18,12 @@
 
         // Si la slide tiene fondo/imagen
         if (!not_value($slide->slide_image))
-            $bg_url = base_url($slide->slide_image);
+            $bg_image = base_url($slide->slide_image);
         else 
             $bg_image = base_url('static/images/default_slide.png');
 
 ?>
-        <li style="background-image: url(<?= $bg_image ;?>); " 
+        <li style="background-image: url(<?= $bg_image ;?>);" 
             data-slide-order="<?= $slide->slide_order; ?>" 
             data-slide-id="<?= $slide->slide_id; ?>">
           
@@ -36,7 +39,7 @@
 		</li>
 		<? endforeach ?>
     
-       <? /* <input type="submit" name="g-submit" value="Enviar"> */ ?>
+        <? //<input type="submit" name="g-submit" value="Enviar">  ?>
         
 	</ul>
 </form>

@@ -1,7 +1,7 @@
 
     
 
-    <form action="<?= base_url().'gestion/infosite/edit' ;?>"
+    <form action="<?= base_url('focus/infosite/edit');?>"
                   method="post" >
     <div class="x_content">
         

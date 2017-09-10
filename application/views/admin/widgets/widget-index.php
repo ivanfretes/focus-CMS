@@ -1,10 +1,7 @@
 <?
-	/**
-	 * Contenedor de cualquier widget/componente
-	 */
-
-
-
+/**
+ * Contiene un widget
+ */
 ?>
 
 <li class="ui-sortable-component" 
@@ -19,7 +16,7 @@
 		<div style="float:right;">        
 				<a  class="btn btn-danger" 
 						data-type="remove"
-						href='<?= base_url().'gestion/widgets/remove/' ;?>' 
+						href='<?= base_url().'focus/widgets/remove/' ;?>' 
 						data-widget="<?= $widget_id ;?>">
 						<span class="glyphicon glyphicon-trash" 
 									aria-hidden="true"></span>
@@ -30,11 +27,11 @@
 
 
 <?
-	if (isset($file_view)){
+	// Carma
+	if (isset($file_view))
 		$this->load->view('admin/widget/'.$file_view);	
-	}
-	else 
-		echo "El nombre de la vista del widget no esta inicializado";
+	
+
 ?>
 		
 </li>

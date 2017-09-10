@@ -1,12 +1,11 @@
-
 <? 
 	/**
 	 * El array de datos consta de un $widget['type'] = row
 	 */
 
 	// Cast del elemento	
-	$row = $widget[0];
-
+	$row = $widget;
+	
 	/**
 	 * Por defecto, es TRUE en caso que la fila solo
 	 * tenga una columna su valor es FALSE
@@ -20,7 +19,7 @@
 		$style_row = 'spotlight onscroll-image-fade-in style1 orient-left ';
 	}
 	else if('right' === $row->row_orientation) {
-		$style_row = 'spotlight onscroll-image-fade-in style1 orient-right ';	
+		$style_row = 'spotlight onscroll-image-fade-in style1 orient-right ';
 	}
 	else {
 		// En caso que sea CENTER
@@ -40,25 +39,31 @@
 ?>
 
 <? // -- Slug del widget --  ?>
-<a name="<?= $widget['slug'] ;?>"></a>
+<a name="<?= $widget_slug ;?>"></a>
 
 <section class="<?= $style_row ; ?>">
 	<div class="content">
 		<h2><?= $row->row_title; ?></h2>
 		
-		<? if ('' !== $row->row_subtitle): ?>
-			<h5><?= $row->row_subtitle; ?></h5>
-		<? endif ?>
+	<? 	if ('' !== $row->row_subtitle) { ?>
+		
+		<h5><?= $row->row_subtitle; ?></h5>
+			
+	<? 	
+		} 		
+		echo $row->row_content; 
 
-		<? echo $row->row_content; 
+		// Verificamos si el boton esta inicializado
+		if (!not_value($row->row_btn_title)):  ?>
 
-			if ('' !== $row->row_btn_title): ?>
-			<ul class="actions vertical">
-				<li><a href="<?= $row->row_btn_link; ?>" class="button">
-					<?= $row->row_btn_title; ?>
-				</a></li>
-			</ul>	
-		<? 	endif ?>
+		<ul class="actions vertical">
+			<li><a href="<?= $row->row_btn_link; ?>" class="button">
+				<?= $row->row_btn_title; ?>
+			</a></li>
+		</ul>	
+
+	<? 	endif ?>
+	
 	</div>
 	<div class="image">
 		<?
@@ -69,12 +74,12 @@
 			 * Si un componente de una columna no asignamos la imagen
 			 */
 			if(NULL !== $row->row_image){
-				$image = base_url().'uploads/images/'.$row->row_image;
+				$image = base_url($row->row_image);
 				$image = "<img src='$image'>";
 			}
 			else{
 				if($variuos_column){
-					$image = base_url().'static/images/default_column.png'; 
+					$image = base_url('static/images/default_column.png'); 
 					$image = "<img src='$image'>";
 				}
 				else {

@@ -3,28 +3,41 @@
 
 		public function __construct(){
 			parent::__construct();
+			$this->table = 'contacts';
 		}
 
 		/**
-		 * Listed all contects
+		 * Lista todos los contactos
 		 * @return {array} 
 		 */
-		public function get_contacts($limit_start,$limit_end){
-			$this->db->limit($limit_start, $limit_end)
-				->order_by('contact_date_created', 'DESC');
+		public function get_all($start,$cant){
+			$this->db->limit($cant, $start)
+				 ->order_by('contact_date_created', 'DESC');
 
-			$query = $this->db->get('contacts');
-
+			$query = $this->db->get($this->table);
 			return $query->result();
 		}
 
 
 		/**
-		 * Detalla un contacto en particular
+		 * Elimina un contacto
+		 * 
+		 * @param {number} $page_id
+		 * @return {boolean}
+		 */
+		public function remove($contact_id){
+			$this->db->where('contact_id', $contact_id);
+			if ($this->db->delete($this->table)) return TRUE;
+			return FALSE;
+		}
+
+
+		/**
+		 * Detalla un contacto
 		 * @param {number} $contact_id
 		 * @return {object} 
 		 */
-		public function get_contact_by_id($contact_id){
+		public function get($contact_id){
 
 			$this->db->where('id_contact', $contact_id);
 			$query = $this->db->get('contacts');
@@ -37,91 +50,37 @@
 		 * Create a simple porfolio
 		 * Requiere que el nombre de la persona este inicializado
 		 * 
-		 * 
-		 * @param {string} $contact_id
-		 * @param {string} $firstname
-		 * @param {string} $lastname
-		 * @param {string} $dni
-		 * @param {string} $phone
-		 * @param {string} $movil
-		 * @param {string} $mail
-		 * @param {string} $direction
-		 * @param {string} $reference
-		 * @param {string} $description
-		 * @param {number} $status
-		 *  
-		 * @return {boolean} Retorna si no se inserto
+		 * @param {array} $data
 		 */
-		public function create_contact($firstname,$lastname,$dni,$phone,
-									 $movil,$mail,$direction,$reference,
-									 $description,$status){
-			
-			if (NULL !== $firstname){
-				$this->db->set('contact_firstname', $firstname);
-				$this->db->set('contact_lastname', $lastname);
-				$this->db->set('contact_dni', $dni);
-				$this->db->set('contact_phone', $phone);
-				$this->db->set('contact_movil', $movil);
-				$this->db->set('contact_mail', $mail);
-				$this->db->set('contact_direction', $direction);
-				$this->db->set('contact_reference', $reference);
-				$this->db->set('contact_description', $description);
-				$this->db->set('contact_status', 0);
-
-				if ($this->db->insert('contacts')) return TRUE;
+		public function create($contact_data){
+			if (!not_value($contact_data)){ 
+				if ($this->db->insert($this->table, $contact_data)) 
+					return TRUE;
 			}
-
 			return FALSE;
-			
 		}
 
 
 		/**
-		 * Solo aplicable para el caso en 
-		 * caso que el admninistrador genero el contacto, y no desde
-		 * el frontend
+		 * Edita un contacto, Puede cambiar el estado del contacto
 		 * 
-		 * 
-		 * Edit a single porfolio
-		 * @param {string} $contact_id
-		 * @param {string} $firstname
-		 * @param {string} $lastname
-		 * @param {string} $dni
-		 * @param {string} $phone
-		 * @param {string} $movil
-		 * @param {string} $mail
-		 * @param {string} $direction
-		 * @param {string} $reference
-		 * @param {string} $description
-		 * @param {number} $status
-		 * 
-		 * @return {void}
+		 * @param {number} $contact_id
+		 * @param {array} $contact_data
+		 * @return {boolean}
 		 */
-		public function edit_contact($contact_id, $firstname,$lastname,$dni,
-									 $phone,$movil,$mail,$direction,$reference,
-									 $description,$status){
-			
-			$this->db->set('contact_firstname', $firstname);
-			$this->db->set('contact_lastname', $lastname);
-			$this->db->set('contact_dni', $dni);
-			$this->db->set('contact_phone', $phone);
-			$this->db->set('contact_movil', $movil);
-			$this->db->set('contact_mail', $mail);
-			$this->db->set('contact_direction', $direction);
-			$this->db->set('contact_reference', $reference);
-			$this->db->set('contact_description', $description);
-			$this->db->set('contact_status', $status);
-
-			$this->db->where('id_contact', $contact_id);
-			$this->db->update('contacts');
+		public function edit($contact_id, $contact_data){
+			$this->db->where('contact_id', $contact_id);
+			if ($this->db->update($this->table,$data)) 
+				return TRUE; 
+			return FALSE;
 		}
 
 
 		/**
-		 * Count the number of contacts
+		 * Cuenta la cantidad de contactos generados
 		 * @return {number} 
 		 */
-		public function count_contacts(){
+		public function get_count(){
 			$this->db->select('COUNT(1) AS cantContact');
 			$query = $this->db->get('contacts');
 

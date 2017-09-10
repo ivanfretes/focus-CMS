@@ -6,6 +6,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * 
  * Obtiene los datos de l empresa
  * 
+ * Integrar al controlador Corporativo
+ * 
  * @package GestionCMS
  * @subpackage website/infosite
  * @author Ivan Fretes

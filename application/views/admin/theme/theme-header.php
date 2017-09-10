@@ -40,7 +40,7 @@
 
     <script type="text/javascript">
         const BASE_URL =  '<?= base_url(); ?>';
-        const GESTION_URL = BASE_URL+'gestion/';
+        const FOCUS_URL = BASE_URL+'focus/';
     </script>
   </head>
     

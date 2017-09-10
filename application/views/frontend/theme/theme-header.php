@@ -2,12 +2,11 @@
 <html>
 <head>
 
-
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="Tag epuka">
-    <meta name="description" content="Web de Epuka">
-    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="author" content="Epuka">
 
 	<!-- css -->
 	<link rel="stylesheet" href="<?= base_url('static/css/font-awesome.min.css'); ?>">
@@ -19,14 +18,14 @@
     <link rel="stylesheet" href="<?= base_url('static/css/f_style.css'); ?>">
 
 
-    <link rel="icon" href="<?= base_url('/uploads/images/favicon.png'); ?>" type="image/png" sizes="16x16">
+    <link rel="icon" href="<?= base_url('/uploads/images/static/favicon.png'); ?>" type="image/png" sizes="16x16">
     
     <!-- js -->
     <script type="text/javascript" src="<?= base_url(); ?>static/js/_jquery.min.js"></script>
     <script defer src="<?= base_url(); ?>/static/vendors/FlexSlider/jquery.flexslider.js"></script>
 
 
-    <title><?= $page_title.' - ' ?></title>
+    <title><?= $title.' - ' ?>Epuka!</title>
          
 </head>
 <body>
