@@ -215,22 +215,15 @@ class Page extends CI_Controller {
 		$image_uploaded = upload_images();
 
 		if (!not_value($image_uploaded)){
-
-			// Indice y rutas de la imagen para insertar en la base de datos
-			$image_data = fieldname_to_entity(array('g-' => 'page_'), 
-											  $image_uploaded);
-
-			$portada_name = $image_data['page_portada_url']['file_name'];
-			$portada_format = $image_data['page_portada_url']['image_type'];
-
-			// Si la imagen es un gif, no redimensiona
-			if ('gif' !== $portada_format)
-				$portada_route = resize_image(1025,576, $portada_name);
-			else 
-				$portada_route = 'uploads/images/raw/'.$portada_name;
-
-			// Retorna el campo con 
-			return array('page_portada_url' => $portada_route);
+			$image_data = array_shift($image_uploaded);
+			$iformat = $image_data['image_type'];
+			if ('gif' !== $iformat)
+				$iroute = resize_image_by_height($image_data, 768);
+			else {
+				$iname = $image_data['file_name'];
+				$iroute = 'uploads/images/raw/'.$portada_name;
+			}
+			return array('page_portada_url' => $iroute);
 		}
 
 		return NULL;

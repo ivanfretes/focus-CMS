@@ -113,7 +113,6 @@ function send_order(url, element, event = 'click'){
 function _main(){
 	
 	// Enviamos archivos de forma automatica
-	send_files();	
 	
 	// Creamos un slug para la pagina
 	create_slug('.page-container #g-title', '.page-container #g-url');
@@ -345,7 +344,24 @@ function send_single_form(element, method = 'get', event = 'keyup'){
 			processData: false
 		})
 		.done(function(data){
-			console.log(data);
+			
+			if ('false' !== data){
+				// Actualizamos el valor del input file
+				
+				new PNotify({
+					title: 'Subido!',
+					text: 'Archivo subido correctamente',
+					type: ''
+				});
+				
+			}
+			else {
+				new PNotify({
+					title: 'Error al Subir!',
+					text: 'El archivo no fué subido',
+					type: ''
+				});
+			}
 		});
 		
 	});
@@ -437,7 +453,7 @@ function create_slug(element, elementToSet = null, event = 'keyup'){
 	@param {string} elementToSet : elemento a ser actualizado
 	@param {boolean} elementImg : Si el thumbnail sera una imagen o un background
 	
-	@return {string} : Retorna la ruta del elemento blob
+	@return {boolean} : Si se actualiza la miniatura puede enviarse al servidor
 */
 function set_thumbnail(event, elementToSet, elementImg = true){
 	
@@ -453,21 +469,29 @@ function set_thumbnail(event, elementToSet, elementImg = true){
 		// Verificamos que el tipo de input sea file
 		if (-1 !== elementHTML.indexOf('type="file"')){
 
-			// Llamamos el path de la imagen blob
-			var imageBlobPath = URL.createObjectURL(event.target.files[0]);
-			
-			// Verifica si actualizamos un <img src=""> u otro elemento background
-			if (elementImg)				
-				elementToSet.attr('src', imageBlobPath);
-			else 
-				elementToSet.css('background-image', 
-									'url(' + imageBlobPath + ')');
+			// Llamamos el path de la imagen blob, y verificamos el tamaño de archivo
+			// Verificamos si el elemento a actualzar es una imagen o un background
+			var fileData = event.target.files[0];
+			if (MAX_FILE_SIZE >= fileData.size){
+				var imageBlobPath = URL.createObjectURL(fileData);
+				if (elementImg)				
+					elementToSet.attr('src', imageBlobPath);
+				else 
+					elementToSet.css('background-image', 
+										'url(' + imageBlobPath + ')');
+
+
+				return true;	
+			}
 		}
 
 	}
 	catch(e){
 		console.log(e);
 	}
+	
+	return false;
+	
 }
 
 
@@ -482,11 +506,27 @@ function set_image(element, elementToSet = '', event = 'change'){
 
 	$('body').delegate(element+' input[type=file]', event, function(e){
 		
-		var elementParent = $(this).parents(element);
+		var self = $(this);
+		var elementParent = self.parents(element);
 		var elementSetter = $(elementParent).find(elementToSet);
 
-		if (0 !== elementSetter)
-			set_thumbnail(e, elementSetter);
+		if (0 !== elementSetter){
+			var fileSend = set_thumbnail(e, elementSetter);
+			if (fileSend){
+				console.log('Archivo enviado correctamente');
+				send_files(self);
+			}
+			else {
+				console.log('-- Verificar el tamaño del archivo asignado --');
+				
+				new PNotify({
+					title: 'Error!',
+					text: 'Archivo excede el tamaño permitido',
+					type: ''
+				});
+			}
+		}
+			
 	});
 }
 
@@ -506,61 +546,83 @@ function set_image_background(element, elementToSet = '', event = 'change'){
 		var elementParent = self.parents(element+' '+elementToSet);
 		
 		if (0 !== elementParent){
-			var imageBlog = set_thumbnail(e, elementParent, false);
-			
+			var fileSend = set_thumbnail(e, elementParent, false);
+			if (fileSend){
+				console.log('Archivo enviado correctamente');
+				send_files(self);
+			}
+			else {
+				console.log('-- Verificar el tamaño del archivo asignado --');
+				
+				new PNotify({
+					title: 'Error!',
+					text: 'Archivo Excede el tamaño permitido',
+					type: ''
+				});
+			}
 		}
 			
 	});
 }
 
-function send_files(){
-	$('body').delegate('input[type=file]','change', function(){
-		var self = $(this);
-		
-		var form = $(this).parents('form');
-		var formAction = form.attr('action');
-		var formIdStr = form.attr('id');
-		var formDOM = document.getElementById(formIdStr);
+function send_files(element){
+	// Asignamos la imagen mientras se carga el archivo
+	$('.loading-data').addClass('loading-image');
+	
+	var form = element.parents('form');
+	var formAction = form.attr('action');
+	var formIdStr = form.attr('id');
+	var formDOM = document.getElementById(formIdStr);
 
-		
-		// Verificamos el metodo de envio
-		var formMethod = form.attr('method')
-		if (undefined === formMethod)
-			formMethod = 'post';
-		
-		// Inicializamos el formulario a enviar
-		var formData = new FormData(formDOM);
-		formData.append('g-submit', true);
-		
-		// Enviamos los datos
-		$.ajax({
-			url: formAction,
-			type: formMethod,
-			data: formData,
-			cache: false,
-			contentType: false,
-			processData: false
-		})
-		.done(function(data){
+
+	// Verificamos el metodo de envio
+	var formMethod = form.attr('method')
+	if (undefined === formMethod)
+		formMethod = 'post';
+
+	// Inicializamos el formulario a enviar
+	var formData = new FormData(formDOM);
+	formData.append('g-submit', true);
+
+	// Enviamos los datos
+	$.ajax({
+		url: formAction,
+		type: formMethod,
+		data: formData,
+		cache: false,
+		contentType: false,
+		processData: false
+	})
+	.done(function(data){
+
+		if ('false' !== data){
+			// Actualizamos el valor del input file
+			element.val(null);
+
+			new PNotify({
+				title: 'Subido!',
+				text: 'Archivo subido correctamente',
+				type: ''
+			});
 			
-			if ('false' !== data){
-				// Actualizamos el valor del input file
-				self.val(null);
-				
-				new PNotify({
-					title: 'Subido!',
-					text: 'Archivo subido correctamente',
-					type: ''
-				});
-				
-			}
-			
-				
-		});
-		
+			console.log('Eliminamos el loading image');
+			$('.loading-data').removeClass('loading-image');
+		}
+		else {
+			console.log('Algo no salio bien');
+		}
+
+
 	});
 }
 
+function bytesToSize(bytes) {
+    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes == 0) return 'n/a';
+    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    if (i == 0) return bytes + ' ' + sizes[i];
+    return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
+};
 
 
 // end fn genericas --

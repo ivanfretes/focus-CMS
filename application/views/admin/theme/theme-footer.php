@@ -8,7 +8,7 @@
      <!-- footer content -->
         <footer>
             <div class="pull-right">
-                Focus v1.0.2 <a href="#">Cuantica * Soft</a>
+                Focus v1.0.3 <a href="#">Cuantica * Soft</a>
             </div>
             <div class="clearfix"></div>
         </footer>

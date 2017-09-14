@@ -36,7 +36,7 @@ if (! function_exists('upload_file')){
   		$config['allowed_types'] = 'gif|jpg|png';
   		$config['remove_spaces'] = TRUE;
   		$config['file_permissions'] = '0777';
-  		$config['max_size'] = 10240; // 10 MB
+  		$config['max_size'] = 20480; // 10 MB
 
         // Agrega o remplazamos configuraciones 
 		if (0 < count($custom_config)){

@@ -304,3 +304,32 @@ strong, b {
     background: rgba(255,255,255,.8); 
     right: 0px;
 }
+
+.first-line {
+    text-shadow: 1px -1px 0 rgba(165,54,201,1), 1px 1px 0 rgba(165,54,201,1), -1px -1px 0 rgba(165,54,201,1), -1px 1px 0 rgba(165,54,201,1), 2px -2px 0 rgba(165,54,201,1), 2px 2px 0 rgba(165,54,201,1), -2px -2px 0 rgba(165,54,201,1), -2px 1px 0 rgba(165,54,201,1), -1px 1px 0 rgba(165,54,201,1), -1px 2px 0 rgba(165,54,201,1), -2px 2px 0 rgba(165,54,201,1), -2px 3px 0 rgba(165,54,201,1), -3px 3px 0 rgba(165,54,201,1), -4px 4px 0 rgba(165,54,201,1);
+    color: #fff;
+    font-family: 'ubuntu';
+    font-size: 5vw;
+}
+
+.second-line {
+    text-shadow: 1px -1px 0 rgba(165,54,201,1), 1px 1px 0 rgba(165,54,201,1), -1px -1px 0 rgba(165,54,201,1), -1px 1px 0 rgba(165,54,201,1), 2px -2px 0 rgba(165,54,201,1), 2px 2px 0 rgba(165,54,201,1), -2px -2px 0 rgba(165,54,201,1), -2px 1px 0 rgba(165,54,201,1), -1px 1px 0 rgba(165,54,201,1), -1px 2px 0 rgba(165,54,201,1), -2px 2px 0 rgba(165,54,201,1), -2px 3px 0 rgba(165,54,201,1), -3px 3px 0 rgba(165,54,201,1), -4px 4px 0 rgba(165,54,201,1);
+    color: #fff;
+    font-family: 'aqz';
+    font-size: 7vw;
+    margin-top: -35px;
+}
+
+
+/* jQuery UI*/
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+table {
+	font-size: 1em;
+}
+
+.ui-draggable, .ui-droppable {
+	background-position: top;
+}

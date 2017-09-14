@@ -59,7 +59,12 @@
                 <b>Tipo de Evento:</b> 
                 <?= $contact_data->contact_reference ;?><br>
                 <b>Fecha del evento:</b> 
-                <?= $contact_data->contact_date_reference ;?><br>
+                <?  
+                    $freferencia = $contact_data->contact_date_reference;
+                    $freferencia = substr($freferencia, 0, 10);
+
+                    echo $freferencia;
+                ;?><br>
                 <b>Lugar del Evento:</b> 
                 <?= $contact_data->contact_direction;?>
             </div>

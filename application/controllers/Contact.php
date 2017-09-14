@@ -56,8 +56,9 @@ class Contact extends CI_Controller {
 
 		$data = array(
 			'page_title' => 'Contactános',
-			'page_subtitle' => NULL ,
-			'page_portada_url' => NULL
+			'page_subtitle' => "NECESITÁS <br> MÁS INFORMACIÓN",
+			'page_description' => "CONTACTANOS",
+			'page_portada_url' => 'uploads/images/static/contacto-image.jpg'
 		);
 		$data['title'] = 'Contactános';
 
@@ -72,8 +73,10 @@ class Contact extends CI_Controller {
 				$_POST
 			);
 
-			if ($this->contact_model->create($contact_data))
+			if ($this->contact_model->create($contact_data)){
+				$data['page_description'] = NULL;
 				$data['page_subtitle'] = 'Enviado Correctamente';
+			}
 		}
 		else
 			$data['main_content'] = 'frontend/pages/page-contact';

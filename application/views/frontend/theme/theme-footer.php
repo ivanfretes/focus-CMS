@@ -85,7 +85,7 @@
         
         <?  if (!not_value($page->page_title)){?>
 
-            .title-page:before {
+            .first-line:before,.second-line:before {
                 content: '<?= $page->page_title; ?>';
             }
 

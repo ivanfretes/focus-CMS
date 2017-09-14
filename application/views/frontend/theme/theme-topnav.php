@@ -3,7 +3,7 @@
     if ($this->session->logged_in && !not_value($page_id)){
 ?>
         <a href="<?=  base_url("focus/pages/edit/$page_id"); ?>" 
-           target="parent" class="edit-page">
+           target="_blank" class="edit-page">
            Editar Página
         </a>
 <?

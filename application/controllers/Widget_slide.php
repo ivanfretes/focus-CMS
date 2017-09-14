@@ -49,18 +49,16 @@ class Widget_slide extends CI_Controller {
 		if (!not_value($image_uploaded)){
 			// Datos de la imagen
 			$image_data = array_shift($image_uploaded);
-			$iname = $image_data['file_name'];
 			$iformat = $image_data['image_type'];
-
-			// Si la imagen es un gif, no redimensiona
 			if ('gif' !== $iformat){
 				$iroute = resize_image(900, 560, $iname);
+				//$iroute = resize_image_by_width($image_data, 300);
 				resize_image(450, 280, $iname);
 			}
-			else 
+			else {
+				$iname = $image_data['file_name'];
 				$iroute = 'uploads/images/raw/'.$iname;
-
-			// Retorna el campo con 
+			}
 			return array('slide_image' => $iroute);
 		}
 		return NULL;

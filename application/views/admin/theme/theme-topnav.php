@@ -1,4 +1,8 @@
-<!-- Top Navigation -->
+<!-- Loading Icon -->
+<div class="loading-data"></div>
+
+
+<!-- TOP NAVBAR -->
     <div class="top_nav">
         <div class="nav_menu">
     <nav>

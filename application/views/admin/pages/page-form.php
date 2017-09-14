@@ -9,44 +9,44 @@
  */
 ?>
 
+<div class="theme-container-head">
+	<div class="col-md-8">
+		<input type="text" class="form-control input-lg" 
+			   name="g-title" id="g-title"
+			   <?= default_value_input($page_title); ?>
+			   placeholder="Título"><br>
+			   
+		<input type="text" class="form-control" name="g-url" 
+		   id="g-url" <?= default_value_input($page_url); ?>
+		   required>
+	</div>
+	
+	<div class="col-md-1 text-center">
+		<a href="<?= base_url("focus/pages/$page_id/widgets"); ?>">
+				<span class="glyphicon glyphicon-plus-sign"></span>
+				<br>Agregar Widget
+		</a>
+	</div>
+
+	<div class="col-md-1 text-center">
+		<span class="glyphicon glyphicon-eye-open"></span>
+		<a href="<?= base_url(default_value($page_url)) ;?>"
+		   target="parent" ><br>Ver Página</a>
+	</div>
+	
+	<div class="col-md-2">
+		<input type="submit" name="g-submit" value="Guardar"
+			   class="btn btn-lg btn-success">
+	</div>
+
+	
+</div>
+
+<div class="clear"></div>
+
 <form method="post" enctype="multipart/form-data" id="page-form">
 	
 	<div class="page-container">
-
-		<div class="theme-container-head">
-			<div class="col-md-8">
-				<input type="text" class="form-control input-lg" 
-					   name="g-title" id="g-title"
-					   <?= default_value_input($page_title); ?>
-					   placeholder="Título"><br>
-					   
-				<input type="text" class="form-control" name="g-url" 
-				   id="g-url" <?= default_value_input($page_url); ?>
-				   required>
-			</div>
-			
-			<div class="col-md-1 text-center">
-				<a href="<?= base_url("focus/pages/$page_id/widgets"); ?>">
-						<span class="glyphicon glyphicon-plus-sign"></span>
-						<br>Agregar Widget
-				</a>
-			</div>
-
-			<div class="col-md-1 text-center">
-				<span class="glyphicon glyphicon-eye-open"></span>
-				<a href="<?= base_url(default_value($page_url)) ;?>"
-				   target="parent" ><br>Ver Página</a>
-			</div>
-			
-			<div class="col-md-2">
-				<input type="submit" name="g-submit" value="Guardar"
-					   class="btn btn-lg btn-success">
-			</div>
-
-			
-		</div>
-	
-		<div class="clear"></div>
 			
 		<!-- Imagen de portada-->
 		<?	

@@ -1,3 +1,7 @@
+<?
+    $app_name = 'focus';
+    $app_version = '1.0.3';
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Gestion v1.0.2</title>
+    <title><?= $app_name . ' '. $app_version;  ?></title>
 
     <!-- Bootstrap & Font -->
     <link href="<?= base_url('static/vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet');?>">
@@ -41,6 +45,7 @@
     <script type="text/javascript">
         const BASE_URL =  '<?= base_url(); ?>';
         const FOCUS_URL = BASE_URL+'focus/';
+        const MAX_FILE_SIZE = 6815744; <? // 6.5 MB ?>
     </script>
   </head>
     

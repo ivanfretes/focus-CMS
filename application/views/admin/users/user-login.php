@@ -3,7 +3,7 @@
 <head>
 
 <?
-    $title = 'Inicio de Sesion - FOCUS CMS v1.0.2';
+    $title = 'Inicio de Sesion - FOCUS CMS v1.0.3';
 ?>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -101,7 +101,7 @@
     <h1>Focus CMS</h1>
 
     <p>
-        <b><span style="color:#c15887;">Focus CMS v1.0.2 
+        <b><span style="color:#c15887;">Focus CMS v1.0.3 
         es un generador ágil de páginas webs</span></b>
     </p>
     <a href="#" >Potenciado por CUANTICA Soft</a>
