@@ -1,5 +1,5 @@
 # focus-widgets
-Focus es un generados de Páginas y widgets (componentes). Adecuable a cualquier proyecto web.
+Focus es un generados de Páginas y widgets (componentes). Adecuable a pequeños proyectos webs.
 Genera páginas dinámicas y agiles de una forma tan sencilla y rapida. 
 
 Cuenta con 3 widgets (componentes) por defecto:
